@@ -1,0 +1,289 @@
+---
+/**
+ * 🎬 FOOTER COMPONENT
+ * Pie de página
+ */
+
+const SITE_CONFIG = {
+  description: 'Producciones audiovisuales de excelencia',
+  navigation: [
+    { id: 'home', label: 'home', href: '/' },
+    { id: 'films', label: 'films', href: '/films' },
+    { id: 'about', label: 'about', href: '/about' },
+    { id: 'news', label: 'news', href: '/news' },
+  ],
+  socialLinks: {
+    instagram: 'https://instagram.com/verbeafilms',
+    linkedin: 'https://linkedin.com/company/verbena-films',
+    youtube: 'https://youtube.com/@verbeafilms',
+  },
+};
+
+// Simple translation helper
+const translations: Record<string, Record<string, string>> = {
+  es: {
+    'nav.home': 'Inicio',
+    'nav.films': 'Películas',
+    'nav.about': 'Nosotros',
+    'nav.news': 'Noticias',
+    'footer.contact': 'Contacto',
+    'footer.follow': 'Síguenos',
+    'footer.copyright': '© 2025 Verbena Films. Todos los derechos reservados.',
+  },
+  en: {
+    'nav.home': 'Home',
+    'nav.films': 'Films',
+    'nav.about': 'About',
+    'nav.news': 'News',
+    'footer.contact': 'Contact',
+    'footer.follow': 'Follow us',
+    'footer.copyright': '© 2025 Verbena Films. All rights reserved.',
+  },
+};
+
+function t(key: string, lang: string = 'es'): string {
+  return translations[lang]?.[key] || key;
+}
+
+interface Props {
+  currentLang?: 'es' | 'en';
+}
+
+const { currentLang = 'es' } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Main Content -->
+    <div class="footer-content">
+      <!-- Brand Section -->
+      <div class="footer-section footer-brand">
+        <h3 class="footer-logo">
+          <span>Verbena</span>
+          <span class="accent">Films</span>
+        </h3>
+        <p class="footer-description">
+          {SITE_CONFIG.description}
+        </p>
+      </div>
+
+      <!-- Links Section -->
+      <div class="footer-section">
+        <h4 class="footer-heading">{t('nav.home', currentLang)}</h4>
+        <ul class="footer-links">
+          {
+            SITE_CONFIG.navigation.map((item) => (
+              <li>
+                <a href={item.href}>
+                  {t(`nav.${item.label}`, currentLang)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="footer-section">
+        <h4 class="footer-heading">{t('footer.contact', currentLang)}</h4>
+        <ul class="footer-contact">
+          <li>
+            <a href="mailto:info@verbena-films.com">
+              info@verbena-films.com
+            </a>
+          </li>
+          <li>
+            <a href="tel:+34123456789">+34 123 456 789</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Section -->
+      <div class="footer-section">
+        <h4 class="footer-heading">{t('footer.follow', currentLang)}</h4>
+        <ul class="footer-social">
+          {
+            SITE_CONFIG.socialLinks?.instagram && (
+              <li>
+                <a
+                  href={SITE_CONFIG.socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
+                  Instagram
+                </a>
+              </li>
+            )
+          }
+          {
+            SITE_CONFIG.socialLinks?.linkedin && (
+              <li>
+                <a
+                  href={SITE_CONFIG.socialLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            )
+          }
+          {
+            SITE_CONFIG.socialLinks?.youtube && (
+              <li>
+                <a
+                  href={SITE_CONFIG.socialLinks.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
+                  YouTube
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="footer-divider"></div>
+
+    <!-- Bottom Section -->
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        {t('footer.copyright', currentLang).replace('2025', currentYear.toString())}
+      </p>
+      <p class="footer-made-with">
+        Made with ❤️ by Verbena Films
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-dark-secondary);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+
+    @media (max-width: 768px) {
+      padding: 0 var(--spacing-md);
+    }
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-2xl);
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-xl);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .footer-brand {
+    grid-column: 1;
+
+    @media (max-width: 480px) {
+      grid-column: auto;
+    }
+  }
+
+  .footer-logo {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+
+    span.accent {
+      color: var(--color-accent);
+    }
+  }
+
+  .footer-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .footer-heading {
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .footer-links,
+  .footer-contact,
+  .footer-social {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+
+    li {
+      a {
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        transition: color var(--transition-default);
+        font-size: 0.9rem;
+
+        &:hover {
+          color: var(--color-accent);
+        }
+      }
+    }
+  }
+
+  .footer-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: var(--spacing-xl) 0;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+
+  .footer-copyright {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .footer-made-with {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+</style>

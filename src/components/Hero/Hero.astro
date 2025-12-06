@@ -1,0 +1,336 @@
+---
+/**
+ * 🎬 HERO COMPONENT
+ * Sección hero con carrusel de 3 videos (10 segundos cada uno)
+ */
+
+// Simple translation helper
+const translations: Record<string, Record<string, string>> = {
+  es: {
+    'hero.title': 'Verbena Films',
+    'hero.subtitle': 'Producciones audiovisuales de excelencia',
+    'hero.cta': 'Explora nuestro trabajo',
+  },
+  en: {
+    'hero.title': 'Verbena Films',
+    'hero.subtitle': 'Outstanding audiovisual productions',
+    'hero.cta': 'Explore our work',
+  },
+};
+
+function t(key: string, lang: string = 'es'): string {
+  return translations[lang]?.[key] || key;
+}
+
+interface Props {
+  currentLang?: 'es' | 'en';
+}
+
+const { currentLang = 'es' } = Astro.props;
+
+// Videos del hero (carpeta public/videos/)
+const heroVideos = [
+  '/videos/hero-1.mp4',
+  '/videos/hero-2.mp4',
+  '/videos/hero-3.mp4',
+];
+---
+
+<section class="hero">
+  <!-- Video Carousel Background -->
+  <div class="hero-video-container">
+    <video
+      class="hero-video active"
+      id="heroVideo"
+      autoplay
+      muted
+      loop={false}
+      playsinline
+    >
+      <source src={heroVideos[0]} type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="container">
+      <h1 class="hero-title">{t('hero.title', currentLang)}</h1>
+      <p class="hero-subtitle">{t('hero.subtitle', currentLang)}</p>
+      <a href="/films" class="hero-cta">
+        {t('hero.cta', currentLang)}
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Video Indicators -->
+  <div class="hero-indicators">
+    {
+      heroVideos.map((_, index) => (
+        <button
+          class={`indicator ${index === 0 ? 'active' : ''}`}
+          data-video-index={index}
+          aria-label={`Video ${index + 1}`}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: var(--spacing-2xl);
+  }
+
+  .hero-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(15, 15, 15, 0.7) 0%,
+      rgba(15, 15, 15, 0.5) 50%,
+      rgba(15, 15, 15, 0.7) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--color-text-primary);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: var(--font-weight-thin);
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 2rem;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 1px;
+
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.95rem;
+    }
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: 2px solid var(--color-accent);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--transition-default);
+
+    &:hover {
+      background: var(--color-accent);
+      color: var(--color-dark-bg);
+
+      .arrow {
+        transform: translateX(5px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      font-size: 0.9rem;
+    }
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--transition-default);
+  }
+
+  .hero-indicators {
+    position: absolute;
+    bottom: var(--spacing-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: var(--spacing-md);
+
+    @media (max-width: 768px) {
+      bottom: var(--spacing-lg);
+      gap: var(--spacing-sm);
+    }
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--transition-default);
+
+    &:hover {
+      border-color: var(--color-text-secondary);
+    }
+
+    &.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    @media (max-width: 768px) {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script define:vars={{ heroVideos }}>
+  class HeroVideoCarousel {
+    constructor() {
+      this.videos = heroVideos;
+      this.currentIndex = 0;
+      this.videoElement = document.getElementById('heroVideo');
+      this.indicators = document.querySelectorAll('.indicator');
+      this.videoDuration = 10000; // 10 segundos
+
+      if (this.videoElement) {
+        this.init();
+      }
+    }
+
+    init() {
+      // Video ended event
+      this.videoElement.addEventListener('ended', () => {
+        this.nextVideo();
+      });
+
+      // Indicator clicks
+      this.indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          this.goToVideo(index);
+        });
+      });
+
+      // Fallback: si el video no termina en 10 segundos, cambiar igualmente
+      this.setupTimeout();
+    }
+
+    setupTimeout() {
+      setTimeout(() => {
+        if (this.currentIndex < this.videos.length - 1) {
+          this.nextVideo();
+        } else {
+          this.goToVideo(0);
+        }
+      }, this.videoDuration);
+    }
+
+    nextVideo() {
+      this.currentIndex = (this.currentIndex + 1) % this.videos.length;
+      this.updateVideo();
+    }
+
+    goToVideo(index) {
+      this.currentIndex = index;
+      this.updateVideo();
+    }
+
+    updateVideo() {
+      // Update video source
+      this.videoElement.src = this.videos[this.currentIndex];
+
+      // Reset and play
+      this.videoElement.currentTime = 0;
+      this.videoElement.play();
+
+      // Update indicators
+      this.indicators.forEach((indicator, index) => {
+        if (index === this.currentIndex) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
+      });
+
+      // Setup next transition
+      this.setupTimeout();
+    }
+  }
+
+  // Initialize carousel
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new HeroVideoCarousel();
+    });
+  } else {
+    new HeroVideoCarousel();
+  }
+</script>

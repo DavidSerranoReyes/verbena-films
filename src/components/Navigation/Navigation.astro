@@ -1,0 +1,293 @@
+---
+/**
+ * 🎬 NAVIGATION COMPONENT
+ * Barra de navegación con selector de idiomas
+ */
+
+const SITE_CONFIG = {
+  navigation: [
+    { id: 'home', label: 'home', href: '/' },
+    { id: 'films', label: 'films', href: '/films' },
+    { id: 'about', label: 'about', href: '/about' },
+    { id: 'news', label: 'news', href: '/news' },
+  ],
+};
+
+// Simple translation helper
+const translations: Record<string, Record<string, string>> = {
+  es: {
+    'nav.home': 'Inicio',
+    'nav.films': 'Películas',
+    'nav.about': 'Nosotros',
+    'nav.news': 'Noticias',
+  },
+  en: {
+    'nav.home': 'Home',
+    'nav.films': 'Films',
+    'nav.about': 'About',
+    'nav.news': 'News',
+  },
+};
+
+function t(key: string, lang: string = 'es'): string {
+  return translations[lang]?.[key] || key;
+}
+
+interface Props {
+  currentLang?: 'es' | 'en';
+}
+
+const { currentLang = 'es' } = Astro.props;
+---
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <a href="/">
+        <span class="logo-text">Verbena</span>
+        <span class="logo-text accent">Films</span>
+      </a>
+    </div>
+
+    <!-- Menu Toggle (Mobile) -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <ul class="navbar-links" id="navbarLinks">
+      {
+        SITE_CONFIG.navigation.map((item) => (
+          <li>
+            <a href={item.href} class="nav-link">
+              {t(`nav.${item.label}`, currentLang)}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+      <button
+        class={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
+        data-lang="es"
+        aria-label="Cambiar a Español"
+      >
+        ES
+      </button>
+      <span class="lang-divider">/</span>
+      <button
+        class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+        data-lang="en"
+        aria-label="Switch to English"
+      >
+        EN
+      </button>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: var(--spacing-2xl);
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 1000;
+  }
+
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+      padding: 0 var(--spacing-md);
+    }
+  }
+
+  .navbar-logo a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: opacity var(--transition-default);
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .logo-text {
+    color: var(--color-text-primary);
+
+    &.accent {
+      color: var(--color-accent);
+    }
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 6px;
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
+
+    span {
+      width: 25px;
+      height: 2px;
+      background: var(--color-text-primary);
+      transition: all var(--transition-default);
+      border-radius: 2px;
+    }
+
+    &.active span:nth-child(1) {
+      transform: rotate(45deg) translate(10px, 10px);
+    }
+
+    &.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    &.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+  }
+
+  .navbar-links {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-xl);
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: 768px) {
+      position: absolute;
+      top: var(--spacing-2xl);
+      left: 0;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-dark-secondary);
+      border-bottom: 1px solid var(--color-border);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-default);
+
+      &.active {
+        max-height: 300px;
+      }
+    }
+
+    li {
+      @media (max-width: 768px) {
+        border-bottom: 1px solid var(--color-border);
+      }
+    }
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-regular);
+    transition: color var(--transition-default);
+    display: block;
+    padding: var(--spacing-md) 0;
+
+    @media (max-width: 768px) {
+      padding: var(--spacing-md);
+    }
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-left: var(--spacing-lg);
+
+    @media (max-width: 768px) {
+      margin-left: auto;
+      margin-right: var(--spacing-md);
+    }
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: color var(--transition-default);
+    padding: 0;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+
+    &.active {
+      color: var(--color-accent);
+    }
+  }
+
+  .lang-divider {
+    color: var(--color-text-secondary);
+  }
+</style>
+
+<script is:inline>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navbarLinks = document.getElementById('navbarLinks');
+
+  if (menuToggle && navbarLinks) {
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      navbarLinks.classList.toggle('active');
+    });
+
+    // Close menu when link is clicked
+    const links = navbarLinks.querySelectorAll('a');
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navbarLinks.classList.remove('active');
+      });
+    });
+  }
+
+  // Language switcher
+  const langButtons = document.querySelectorAll('.lang-btn');
+  langButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      if (lang) {
+        window.switchLanguage(lang);
+      }
+    });
+  });
+</script>
