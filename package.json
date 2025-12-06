@@ -1,0 +1,23 @@
+{
+  "name": "verbena-films",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Professional film production company website built with Astro + React + TypeScript",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.0",
+    "i18next": "^23.7.0"
+  },
+  "devDependencies": {
+    "@astrojs/react": "^3.0.0",
+    "typescript": "^5.3.0"
+  }
+}
