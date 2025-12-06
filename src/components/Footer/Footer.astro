@@ -1,23 +1,8 @@
 ---
 /**
- * 🎬 FOOTER COMPONENT
- * Pie de página
+ * 🎬 FOOTER COMPONENT - MEJORADO
+ * Diseño moderno inspirado en Avalon
  */
-
-const SITE_CONFIG = {
-  description: 'Producciones audiovisuales de excelencia',
-  navigation: [
-    { id: 'home', label: 'home', href: '/' },
-    { id: 'films', label: 'films', href: '/films' },
-    { id: 'about', label: 'about', href: '/about' },
-    { id: 'news', label: 'news', href: '/news' },
-  ],
-  socialLinks: {
-    instagram: 'https://instagram.com/verbeafilms',
-    linkedin: 'https://linkedin.com/company/verbena-films',
-    youtube: 'https://youtube.com/@verbeafilms',
-  },
-};
 
 // Simple translation helper
 const translations: Record<string, Record<string, string>> = {
@@ -26,8 +11,11 @@ const translations: Record<string, Record<string, string>> = {
     'nav.films': 'Películas',
     'nav.about': 'Nosotros',
     'nav.news': 'Noticias',
+    'footer.location': 'Ubicación',
     'footer.contact': 'Contacto',
     'footer.follow': 'Síguenos',
+    'footer.legal': 'Aviso legal y Protección de Datos',
+    'footer.cookies': 'Cookies',
     'footer.copyright': '© 2025 Verbena Films. Todos los derechos reservados.',
   },
   en: {
@@ -35,8 +23,11 @@ const translations: Record<string, Record<string, string>> = {
     'nav.films': 'Films',
     'nav.about': 'About',
     'nav.news': 'News',
+    'footer.location': 'Location',
     'footer.contact': 'Contact',
-    'footer.follow': 'Follow us',
+    'footer.follow': 'Follow',
+    'footer.legal': 'Legal Notice & Data Protection',
+    'footer.cookies': 'Cookies',
     'footer.copyright': '© 2025 Verbena Films. All rights reserved.',
   },
 };
@@ -50,129 +41,120 @@ interface Props {
 }
 
 const { currentLang = 'es' } = Astro.props;
-const currentYear = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="footer-container">
-    <!-- Main Content -->
-    <div class="footer-content">
-      <!-- Brand Section -->
-      <div class="footer-section footer-brand">
-        <h3 class="footer-logo">
-          <span>Verbena</span>
-          <span class="accent">Films</span>
-        </h3>
-        <p class="footer-description">
-          {SITE_CONFIG.description}
-        </p>
-      </div>
+  <div class="footer-content">
+    <div class="container">
+      <!-- Top Section - Main Info -->
+      <div class="footer-top">
+        <!-- Location -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">{t('footer.location', currentLang)}</h4>
+          <div class="footer-info">
+            {
+              currentLang === 'es' ? (
+                <>
+                  <p>Plaza del Cordón 2</p>
+                  <p>28005 Madrid</p>
+                  <p>Spain</p>
+                </>
+              ) : (
+                <>
+                  <p>Plaza del Cordón 2</p>
+                  <p>28005 Madrid</p>
+                  <p>Spain</p>
+                </>
+              )
+            }
+          </div>
+        </div>
 
-      <!-- Links Section -->
-      <div class="footer-section">
-        <h4 class="footer-heading">{t('nav.home', currentLang)}</h4>
-        <ul class="footer-links">
-          {
-            SITE_CONFIG.navigation.map((item) => (
-              <li>
-                <a href={item.href}>
-                  {t(`nav.${item.label}`, currentLang)}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+        <!-- Navigation -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">{t('nav.about', currentLang)}</h4>
+          <nav class="footer-nav">
+            <a href="/">{t('nav.home', currentLang)}</a>
+            <a href="/films">{t('nav.films', currentLang)}</a>
+            <a href="/about">{t('nav.about', currentLang)}</a>
+            <a href="/news">{t('nav.news', currentLang)}</a>
+          </nav>
+        </div>
 
-      <!-- Contact Section -->
-      <div class="footer-section">
-        <h4 class="footer-heading">{t('footer.contact', currentLang)}</h4>
-        <ul class="footer-contact">
-          <li>
-            <a href="mailto:info@verbena-films.com">
-              info@verbena-films.com
-            </a>
-          </li>
-          <li>
+        <!-- Contact -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">{t('footer.contact', currentLang)}</h4>
+          <div class="footer-contact">
+            <a href="mailto:info@verbena-films.com">info@verbena-films.com</a>
             <a href="tel:+34123456789">+34 123 456 789</a>
-          </li>
-        </ul>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">{t('footer.follow', currentLang)}</h4>
+          <div class="footer-social">
+            <a
+              href="https://instagram.com/verbeafilms"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link"
+            >
+              Instagram
+            </a>
+          </div>
+        </div>
       </div>
 
-      <!-- Social Section -->
-      <div class="footer-section">
-        <h4 class="footer-heading">{t('footer.follow', currentLang)}</h4>
-        <ul class="footer-social">
-          {
-            SITE_CONFIG.socialLinks?.instagram && (
-              <li>
-                <a
-                  href={SITE_CONFIG.socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                >
-                  Instagram
-                </a>
-              </li>
-            )
-          }
-          {
-            SITE_CONFIG.socialLinks?.linkedin && (
-              <li>
-                <a
-                  href={SITE_CONFIG.socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                >
-                  LinkedIn
-                </a>
-              </li>
-            )
-          }
-          {
-            SITE_CONFIG.socialLinks?.youtube && (
-              <li>
-                <a
-                  href={SITE_CONFIG.socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="YouTube"
-                >
-                  YouTube
-                </a>
-              </li>
-            )
-          }
-        </ul>
+      <!-- Divider -->
+      <div class="footer-divider"></div>
+
+      <!-- Bottom Section - Legal & Copyright -->
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <a href="#" class="footer-link-small">{t('footer.legal', currentLang)}</a>
+          <a href="#" class="footer-link-small">{t('footer.cookies', currentLang)}</a>
+        </div>
+        <div class="footer-bottom-right">
+          <p class="footer-copyright">
+            {t('footer.copyright', currentLang)}
+          </p>
+        </div>
       </div>
-    </div>
-
-    <!-- Divider -->
-    <div class="footer-divider"></div>
-
-    <!-- Bottom Section -->
-    <div class="footer-bottom">
-      <p class="footer-copyright">
-        {t('footer.copyright', currentLang).replace('2025', currentYear.toString())}
-      </p>
-      <p class="footer-made-with">
-        Made with ❤️ by Verbena Films
-      </p>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--color-dark-secondary);
+    background: linear-gradient(180deg, var(--color-dark-bg) 0%, var(--color-dark-secondary) 100%);
     border-top: 1px solid var(--color-border);
-    color: var(--color-text-secondary);
-    padding: var(--spacing-2xl) 0;
+    padding: var(--spacing-2xl) 0 var(--spacing-xl) 0;
+    position: relative;
+    overflow: hidden;
   }
 
-  .footer-container {
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-accent),
+      transparent
+    );
+    opacity: 0.3;
+  }
+
+  .footer-content {
+    width: 100%;
+  }
+
+  .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
@@ -180,11 +162,16 @@ const currentYear = new Date().getFullYear();
     @media (max-width: 768px) {
       padding: 0 var(--spacing-md);
     }
+
+    @media (max-width: 480px) {
+      padding: 0 var(--spacing-sm);
+    }
   }
 
-  .footer-content {
+  /* Top Section */
+  .footer-top {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-2xl);
     margin-bottom: var(--spacing-2xl);
 
@@ -195,95 +182,192 @@ const currentYear = new Date().getFullYear();
 
     @media (max-width: 480px) {
       grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
     }
   }
 
-  .footer-section {
+  .footer-column {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-  }
+    animation: fadeInUp 0.6s ease-out;
 
-  .footer-brand {
-    grid-column: 1;
-
-    @media (max-width: 480px) {
-      grid-column: auto;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
 
-  .footer-logo {
-    font-size: 1.5rem;
+  .footer-column-title {
+    font-size: 0.85rem;
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--spacing-sm);
-
-    span.accent {
-      color: var(--color-accent);
-    }
-  }
-
-  .footer-description {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-  }
-
-  .footer-heading {
-    font-size: 1rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: var(--spacing-md);
+    letter-spacing: 2px;
+    color: var(--color-text-primary);
+    margin: 0;
   }
 
-  .footer-links,
-  .footer-contact,
-  .footer-social {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .footer-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+
+    p {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      margin: 0;
+      line-height: 1.6;
+      transition: color var(--transition-default);
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  /* Navigation Links */
+  .footer-nav {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
 
-    li {
-      a {
-        color: var(--color-text-secondary);
-        text-decoration: none;
-        transition: color var(--transition-default);
-        font-size: 0.9rem;
+    a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all var(--transition-default);
+      position: relative;
+      width: fit-content;
 
-        &:hover {
-          color: var(--color-accent);
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--color-accent);
+        transition: width var(--transition-default);
+      }
+
+      &:hover {
+        color: var(--color-accent);
+
+        &::after {
+          width: 100%;
         }
       }
     }
   }
 
-  .footer-divider {
-    height: 1px;
-    background: var(--color-border);
-    margin: var(--spacing-xl) 0;
-  }
-
-  .footer-bottom {
+  /* Contact Info */
+  .footer-contact {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: var(--spacing-sm);
-    text-align: center;
+
+    a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color var(--transition-default);
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  /* Social Links */
+  .footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .social-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all var(--transition-default);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    width: fit-content;
+
+    &::before {
+      content: '🔗';
+      opacity: 0;
+      transition: opacity var(--transition-default);
+    }
+
+    &:hover {
+      color: var(--color-accent);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  /* Divider */
+  .footer-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-border),
+      transparent
+    );
+    margin: var(--spacing-2xl) 0;
+  }
+
+  /* Bottom Section */
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--spacing-md);
+    }
+  }
+
+  .footer-bottom-left {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+  }
+
+  .footer-link-small {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color var(--transition-default);
+
+    &:hover {
+      color: var(--color-accent);
+    }
   }
 
   .footer-copyright {
-    font-size: 0.85rem;
     color: var(--color-text-secondary);
-  }
-
-  .footer-made-with {
     font-size: 0.85rem;
-    color: var(--color-text-secondary);
+    margin: 0;
   }
 </style>
