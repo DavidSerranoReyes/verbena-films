@@ -155,14 +155,17 @@ verbena-films/
 
 ## 🚀 Fases de Desarrollo
 
-### **Fase 1: Setup & Configuración** ✅
+### **Fase 1: Setup & Configuración** ✅ COMPLETADA
 
-- [ ] Inicializar proyecto (Astro + React)
-- [ ] Configurar TypeScript
-- [ ] Instalar dependencias base
-- [ ] Configurar git y repositorio
-- [ ] Setup de Strapi (local o staging)
-- [ ] Importar fuente Montserrat
+- [x] Inicializar proyecto (Astro + React)
+- [x] Configurar TypeScript (strict mode + esModuleInterop)
+- [x] Instalar dependencias base (react-i18next, i18next)
+- [x] Configurar git y repositorio GitHub
+- [x] Importar fuente Montserrat (Thin 100, Regular 400, Bold 700)
+- [x] Crear MainLayout.astro base
+- [x] Configurar i18n (ES/EN) con detección automática
+- [x] Crear tipos TypeScript y configuración sitio
+- [ ] Setup de Strapi (local o staging) - PRÓXIMO
 
 ### **Fase 2: Home** 🎯 (SIGUIENTE)
 
