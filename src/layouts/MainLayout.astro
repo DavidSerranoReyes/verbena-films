@@ -41,7 +41,7 @@ const { title = 'Verbena Films', description = 'Producciones audiovisuales de ex
     <slot />
     
     <!-- Language Toggle Script -->
-    <script>
+    <script is:inline>
       // Detect and set language preference
       function initLanguage() {
         const stored = localStorage.getItem('language');
@@ -59,7 +59,7 @@ const { title = 'Verbena Films', description = 'Producciones audiovisuales de ex
       initLanguage();
       
       // Expose function for language switching
-      window.switchLanguage = (lang: string) => {
+      window.switchLanguage = function(lang) {
         if (['es', 'en'].includes(lang)) {
           localStorage.setItem('language', lang);
           document.documentElement.lang = lang;
