@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Home",
+    "films": "Films",
+    "about": "About",
+    "news": "News"
+  },
+  "hero": {
+    "title": "Verbena Films",
+    "subtitle": "Outstanding audiovisual productions",
+    "cta": "Explore our work"
+  },
+  "footer": {
+    "copyright": "© 2025 Verbena Films. All rights reserved.",
+    "contact": "Contact",
+    "follow": "Follow us"
+  },
+  "language": "Language"
+}

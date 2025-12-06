@@ -5,6 +5,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,

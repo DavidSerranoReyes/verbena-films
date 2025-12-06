@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Verbena Films', description = 'Producciones audiovisuales de excelencia' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0f0f0f" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/og-image.jpg" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Title -->
+    <title>{title} | Verbena Films</title>
+  </head>
+  <body>
+    <slot />
+    
+    <!-- Language Toggle Script -->
+    <script>
+      // Detect and set language preference
+      function initLanguage() {
+        const stored = localStorage.getItem('language');
+        if (stored) {
+          document.documentElement.lang = stored;
+          return;
+        }
+        
+        const browserLang = navigator.language.split('-')[0];
+        const lang = ['es', 'en'].includes(browserLang) ? browserLang : 'es';
+        localStorage.setItem('language', lang);
+        document.documentElement.lang = lang;
+      }
+      
+      initLanguage();
+      
+      // Expose function for language switching
+      window.switchLanguage = (lang: string) => {
+        if (['es', 'en'].includes(lang)) {
+          localStorage.setItem('language', lang);
+          document.documentElement.lang = lang;
+          // Dispatch event for React components
+          window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+          location.reload();
+        }
+      };
+    </script>
+  </body>
+</html>

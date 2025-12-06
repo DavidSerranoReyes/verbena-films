@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "films": "Películas",
+    "about": "Nosotros",
+    "news": "Noticias"
+  },
+  "hero": {
+    "title": "Verbena Films",
+    "subtitle": "Producciones audiovisuales de excelencia",
+    "cta": "Explora nuestro trabajo"
+  },
+  "footer": {
+    "copyright": "© 2025 Verbena Films. Todos los derechos reservados.",
+    "contact": "Contacto",
+    "follow": "Síguenos"
+  },
+  "language": "Idioma"
+}
