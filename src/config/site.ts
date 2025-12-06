@@ -9,18 +9,18 @@ export const SITE_CONFIG = {
   author: 'Verbena Films',
   siteName: 'Verbena Films',
   siteUrl: 'https://verbena-films.com',
-  
+
   socialLinks: {
     instagram: 'https://instagram.com/verbeafilms',
     linkedin: 'https://linkedin.com/company/verbena-films',
     youtube: 'https://youtube.com/@verbeafilms',
   },
-  
+
   // API Configuration
   api: {
     strapiUrl: process.env.PUBLIC_STRAPI_URL || 'http://localhost:1337',
   },
-  
+
   // Navigation items
   navigation: [
     { id: 'home', label: 'home', href: '/' },

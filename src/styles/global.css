@@ -88,7 +88,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family-main), sans-serif;
   font-weight: var(--font-weight-thin);
   line-height: 1.2;
@@ -158,7 +163,8 @@ a {
 }
 
 /* Buttons */
-button, .btn {
+button,
+.btn {
   font-family: var(--font-family-main), sans-serif;
   font-size: 1rem;
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -197,7 +203,9 @@ button, .btn {
 }
 
 /* Forms */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: var(--font-family-main), sans-serif;
   background-color: var(--color-dark-secondary);
   color: var(--color-text-primary);
