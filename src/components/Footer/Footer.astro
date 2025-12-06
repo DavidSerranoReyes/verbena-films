@@ -224,6 +224,9 @@ const { currentLang = 'es' } = Astro.props;
       margin: 0;
       line-height: 1.6;
       transition: color var(--transition-default);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
 
       &:hover {
         color: var(--color-accent);
@@ -244,6 +247,9 @@ const { currentLang = 'es' } = Astro.props;
       transition: all var(--transition-default);
       position: relative;
       width: fit-content;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
 
       &::after {
         content: '';
@@ -277,6 +283,9 @@ const { currentLang = 'es' } = Astro.props;
       text-decoration: none;
       font-size: 0.95rem;
       transition: color var(--transition-default);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
 
       &:hover {
         color: var(--color-accent);
@@ -292,6 +301,13 @@ const { currentLang = 'es' } = Astro.props;
   }
 
   .social-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color var(--transition-default);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
     color: var(--color-text-secondary);
     text-decoration: none;
     font-size: 0.95rem;
