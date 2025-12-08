@@ -28,11 +28,26 @@ interface Props {
 
 const { currentLang = 'es' } = Astro.props;
 
-// Videos del hero (carpeta public/videos/)
+// Videos del hero con información
 const heroVideos = [
-  '/videos/hero-1.mp4',
-  '/videos/hero-2.mp4',
-  '/videos/hero-3.mp4',
+  {
+    src: '/videos/hero-1.mp4',
+    title: 'BIENVENUS',
+    director: 'Ana Puentes',
+    year: '2018',
+  },
+  {
+    src: '/videos/hero-2.mp4',
+    title: 'MI VIDA AL PRINCIPIO',
+    director: 'Ana Puentes',
+    year: '2022',
+  },
+  {
+    src: '/videos/hero-3.mp4',
+    title: 'EN LA NOCHE CAMINAMOS SOLOS',
+    director: 'Rafa Alberola',
+    year: '2024',
+  },
 ];
 ---
 
@@ -47,7 +62,7 @@ const heroVideos = [
       loop={false}
       playsinline
     >
-      <source src={heroVideos[0]} type="video/mp4" />
+      <source src={heroVideos[0].src} type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
   </div>
@@ -57,6 +72,16 @@ const heroVideos = [
     <div class="container">
       <h1 class="hero-title">{t('hero.title', currentLang)}</h1>
       <p class="hero-subtitle">{t('hero.subtitle', currentLang)}</p>
+      
+      <!-- Video Info -->
+      <div class="video-info" id="videoInfo">
+        <h2 class="video-title">{heroVideos[0].title}</h2>
+        <p class="video-meta">
+          <span class="director">{heroVideos[0].director}</span>
+          <span class="year">({heroVideos[0].year})</span>
+        </p>
+      </div>
+
       <a href="/films" class="hero-cta">
         {t('hero.cta', currentLang)}
         <span class="arrow">→</span>
@@ -168,6 +193,51 @@ const heroVideos = [
     }
   }
 
+  .video-info {
+    margin-bottom: var(--spacing-2xl);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .video-title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+
+    @media (max-width: 768px) {
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
+  }
+
+  .video-meta {
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    color: var(--color-text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.85rem;
+    }
+  }
+
+  .director {
+    margin-right: var(--spacing-sm);
+  }
+
+  .year {
+    color: var(--color-accent);
+  }
+
   .hero-cta {
     display: inline-flex;
     align-items: center;
@@ -258,6 +328,7 @@ const heroVideos = [
       this.videos = heroVideos;
       this.currentIndex = 0;
       this.videoElement = document.getElementById('heroVideo');
+      this.videoInfoElement = document.getElementById('videoInfo');
       this.indicators = document.querySelectorAll('.indicator');
       this.videoDuration = 10000; // 10 segundos
 
@@ -305,11 +376,23 @@ const heroVideos = [
 
     updateVideo() {
       // Update video source
-      this.videoElement.src = this.videos[this.currentIndex];
+      this.videoElement.src = this.videos[this.currentIndex].src;
 
       // Reset and play
       this.videoElement.currentTime = 0;
       this.videoElement.play();
+
+      // Update video info
+      const video = this.videos[this.currentIndex];
+      if (this.videoInfoElement) {
+        this.videoInfoElement.innerHTML = `
+          <h2 class="video-title">${video.title}</h2>
+          <p class="video-meta">
+            <span class="director">${video.director}</span>
+            <span class="year">(${video.year})</span>
+          </p>
+        `;
+      }
 
       // Update indicators
       this.indicators.forEach((indicator, index) => {
