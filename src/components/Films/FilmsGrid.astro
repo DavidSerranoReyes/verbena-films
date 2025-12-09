@@ -167,11 +167,6 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
                 loading="lazy"
                 data-modal-trigger={film.id}
               />
-              <div class="film-overlay">
-                <button class="play-button" data-modal-trigger={film.id}>
-                  ▶
-                </button>
-              </div>
             </div>
 
             <!-- Film Info -->
@@ -180,52 +175,6 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
 
               {film.year && (
                 <p class="film-year">{film.year}</p>
-              )}
-
-              {film.director && (
-                <p class="film-meta">
-                  <span class="label">{t('films.director', currentLang)}:</span>
-                  <span>{film.director}</span>
-                </p>
-              )}
-
-              {film.type && (
-                <p class="film-meta">
-                  <span class="label">{t('films.type', currentLang)}:</span>
-                  <span>{film.type}</span>
-                </p>
-              )}
-
-              {film.country && (
-                <p class="film-meta">
-                  <span class="label">{t('films.country', currentLang)}:</span>
-                  <span>{film.country}</span>
-                </p>
-              )}
-
-              {film.language && (
-                <p class="film-meta">
-                  <span class="label">{t('films.language', currentLang)}:</span>
-                  <span>{film.language}</span>
-                </p>
-              )}
-
-              {film.synopsis && (
-                <details class="film-details">
-                  <summary class="summary-button">{t('films.synopsis', currentLang)}</summary>
-                  <p class="film-synopsis">{film.synopsis}</p>
-                </details>
-              )}
-
-              {film.awards && film.awards.length > 0 && (
-                <details class="film-details">
-                  <summary class="summary-button">{t('films.awards', currentLang)}</summary>
-                  <ul class="awards-list">
-                    {film.awards.map((award) => (
-                      <li>{award}</li>
-                    ))}
-                  </ul>
-                </details>
               )}
             </div>
           </article>
@@ -281,7 +230,54 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
           <!-- Info -->
           <div class="modal-info">
             <h2 class="modal-title">{film.title}</h2>
+            
             {film.year && <p class="modal-year">{film.year}</p>}
+            
+            {film.type && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.type', currentLang)}:</span>
+                <span>{film.type}</span>
+              </p>
+            )}
+
+            {film.director && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.director', currentLang)}:</span>
+                <span>{film.director}</span>
+              </p>
+            )}
+
+            {film.country && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.country', currentLang)}:</span>
+                <span>{film.country}</span>
+              </p>
+            )}
+
+            {film.language && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.language', currentLang)}:</span>
+                <span>{film.language}</span>
+              </p>
+            )}
+
+            {film.synopsis && (
+              <div class="modal-synopsis">
+                <h3 class="modal-section-title">{t('films.synopsis', currentLang)}</h3>
+                <p>{film.synopsis}</p>
+              </div>
+            )}
+
+            {film.awards && film.awards.length > 0 && (
+              <div class="modal-awards">
+                <h3 class="modal-section-title">{t('films.awards', currentLang)}</h3>
+                <ul class="modal-awards-list">
+                  {film.awards.map((award) => (
+                    <li>{award}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -551,11 +547,13 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     transform: translate(-50%, -50%) scale(0.9);
     width: 90%;
     max-width: 900px;
+    max-height: 90vh;
     background: var(--color-dark-bg);
     border: 1px solid var(--color-border);
     transition: transform var(--transition-default);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     .film-modal.active & {
       transform: translate(-50%, -50%) scale(1);
@@ -647,6 +645,71 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     font-size: 0.9rem;
     color: var(--color-accent);
     font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .modal-meta {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-sm);
+
+    .modal-label {
+      color: var(--color-accent);
+      font-weight: var(--font-weight-bold);
+      min-width: 80px;
+    }
+  }
+
+  .modal-section-title {
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .modal-synopsis {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .modal-awards {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .modal-awards-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      padding: var(--spacing-xs) 0;
+      padding-left: var(--spacing-md);
+      position: relative;
+
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+        font-weight: var(--font-weight-bold);
+      }
+    }
   }
 </style>
 
