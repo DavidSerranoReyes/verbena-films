@@ -1,0 +1,762 @@
+---
+/**
+ * 🎬 FILMS GRID COMPONENT
+ * Galería de películas con información detallada
+ */
+
+// Simple translation helper
+const translations: Record<string, Record<string, string>> = {
+  es: {
+    'films.title': 'Nuestras Películas',
+    'films.description': 'Una selección de nuestros trabajos audiovisuales más destacados',
+    'films.type': 'Tipo',
+    'films.director': 'Director',
+    'films.year': 'Año',
+    'films.country': 'País',
+    'films.language': 'Idioma',
+    'films.synopsis': 'Sinopsis',
+    'films.awards': 'Premios y Festivales',
+    'films.watch': 'Ver tráiler',
+  },
+  en: {
+    'films.title': 'Our Films',
+    'films.description': 'A selection of our most outstanding audiovisual works',
+    'films.type': 'Type',
+    'films.director': 'Director',
+    'films.year': 'Year',
+    'films.country': 'Country',
+    'films.language': 'Language',
+    'films.synopsis': 'Synopsis',
+    'films.awards': 'Awards & Festivals',
+    'films.watch': 'Watch Trailer',
+  },
+};
+
+function t(key: string, lang: string = 'es'): string {
+  return translations[lang]?.[key] || key;
+}
+
+interface Props {
+  currentLang?: 'es' | 'en';
+}
+
+const { currentLang = 'es' } = Astro.props;
+
+// Películas
+const films = [
+  {
+    id: 'taranta',
+    title: 'Taranta',
+    director: '',
+    year: '',
+    type: '',
+    country: '',
+    language: '',
+    synopsis: '',
+    awards: [],
+    trailer: '',
+    poster: '/images/movies/TARANTA.png',
+  },
+  {
+    id: 'flores',
+    title: 'Flores para una madre',
+    director: '',
+    year: '',
+    type: '',
+    country: '',
+    language: '',
+    synopsis: '',
+    awards: [],
+    trailer: '',
+    poster: '/images/movies/FLORES PARA UNA MADRE AUSENTE.jpeg',
+  },
+  {
+    id: 'audicion',
+    title: 'Audición',
+    director: '',
+    year: '',
+    type: '',
+    country: '',
+    language: '',
+    synopsis: '',
+    awards: [],
+    trailer: '',
+    poster: '/images/movies/AUDICIÓN.png',
+  },
+  {
+    id: 'bienvenus',
+    title: 'Bienvenus',
+    director: 'Ana Puentes',
+    year: '2018',
+    type: 'Cortometraje Documental',
+    country: 'España',
+    language: 'Español - Francés',
+    synopsis: `Bienvenus es la historia de Nuria, una estudiante de traducción de 24 años, y de Salif, Chiaka y Pape, migrantes forzados procedentes de África que viven temporalmente en Granada.
+A través de su relación con Nuria descubriremos su realidad en una ciudad y un país extraño para ellos, las dificultades que sufren: las normales por su propia situación y las ocasionadas por los diferentes códigos culturales entre su país y España.
+Pero también, y sobre todo, el cambio que supone en la vida de estas personas el que alguien de esta cultura, en este caso Nuria, se implique a nivel emocional con ellos, les ayude a integrarse y conseguir sus objetivos, y en el camino ir descubriendo que son ellos los que tienen muchas más cosas que enseñarnos a nosotros de las que podríamos imaginar.`,
+    awards: [
+      'Premio Filmadrid',
+      'Seleccionado en ABYCINE',
+      'Festival de Cine de Madrid FCM-PNR',
+      'American Documentary Festival',
+      'Festival Directed by Women',
+      'St Cloud Film Fest',
+    ],
+    trailer: 'https://vimeo.com/306275587?fl=pl&fe=sh',
+    poster: '/images/movies/CARTEL-BIENVENUS_LAURELES.jpg',
+  },
+  {
+    id: 'mi-vida',
+    title: 'Mi vida al principio',
+    director: 'Ana Puentes',
+    year: '2022',
+    type: 'Cortometraje Ficción',
+    country: 'España',
+    language: 'Español',
+    synopsis: `Es Nochevieja en un pequeño pueblo de la sierra de Madrid, inhóspito y helado. ROMA tiene 9 años y su sitio favorito es el regazo de su padre, RODOLFO. Pero el ambiente está enrarecido después de que su madre haya decidido no pasar las fiestas con la familia paterna. Cuando ROMA se viste de chico para cantar en medio de la celebración familiar descubre la intolerancia de su padre. Nada volverá a ser como antes.`,
+    awards: [
+      'Candidato al Goya 2024',
+      'Sección oficial en la 35º Semana de Cine de Medina del Campo',
+      'Festival de Sevilla',
+      'Sección Oficial Abycine',
+      'Premios Pávez',
+      'Premios FUGAZ',
+    ],
+    trailer: 'https://vimeo.com/736976963?fl=pl&fe=sh',
+    poster: '/images/movies/MI VIDA AL PRINCIPIO.jpg',
+  },
+  {
+    id: 'noche',
+    title: 'En la noche caminamos solos',
+    director: 'Rafa Alberola',
+    year: '2024',
+    type: 'Cortometraje Ficción',
+    country: 'España',
+    language: 'Español',
+    synopsis: `Un rider sin bicicleta y una mujer vampiro caminan por la noche, abandonando el trabajo y la ciudad en busca de la libertad. Mientras, en su casa, un escritor se devana los sesos por tratar de entender y dirigir a estos personajes que cada vez están más lejos de su autoridad.`,
+    awards: [
+      'Estreno en Sección Oficial de SEMINCI',
+      'Sección Oficial Abycine',
+      'Festival de Sevilla',
+    ],
+    trailer: '',
+    poster: '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.jpg',
+  },
+];
+---
+
+<section class="films-section">
+  <div class="container">
+    <!-- Header -->
+    <div class="films-header">
+      <h1 class="films-title">{t('films.title', currentLang)}</h1>
+      <p class="films-description">{t('films.description', currentLang)}</p>
+    </div>
+
+    <!-- Films Grid -->
+    <div class="films-grid">
+      {
+        films.map((film) => (
+          <article class="film-card" data-film-id={film.id}>
+            <!-- Poster -->
+            <div class="film-poster-container">
+              <img
+                src={film.poster}
+                alt={film.title}
+                class="film-poster"
+                loading="lazy"
+                data-modal-trigger={film.id}
+              />
+              <div class="film-overlay">
+                <button class="play-button" data-modal-trigger={film.id}>
+                  ▶
+                </button>
+              </div>
+            </div>
+
+            <!-- Film Info -->
+            <div class="film-info">
+              <h2 class="film-title">{film.title}</h2>
+
+              {film.year && (
+                <p class="film-year">{film.year}</p>
+              )}
+
+              {film.director && (
+                <p class="film-meta">
+                  <span class="label">{t('films.director', currentLang)}:</span>
+                  <span>{film.director}</span>
+                </p>
+              )}
+
+              {film.type && (
+                <p class="film-meta">
+                  <span class="label">{t('films.type', currentLang)}:</span>
+                  <span>{film.type}</span>
+                </p>
+              )}
+
+              {film.country && (
+                <p class="film-meta">
+                  <span class="label">{t('films.country', currentLang)}:</span>
+                  <span>{film.country}</span>
+                </p>
+              )}
+
+              {film.language && (
+                <p class="film-meta">
+                  <span class="label">{t('films.language', currentLang)}:</span>
+                  <span>{film.language}</span>
+                </p>
+              )}
+
+              {film.synopsis && (
+                <details class="film-details">
+                  <summary class="summary-button">{t('films.synopsis', currentLang)}</summary>
+                  <p class="film-synopsis">{film.synopsis}</p>
+                </details>
+              )}
+
+              {film.awards && film.awards.length > 0 && (
+                <details class="film-details">
+                  <summary class="summary-button">{t('films.awards', currentLang)}</summary>
+                  <ul class="awards-list">
+                    {film.awards.map((award) => (
+                      <li>{award}</li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Modal/Lightbox -->
+  {
+    films.map((film) => (
+      <div class="film-modal" id={`modal-${film.id}`} data-film-id={film.id}>
+        <div class="modal-overlay" data-modal-close></div>
+        <div class="modal-content">
+          <button class="modal-close" data-modal-close aria-label="Close">✕</button>
+          
+          <div class="modal-inner">
+            <!-- Image -->
+            <img
+              src={film.poster}
+              alt={film.title}
+              class="modal-image"
+              id={`img-${film.id}`}
+            />
+            
+            <!-- Video (hidden by default) -->
+            {film.trailer && (
+              <div class="modal-video" id={`video-${film.id}`} style="display: none;">
+                <iframe
+                  src={`${film.trailer}?h=1080&color=d4a574`}
+                  width="100%"
+                  height="100%"
+                  frameborder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                  title={film.title}
+                />
+              </div>
+            )}
+
+            <!-- Play Button (shows on image) -->
+            {film.trailer && (
+              <button
+                class="modal-play-btn"
+                id={`play-btn-${film.id}`}
+                data-film-id={film.id}
+              >
+                ▶ PLAY
+              </button>
+            )}
+          </div>
+
+          <!-- Info -->
+          <div class="modal-info">
+            <h2 class="modal-title">{film.title}</h2>
+            {film.year && <p class="modal-year">{film.year}</p>}
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .films-section {
+    padding: var(--spacing-2xl) 0;
+    background: var(--color-dark-bg);
+    margin-top: var(--spacing-2xl);
+  }
+
+  .films-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .films-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: var(--font-weight-thin);
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  .films-description {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    letter-spacing: 0.5px;
+  }
+
+  .films-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .film-card {
+    background: var(--color-dark-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all var(--transition-default);
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(212, 165, 116, 0.15);
+    }
+  }
+
+  .film-poster-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 150%; /* 2:3 aspect ratio */
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 165, 116, 0.1) 0%,
+      rgba(232, 184, 138, 0.1) 100%
+    );
+  }
+
+  .film-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-default);
+  }
+
+  .film-card:hover .film-poster {
+    transform: scale(1.05);
+  }
+
+  .film-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .film-card:hover .film-overlay {
+    opacity: 1;
+  }
+
+  .play-button {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    font-size: 24px;
+    text-decoration: none;
+    transition: all var(--transition-default);
+
+    &:hover {
+      background: var(--color-accent);
+      color: var(--color-dark-bg);
+      transform: scale(1.1);
+    }
+  }
+
+  .film-info {
+    padding: var(--spacing-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .film-title {
+    font-size: 1.3rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .film-year {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 1px;
+  }
+
+  .film-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.5;
+
+    .label {
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+    }
+  }
+
+  .film-details {
+    margin-top: var(--spacing-md);
+    cursor: pointer;
+
+    &[open] {
+      .summary-button {
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  .summary-button {
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color var(--transition-default);
+    list-style: none;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+
+    &::marker {
+      display: none;
+    }
+  }
+
+  .film-synopsis {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .awards-list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+
+    li {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      padding: var(--spacing-xs) 0;
+      padding-left: var(--spacing-md);
+      position: relative;
+
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  /* Modal Styles */
+  .film-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-default);
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 900px;
+    background: var(--color-dark-bg);
+    border: 1px solid var(--color-border);
+    transition: transform var(--transition-default);
+    display: flex;
+    flex-direction: column;
+
+    .film-modal.active & {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 40px;
+    height: 40px;
+    background: rgba(212, 165, 116, 0.2);
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-default);
+    z-index: 10;
+
+    &:hover {
+      background: var(--color-accent);
+      color: var(--color-dark-bg);
+    }
+  }
+
+  .modal-inner {
+    position: relative;
+    width: 100%;
+    padding-bottom: 66.67%; /* 3:2 aspect ratio */
+    overflow: hidden;
+    background: #000;
+  }
+
+  .modal-image,
+  .modal-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .modal-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(212, 165, 116, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: var(--color-dark-bg);
+    font-size: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-default);
+    z-index: 5;
+
+    &:hover {
+      background: var(--color-accent);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  .modal-info {
+    padding: var(--spacing-lg);
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .modal-year {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+  }
+</style>
+
+<script is:inline>
+  // Film Modal/Lightbox
+  function initFilmModal() {
+    // Open modal on image/button click
+    document.querySelectorAll('[data-modal-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const filmId = trigger.getAttribute('data-modal-trigger');
+        const modal = document.querySelector(`#modal-${filmId}`);
+        if (modal) {
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Close modal on close button click
+    document.querySelectorAll('[data-modal-close]').forEach((closeBtn) => {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const modal = closeBtn.closest('.film-modal');
+        if (modal) {
+          closeModal(modal);
+        }
+      });
+    });
+
+    // Close modal on overlay click
+    document.querySelectorAll('.modal-overlay').forEach((overlay) => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          const modal = overlay.closest('.film-modal');
+          if (modal) {
+            closeModal(modal);
+          }
+        }
+      });
+    });
+
+    // Play button logic
+    document.querySelectorAll('.modal-play-btn').forEach((playBtn) => {
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const filmId = playBtn.getAttribute('data-film-id');
+        playVideoModal(filmId);
+      });
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.film-modal.active');
+        if (activeModal) {
+          closeModal(activeModal);
+        }
+      }
+    });
+  }
+
+  function closeModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    resetModalVideo(modal);
+  }
+
+  function playVideoModal(filmId) {
+    const imageDiv = document.querySelector(`#img-${filmId}`);
+    const videoDiv = document.querySelector(`#video-${filmId}`);
+    const playBtn = document.querySelector(`#play-btn-${filmId}`);
+
+    if (imageDiv && videoDiv && playBtn) {
+      imageDiv.style.display = 'none';
+      videoDiv.style.display = 'block';
+      playBtn.style.display = 'none';
+
+      // Play video
+      const iframe = videoDiv.querySelector('iframe');
+      if (iframe) {
+        iframe.src = iframe.src + '&autoplay=1';
+      }
+    }
+  }
+
+  function resetModalVideo(modal) {
+    const filmId = modal.getAttribute('data-film-id');
+    const imageDiv = document.querySelector(`#img-${filmId}`);
+    const videoDiv = document.querySelector(`#video-${filmId}`);
+    const playBtn = document.querySelector(`#play-btn-${filmId}`);
+
+    if (imageDiv && videoDiv && playBtn) {
+      imageDiv.style.display = 'block';
+      videoDiv.style.display = 'none';
+      playBtn.style.display = 'flex';
+
+      // Reset iframe
+      const iframe = videoDiv.querySelector('iframe');
+      if (iframe) {
+        const src = iframe.src.replace('&autoplay=1', '');
+        iframe.src = src;
+      }
+    }
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFilmModal);
+  } else {
+    initFilmModal();
+  }
+</script>
