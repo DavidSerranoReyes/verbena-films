@@ -103,7 +103,11 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
       'St Cloud Film Fest',
     ],
     trailer: 'https://vimeo.com/306275587?fl=pl&fe=sh',
-    poster: '/images/movies/CARTEL-BIENVENUS_LAURELES.jpg',
+    poster: '/images/movies/fotograma-bienvenus.jpg',
+    images: [
+      '/images/movies/fotograma-bienvenus.jpg',
+      '/images/movies/CARTEL-BIENVENUS_LAURELES.jpg',
+    ],
   },
   {
     id: 'mi-vida',
@@ -124,6 +128,10 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     ],
     trailer: 'https://vimeo.com/736976963?fl=pl&fe=sh',
     poster: '/images/movies/MI VIDA AL PRINCIPIO.jpg',
+    images: [
+      '/images/movies/MI VIDA AL PRINCIPIO.jpg',
+      '/images/movies/MVAP_CARTEL.jpeg',
+    ],
   },
   {
     id: 'noche',
@@ -188,13 +196,13 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     films.map((film) => (
       <div class="film-modal" id={`modal-${film.id}`} data-film-id={film.id}>
         <div class="modal-overlay" data-modal-close></div>
+        <button class="modal-close" data-modal-close aria-label="Close">✕</button>
         <div class="modal-content">
-          <button class="modal-close" data-modal-close aria-label="Close">✕</button>
           
           <div class="modal-inner">
-            <!-- Image -->
+            <!-- Primary Image -->
             <img
-              src={film.poster}
+              src={film.images && film.images.length > 0 ? film.images[0] : film.poster}
               alt={film.title}
               class="modal-image"
               id={`img-${film.id}`}
@@ -261,6 +269,28 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
               </p>
             )}
 
+            {film.language && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.language', currentLang)}:</span>
+                <span>{film.language}</span>
+              </p>
+            )}
+
+            <!-- Additional Images (before synopsis) -->
+            {film.images && film.images.length > 1 && (
+              <div class="modal-additional-images">
+                {film.images.map((image, idx) =>
+                  idx > 0 && (
+                    <img
+                      src={image}
+                      alt={`${film.title} - ${idx + 1}`}
+                      class="modal-additional-image"
+                    />
+                  )
+                )}
+              </div>
+            )}
+
             {film.synopsis && (
               <div class="modal-synopsis">
                 <h3 class="modal-section-title">{t('films.synopsis', currentLang)}</h3>
@@ -271,11 +301,14 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
             {film.awards && film.awards.length > 0 && (
               <div class="modal-awards">
                 <h3 class="modal-section-title">{t('films.awards', currentLang)}</h3>
-                <ul class="modal-awards-list">
+                <div class="modal-awards-list">
                   {film.awards.map((award) => (
-                    <li>{award}</li>
+                    <div class="award-item">
+                      <span class="award-check">✓</span>
+                      <span class="award-name">{award}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
@@ -544,9 +577,9 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: 90%;
-    max-width: 900px;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    max-width: 1000px;
     max-height: 90vh;
     background: var(--color-dark-bg);
     border: 1px solid var(--color-border);
@@ -556,12 +589,12 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     overflow-y: auto;
 
     .film-modal.active & {
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%);
     }
   }
 
   .modal-close {
-    position: absolute;
+    position: fixed;
     top: var(--spacing-lg);
     right: var(--spacing-lg);
     width: 40px;
@@ -575,7 +608,7 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     align-items: center;
     justify-content: center;
     transition: all var(--transition-default);
-    z-index: 10;
+    z-index: 2001;
 
     &:hover {
       background: var(--color-accent);
@@ -586,12 +619,45 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
   .modal-inner {
     position: relative;
     width: 100%;
-    padding-bottom: 66.67%; /* 3:2 aspect ratio */
+    height: 75vh;
     overflow: hidden;
     background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      height: 50vh;
+    }
   }
 
-  .modal-image,
+  .modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .modal-additional-images {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
+    background: var(--color-dark-bg);
+  }
+
+  .modal-additional-image {
+    width: 40%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-sm);
+    margin: 0 auto;
+  }
+
   .modal-video {
     position: absolute;
     top: 0;
@@ -633,7 +699,7 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
   }
 
   .modal-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-sm);
@@ -642,14 +708,14 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
   }
 
   .modal-year {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--color-accent);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-md);
   }
 
   .modal-meta {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
     margin-bottom: var(--spacing-sm);
     display: flex;
@@ -678,7 +744,7 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     border-top: 1px solid var(--color-border);
 
     p {
-      font-size: 0.9rem;
+      font-size: 1rem;
       line-height: 1.6;
       color: var(--color-text-secondary);
     }
@@ -691,23 +757,29 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
   }
 
   .modal-awards-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
 
-    li {
-      font-size: 0.85rem;
+    .award-item {
+      display: flex;
+      gap: 3.5rem;
+      align-items: flex-start;
+      font-size: 1rem;
       color: var(--color-text-secondary);
-      padding: var(--spacing-xs) 0;
-      padding-left: var(--spacing-md);
-      position: relative;
 
-      &::before {
-        content: '✓';
-        position: absolute;
-        left: 0;
+      .award-check {
         color: var(--color-accent);
         font-weight: var(--font-weight-bold);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        min-width: 1.2rem;
+        text-align: center;
+      }
+
+      .award-name {
+        flex: 1;
       }
     }
   }
