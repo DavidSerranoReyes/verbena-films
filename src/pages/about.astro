@@ -1,0 +1,71 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navigation from '../components/Navigation/Navigation.astro';
+import Footer from '../components/Footer/Footer.astro';
+
+const currentLang = 'es';
+
+const translations: Record<string, Record<string, string>> = {
+  es: {
+    'page.title': 'Nosotros | Verbena Films',
+    'page.description': 'Información sobre Verbena Films',
+    'about.title': 'Nosotros',
+    'about.subtitle': 'Nuestra Historia y Misión',
+  },
+  en: {
+    'page.title': 'About | Verbena Films',
+    'page.description': 'About Verbena Films',
+    'about.title': 'About Us',
+    'about.subtitle': 'Our Story and Mission',
+  },
+};
+
+function t(key: string, lang: string = 'es'): string {
+  return translations[lang]?.[key] || key;
+}
+---
+
+<MainLayout 
+  title={t('page.title', currentLang)}
+  description={t('page.description', currentLang)}
+>
+  <Navigation currentLang={currentLang as 'es' | 'en'} />
+  
+  <section class="about-section">
+    <div class="container">
+      <h1>{t('about.title', currentLang)}</h1>
+      <p>{t('about.subtitle', currentLang)}</p>
+      <p>Contenido en desarrollo...</p>
+    </div>
+  </section>
+
+  <Footer currentLang={currentLang as 'es' | 'en'} />
+</MainLayout>
+
+<style>
+  .about-section {
+    padding: var(--spacing-2xl) 0;
+    background: var(--color-dark-bg);
+    margin-top: var(--spacing-2xl);
+    min-height: calc(100vh - var(--spacing-2xl));
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  p {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+</style>

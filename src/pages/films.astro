@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import Navigation from '../components/Navigation/Navigation.astro';
 import FilmsGrid from '../components/Films/FilmsGrid.astro';
 
 // Get language from cookies or browser
@@ -25,5 +26,6 @@ function t(key: string, language: string = 'es'): string {
   title={t('page.title', lang)}
   description={t('page.description', lang)}
 >
+  <Navigation currentLang={lang as 'es' | 'en'} />
   <FilmsGrid currentLang={lang as 'es' | 'en'} />
 </MainLayout>
