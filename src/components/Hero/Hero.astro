@@ -31,19 +31,19 @@ const { currentLang = 'es' } = Astro.props;
 // Videos del hero con información
 const heroVideos = [
   {
-    src: '/videos/hero-1.mp4',
+    src: '/videos/BIENVENUS_HOME.mp4',
     title: 'BIENVENUS',
     director: 'Ana Puentes',
     year: '2018',
   },
   {
-    src: '/videos/hero-2.mp4',
+    src: '/videos/MVAP_CORTE HOME.mp4',
     title: 'MI VIDA AL PRINCIPIO',
     director: 'Ana Puentes',
     year: '2022',
   },
   {
-    src: '/videos/hero-3.mp4',
+    src: '/videos/ELNCS_HOME.mov',
     title: 'EN LA NOCHE CAMINAMOS SOLOS',
     director: 'Rafa Alberola',
     year: '2024',
@@ -56,13 +56,22 @@ const heroVideos = [
   <div class="hero-video-container">
     <video
       class="hero-video active"
-      id="heroVideo"
+      id="heroVideo1"
       autoplay
       muted
       loop={false}
       playsinline
     >
       <source src={heroVideos[0].src} type="video/mp4" />
+    </video>
+    <video
+      class="hero-video"
+      id="heroVideo2"
+      muted
+      loop={false}
+      playsinline
+    >
+      <source src={heroVideos[1].src} type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
   </div>
@@ -111,7 +120,7 @@ const heroVideos = [
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-top: var(--spacing-2xl);
+    margin-top: 0;
   }
 
   .hero-video-container {
@@ -131,7 +140,7 @@ const heroVideos = [
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
 
     &.active {
       opacity: 1;
@@ -327,19 +336,23 @@ const heroVideos = [
     constructor() {
       this.videos = heroVideos;
       this.currentIndex = 0;
-      this.videoElement = document.getElementById('heroVideo');
+      this.video1 = document.getElementById('heroVideo1');
+      this.video2 = document.getElementById('heroVideo2');
       this.videoInfoElement = document.getElementById('videoInfo');
       this.indicators = document.querySelectorAll('.indicator');
-      this.videoDuration = 10000; // 10 segundos
+      this.currentTimeout = null;
 
-      if (this.videoElement) {
+      if (this.video1 && this.video2) {
         this.init();
       }
     }
 
     init() {
-      // Video ended event
-      this.videoElement.addEventListener('ended', () => {
+      // Listen to video end events on both videos
+      this.video1.addEventListener('ended', () => {
+        this.nextVideo();
+      });
+      this.video2.addEventListener('ended', () => {
         this.nextVideo();
       });
 
@@ -350,40 +363,44 @@ const heroVideos = [
         });
       });
 
-      // Fallback: si el video no termina en 10 segundos, cambiar igualmente
-      this.setupTimeout();
+      // Start first video
+      this.playVideo(0);
     }
 
-    setupTimeout() {
-      setTimeout(() => {
-        if (this.currentIndex < this.videos.length - 1) {
-          this.nextVideo();
-        } else {
-          this.goToVideo(0);
-        }
-      }, this.videoDuration);
+    getActiveVideo() {
+      return this.video1.classList.contains('active') ? this.video1 : this.video2;
+    }
+
+    getInactiveVideo() {
+      return this.video1.classList.contains('active') ? this.video2 : this.video1;
     }
 
     nextVideo() {
       this.currentIndex = (this.currentIndex + 1) % this.videos.length;
-      this.updateVideo();
+      this.playVideo(this.currentIndex);
     }
 
     goToVideo(index) {
       this.currentIndex = index;
-      this.updateVideo();
+      this.playVideo(index);
     }
 
-    updateVideo() {
-      // Update video source
-      this.videoElement.src = this.videos[this.currentIndex].src;
+    playVideo(index) {
+      // Clear any existing timeout
+      if (this.currentTimeout) {
+        clearTimeout(this.currentTimeout);
+      }
 
-      // Reset and play
-      this.videoElement.currentTime = 0;
-      this.videoElement.play();
+      const video = this.videos[index];
+      const activeVideo = this.getActiveVideo();
+      const inactiveVideo = this.getInactiveVideo();
+
+      // Set up the new video on the inactive element
+      inactiveVideo.src = video.src;
+      inactiveVideo.load();
+      inactiveVideo.currentTime = 0;
 
       // Update video info
-      const video = this.videos[this.currentIndex];
       if (this.videoInfoElement) {
         this.videoInfoElement.innerHTML = `
           <h2 class="video-title">${video.title}</h2>
@@ -395,20 +412,24 @@ const heroVideos = [
       }
 
       // Update indicators
-      this.indicators.forEach((indicator, index) => {
-        if (index === this.currentIndex) {
+      this.indicators.forEach((indicator, idx) => {
+        if (idx === index) {
           indicator.classList.add('active');
         } else {
           indicator.classList.remove('active');
         }
       });
 
-      // Setup next transition
-      this.setupTimeout();
+      // Play new video immediately
+      inactiveVideo.play().catch(err => console.log('Play error:', err));
+
+      // Fade transition immediately
+      activeVideo.classList.remove('active');
+      inactiveVideo.classList.add('active');
     }
   }
 
-  // Initialize carousel
+  // Initialize carousel when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       new HeroVideoCarousel();
