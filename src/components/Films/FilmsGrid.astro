@@ -14,6 +14,9 @@ const translations: Record<string, Record<string, string>> = {
     'films.year': 'Año',
     'films.country': 'País',
     'films.language': 'Idioma',
+    'films.writer': 'Guionista y Directora',
+    'films.producers': 'Productoras',
+    'films.production': 'Producción',
     'films.synopsis': 'Sinopsis',
     'films.awards': 'Premios y Festivales',
     'films.watch': 'Ver tráiler',
@@ -26,6 +29,9 @@ const translations: Record<string, Record<string, string>> = {
     'films.year': 'Year',
     'films.country': 'Country',
     'films.language': 'Language',
+    'films.writer': 'Writer and Director',
+    'films.producers': 'Producers',
+    'films.production': 'Production',
     'films.synopsis': 'Synopsis',
     'films.awards': 'Awards & Festivals',
     'films.watch': 'Watch Trailer',
@@ -119,6 +125,9 @@ const films = [
     type: 'Cortometraje Documental',
     country: 'España',
     language: 'Español - Francés',
+    writer: 'Ana Puentes',
+    producers: 'Ana Puentes y Sergy Moreno',
+    production: 'Verbena Films y White Leaf Producciones',
     synopsis: `Bienvenus es la historia de Nuria, una estudiante de traducción de 24 años, y de Salif, Chiaka y Pape, migrantes forzados procedentes de África que viven temporalmente en Granada.
 A través de su relación con Nuria descubriremos su realidad en una ciudad y un país extraño para ellos, las dificultades que sufren: las normales por su propia situación y las ocasionadas por los diferentes códigos culturales entre su país y España.
 Pero también, y sobre todo, el cambio que supone en la vida de estas personas el que alguien de esta cultura, en este caso Nuria, se implique a nivel emocional con ellos, les ayude a integrarse y conseguir sus objetivos, y en el camino ir descubriendo que son ellos los que tienen muchas más cosas que enseñarnos a nosotros de las que podríamos imaginar.`,
@@ -145,6 +154,9 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     type: 'Cortometraje Ficción',
     country: 'España',
     language: 'Español',
+    writer: 'Ana Puentes',
+    producers: 'Sergy Moreno y Ana Puentes',
+    production: 'White Leaf Producciones y Verbena Films',
     synopsis: `Es Nochevieja en un pequeño pueblo de la sierra de Madrid, inhóspito y helado. ROMA tiene 9 años y su sitio favorito es el regazo de su padre, RODOLFO. Pero el ambiente está enrarecido después de que su madre haya decidido no pasar las fiestas con la familia paterna. Cuando ROMA se viste de chico para cantar en medio de la celebración familiar descubre la intolerancia de su padre. Nada volverá a ser como antes.`,
     awards: [
       'Candidato al Goya 2024',
@@ -169,6 +181,9 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     type: 'Cortometraje Ficción',
     country: 'España',
     language: 'Español',
+    writer: 'Rafa Alberola',
+    producers: 'Ana Puentes, Jesús Choya, Guillermo Benet y Rafa Alberola',
+    production: 'Verbena Films, Pico 3 Cine, Guillermo Benet y Rafa Alberola, Marvin & Wayne',
     synopsis: `Un rider sin bicicleta y una mujer vampiro caminan por la noche, abandonando el trabajo y la ciudad en busca de la libertad. Mientras, en su casa, un escritor se devana los sesos por tratar de entender y dirigir a estos personajes que cada vez están más lejos de su autoridad.`,
     awards: [
       'Estreno en Sección Oficial de SEMINCI',
@@ -177,6 +192,10 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     ],
     trailer: '',
     poster: '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.jpg',
+    images: [
+      '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.jpg',
+      '/images/movies/ELNCS_cartel.jpg',
+    ],
   },
 ];
 ---
@@ -297,10 +316,24 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
               </p>
             )}
 
-            {film.language && (
+            {film.writer && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.language', currentLang)}:</span>
-                <span>{film.language}</span>
+                <span class="modal-label">{t('films.writer', currentLang)}:</span>
+                <span>{film.writer}</span>
+              </p>
+            )}
+
+            {film.producers && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.producers', currentLang)}:</span>
+                <span>{film.producers}</span>
+              </p>
+            )}
+
+            {film.production && (
+              <p class="modal-meta">
+                <span class="modal-label">{t('films.production', currentLang)}:</span>
+                <span>{film.production}</span>
               </p>
             )}
 
