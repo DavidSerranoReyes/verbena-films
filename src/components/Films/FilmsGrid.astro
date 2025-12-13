@@ -16,6 +16,11 @@ function getVimeoEmbedUrl(url: string): string {
   return url;
 }
 
+// Function to convert image path to WebP
+function getWebpPath(imagePath: string): string {
+  return imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+}
+
 // Películas - ahora solo datos estáticos, las traducciones vienen de i18n.ts
 const films = [
   {
@@ -158,13 +163,16 @@ const films = [
           <article class="film-card" data-film-id={film.id}>
             <!-- Poster -->
             <div class="film-poster-container">
-              <img
-                src={film.poster}
-                alt={film.title}
-                class="film-poster"
-                loading="lazy"
-                data-modal-trigger={film.id}
-              />
+              <picture>
+                <source srcset={getWebpPath(film.poster)} type="image/webp" />
+                <img
+                  src={film.poster}
+                  alt={film.title}
+                  class="film-poster"
+                  loading="lazy"
+                  data-modal-trigger={film.id}
+                />
+              </picture>
             </div>
 
             <!-- Film Info -->
@@ -191,12 +199,15 @@ const films = [
           
           <div class="modal-inner">
             <!-- Primary Image -->
-            <img
-              src={film.images && film.images.length > 0 ? film.images[0] : film.poster}
-              alt={film.title}
-              class="modal-image"
-              id={`img-${film.id}`}
-            />
+            <picture>
+              <source srcset={getWebpPath(film.images && film.images.length > 0 ? film.images[0] : film.poster)} type="image/webp" />
+              <img
+                src={film.images && film.images.length > 0 ? film.images[0] : film.poster}
+                alt={film.title}
+                class="modal-image"
+                id={`img-${film.id}`}
+              />
+            </picture>
             
             <!-- Video (hidden by default) -->
             {film.trailer && (
@@ -311,11 +322,14 @@ const films = [
               <div class="modal-additional-images">
                 {film.images.map((image, idx) =>
                   idx > 0 && (
-                    <img
-                      src={image}
-                      alt={`${film.title} - ${idx + 1}`}
-                      class="modal-additional-image"
-                    />
+                    <picture>
+                      <source srcset={getWebpPath(image)} type="image/webp" />
+                      <img
+                        src={image}
+                        alt={`${film.title} - ${idx + 1}`}
+                        class="modal-additional-image"
+                      />
+                    </picture>
                   )
                 )}
               </div>
