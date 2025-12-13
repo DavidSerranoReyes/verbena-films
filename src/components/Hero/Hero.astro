@@ -191,39 +191,39 @@ const heroVideos = [
   }
 
   .video-info {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
     animation: fadeInUp 1s ease-out forwards;
   }
 
   .video-title {
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-size: clamp(1rem, 2vw, 1.5rem);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-sm);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--color-accent);
 
     @media (max-width: 768px) {
-      font-size: 1.3rem;
+      font-size: 1rem;
     }
 
     @media (max-width: 480px) {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
     }
   }
 
   .video-meta {
-    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    font-size: clamp(0.75rem, 1vw, 0.95rem);
     color: var(--color-text-secondary);
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
 
     @media (max-width: 768px) {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
 
     @media (max-width: 480px) {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
     }
   }
 
@@ -239,18 +239,23 @@ const heroVideos = [
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: 2px solid var(--color-accent);
+    padding: 0.75rem 1.75rem;
+    border: 1.5px solid var(--color-accent);
     color: var(--color-text-primary);
     text-decoration: none;
     font-weight: var(--font-weight-bold);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    border-radius: 12px;
     transition: all var(--transition-default);
+    backdrop-filter: blur(10px);
+    background: rgba(212, 165, 116, 0.05);
 
     &:hover {
       background: var(--color-accent);
       color: var(--color-dark-bg);
+      box-shadow: 0 8px 24px rgba(212, 165, 116, 0.3);
 
       .arrow {
         transform: translateX(5px);
@@ -258,8 +263,8 @@ const heroVideos = [
     }
 
     @media (max-width: 768px) {
-      padding: var(--spacing-sm) var(--spacing-lg);
-      font-size: 0.9rem;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
     }
   }
 
@@ -270,40 +275,42 @@ const heroVideos = [
 
   .hero-indicators {
     position: absolute;
-    bottom: var(--spacing-xl);
+    bottom: var(--spacing-lg);
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
     display: flex;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
 
     @media (max-width: 768px) {
-      bottom: var(--spacing-lg);
-      gap: var(--spacing-sm);
+      bottom: var(--spacing-md);
+      gap: 0.5rem;
     }
   }
 
   .indicator {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    border: 2px solid var(--color-border);
-    background: transparent;
+    border: 1px solid var(--color-text-secondary);
+    background: rgba(212, 165, 116, 0.2);
     cursor: pointer;
     transition: all var(--transition-default);
 
     &:hover {
-      border-color: var(--color-text-secondary);
+      border-color: var(--color-accent);
+      background: rgba(212, 165, 116, 0.4);
     }
 
     &.active {
       background: var(--color-accent);
       border-color: var(--color-accent);
+      box-shadow: 0 0 12px rgba(212, 165, 116, 0.5);
     }
 
     @media (max-width: 768px) {
-      width: 10px;
-      height: 10px;
+      width: 7px;
+      height: 7px;
     }
   }
 

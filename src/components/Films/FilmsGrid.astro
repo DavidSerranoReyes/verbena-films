@@ -220,7 +220,7 @@ const films = [
                 id={`play-btn-${film.id}`}
                 data-film-id={film.id}
               >
-                ▶ PLAY
+                ▶
               </button>
             )}
           </div>
@@ -404,9 +404,9 @@ const films = [
   }
 
   .film-card {
-    background: var(--color-dark-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(212, 165, 116, 0.15);
+    border-radius: 16px;
     overflow: hidden;
     transition: all var(--transition-default);
     display: flex;
@@ -414,8 +414,9 @@ const films = [
 
     &:hover {
       border-color: var(--color-accent);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(212, 165, 116, 0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(212, 165, 116, 0.2);
+      background: rgba(26, 26, 26, 0.8);
     }
   }
 
@@ -619,11 +620,14 @@ const films = [
     max-width: 1000px;
     max-height: 90vh;
     background: var(--color-dark-bg);
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(212, 165, 116, 0.2);
+    border-radius: 20px;
     transition: transform var(--transition-default);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
 
     .film-modal.active & {
       transform: translate(-50%, -50%);
@@ -634,10 +638,10 @@ const films = [
     position: fixed;
     top: var(--spacing-lg);
     right: var(--spacing-lg);
-    width: 40px;
-    height: 40px;
-    background: rgba(212, 165, 116, 0.2);
-    border: 1px solid var(--color-accent);
+    width: 44px;
+    height: 44px;
+    background: rgba(212, 165, 116, 0.15);
+    border: 1.5px solid var(--color-accent);
     color: var(--color-accent);
     font-size: 24px;
     cursor: pointer;
@@ -646,10 +650,12 @@ const films = [
     justify-content: center;
     transition: all var(--transition-default);
     z-index: 2001;
+    border-radius: 12px;
 
     &:hover {
       background: var(--color-accent);
       color: var(--color-dark-bg);
+      box-shadow: 0 8px 20px rgba(212, 165, 116, 0.3);
     }
   }
 
@@ -709,23 +715,25 @@ const films = [
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
-    background: rgba(212, 165, 116, 0.9);
+    width: 70px;
+    height: 70px;
+    background: rgba(212, 165, 116, 0.85);
     border: none;
-    border-radius: 50%;
+    border-radius: 16px;
     color: var(--color-dark-bg);
-    font-size: 32px;
+    font-size: 28px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all var(--transition-default);
     z-index: 5;
+    box-shadow: 0 8px 24px rgba(212, 165, 116, 0.4);
 
     &:hover {
       background: var(--color-accent);
-      transform: translate(-50%, -50%) scale(1.1);
+      transform: translate(-50%, -50%) scale(1.12);
+      box-shadow: 0 12px 36px rgba(212, 165, 116, 0.5);
     }
   }
 
