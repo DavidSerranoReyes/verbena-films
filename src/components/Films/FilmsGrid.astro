@@ -29,6 +29,9 @@ const films = [
     director: 'Samuel Nacar',
     country: 'España',
     year: '2018',
+    writer: 'Claudia Barthelemy y Ana Puentes',
+    producers: 'Ana Puentes, José Carlos de Isla y Paco Ortiz',
+    production: 'Verbena Films, Sarao Films',
     awards: [
       'Premio Abycine Lanza',
       'Premio Abycine WIP',
@@ -43,10 +46,14 @@ const films = [
   },
   {
     id: 'flores',
-    title: 'Flores para una madre',
+    title: 'Flores para una madre ausente',
     director: 'Ana Puentes',
     country: 'España',
     year: '2025',
+    writer: 'Ana Puentes',
+    producers: 'Sergy Moreno y Ana Puentes',
+    executiveProducer: 'Adriana Vera',
+    production: 'White Leaf Producciones, Verbena Films',
     awards: [
       'Premio Alice Guy de Guión',
       'ICAA - Selectivas 2025',
@@ -63,6 +70,10 @@ const films = [
     director: 'Ana Puentes',
     country: 'España',
     year: '2025',
+    writer: 'Ana Puentes',
+    producers: 'Sergy Moreno y Ana Puentes',
+    executiveProducer: 'Adriana Vera y Sandra Caballero',
+    production: 'White Leaf Producciones, Verbena Films',
     awards: [
       'ICAA 2025',
       'Comunidad de Madrid 2025',
@@ -304,6 +315,16 @@ const films = [
                   <span class="lang-en" style="display:none;">{t('films.producers', 'en')}:</span>
                 </span>
                 <span>{film.producers}</span>
+              </p>
+            )}
+
+            {film.executiveProducer && (
+              <p class="modal-meta">
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.executiveProducer', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.executiveProducer', 'en')}:</span>
+                </span>
+                <span>{film.executiveProducer}</span>
               </p>
             )}
 
