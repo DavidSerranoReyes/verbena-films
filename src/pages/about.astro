@@ -71,11 +71,34 @@ import { t } from '../utils/i18n';
 </MainLayout>
 
 <style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   .about-section {
     padding: var(--spacing-2xl) 0;
     background: var(--color-dark-bg);
     margin-top: var(--spacing-2xl);
     min-height: calc(100vh - var(--spacing-2xl));
+    animation: fadeInUp 0.8s ease-out;
   }
 
   .container {
@@ -97,6 +120,21 @@ import { t } from '../utils/i18n';
     margin-bottom: var(--spacing-2xl);
     padding-bottom: var(--spacing-2xl);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideInRight 0.7s ease-out;
+    transition: all var(--transition-default);
+    padding: var(--spacing-lg);
+    margin-left: calc(var(--spacing-lg) * -1);
+    margin-right: calc(var(--spacing-lg) * -1);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+    border-radius: 12px;
+  }
+
+  .about-block:hover {
+    background: rgba(212, 165, 116, 0.05);
+    border-left: 3px solid var(--color-accent);
+    transform: translateX(12px);
+    box-shadow: 0 8px 24px rgba(212, 165, 116, 0.1);
   }
 
   .about-block:last-child {
@@ -109,6 +147,12 @@ import { t } from '../utils/i18n';
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-md);
     letter-spacing: 0.01em;
+    transition: all var(--transition-default);
+  }
+
+  .about-block:hover .block-title {
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
   }
 
   .block-text {
@@ -116,6 +160,11 @@ import { t } from '../utils/i18n';
     color: var(--color-text-secondary);
     line-height: 1.8;
     max-width: 800px;
+    transition: color var(--transition-default);
+  }
+
+  .about-block:hover .block-text {
+    color: var(--color-text-primary);
   }
 
   .team-block {
@@ -128,6 +177,19 @@ import { t } from '../utils/i18n';
     border-radius: 8px;
     margin-top: var(--spacing-lg);
     border-left: 3px solid var(--color-accent, #d4af37);
+    transition: all var(--transition-default);
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .team-member:nth-child(2) { animation-delay: 0.2s; }
+  .team-member:nth-child(3) { animation-delay: 0.3s; }
+  .team-member:nth-child(4) { animation-delay: 0.4s; }
+
+  .team-member:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(8px);
+    box-shadow: 0 8px 24px rgba(212, 165, 116, 0.15);
   }
 
   .member-name {
@@ -157,6 +219,7 @@ import { t } from '../utils/i18n';
     justify-content: center;
     align-items: center;
     margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 0.8s ease-out 0.1s backwards;
   }
 
   .main-logo {
@@ -165,6 +228,11 @@ import { t } from '../utils/i18n';
     height: auto;
     object-fit: contain;
     filter: brightness(0) invert(1);
+    transition: transform var(--transition-default);
+  }
+
+  .main-logo:hover {
+    transform: scale(1.05);
   }
 
   /* Responsive */
