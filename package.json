@@ -13,10 +13,8 @@
     "@iconify-json/mdi": "^1.2.3",
     "astro": "^5.16.4",
     "astro-icon": "^1.1.5",
-    "i18next": "^23.7.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^14.0.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@astrojs/react": "^3.0.0",

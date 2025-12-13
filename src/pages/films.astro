@@ -2,30 +2,12 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Navigation from '../components/Navigation/Navigation.astro';
 import FilmsGrid from '../components/Films/FilmsGrid.astro';
-
-// Get language from cookies or browser
-const lang = Astro.cookies.get('lang')?.value || 'es';
-
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'page.title': 'Películas | Verbena Films',
-    'page.description': 'Galería de producciones audiovisuales de Verbena Films',
-  },
-  en: {
-    'page.title': 'Films | Verbena Films',
-    'page.description': 'Gallery of Verbena Films audiovisual productions',
-  },
-};
-
-function t(key: string, language: string = 'es'): string {
-  return translations[language]?.[key] || key;
-}
 ---
 
 <MainLayout 
-  title={t('page.title', lang)}
-  description={t('page.description', lang)}
+  title="Películas | Verbena Films"
+  description="Galería de producciones audiovisuales de Verbena Films"
 >
-  <Navigation currentLang={lang as 'es' | 'en'} />
-  <FilmsGrid currentLang={lang as 'es' | 'en'} />
+  <Navigation />
+  <FilmsGrid />
 </MainLayout>

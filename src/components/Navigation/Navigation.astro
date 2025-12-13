@@ -4,6 +4,7 @@
  * Barra de navegación con selector de idiomas
  */
 import { Icon } from 'astro-icon/components';
+import { t, type Language } from '../../utils/i18n';
 
 const SITE_CONFIG = {
   navigation: [
@@ -14,28 +15,8 @@ const SITE_CONFIG = {
   ],
 };
 
-// Simple translation helper
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'nav.home': 'Inicio',
-    'nav.films': 'Películas',
-    'nav.about': 'Nosotros',
-    'nav.news': 'Noticias',
-  },
-  en: {
-    'nav.home': 'Home',
-    'nav.films': 'Films',
-    'nav.about': 'About',
-    'nav.news': 'News',
-  },
-};
-
-function t(key: string, lang: string = 'es'): string {
-  return translations[lang]?.[key] || key;
-}
-
 interface Props {
-  currentLang?: 'es' | 'en';
+  currentLang?: Language;
 }
 
 const { currentLang = 'es' } = Astro.props;
@@ -67,7 +48,8 @@ const { currentLang = 'es' } = Astro.props;
         SITE_CONFIG.navigation.map((item) => (
           <li>
             <a href={item.href} class="nav-link">
-              {t(`nav.${item.label}`, currentLang)}
+              <span class="lang-es">{t(`nav.${item.label}`, 'es')}</span>
+              <span class="lang-en" style="display:none;">{t(`nav.${item.label}`, 'en')}</span>
             </a>
           </li>
         ))
@@ -418,13 +400,24 @@ const { currentLang = 'es' } = Astro.props;
     });
   }
 
-  // Language switcher
+  // Language switcher - USA FUNCIÓN GLOBAL
   const langButtons = document.querySelectorAll('.lang-btn');
   langButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       const lang = btn.getAttribute('data-lang');
-      if (lang) {
-        window.switchLanguage(lang);
+      
+      if (lang === 'es' || lang === 'en') {
+        // Guardar en localStorage
+        localStorage.setItem('verbena-lang', lang);
+        
+        // Actualizar atributo lang del HTML
+        document.documentElement.setAttribute('lang', lang);
+        
+        // Aplicar cambios inmediatamente usando la función global
+        if (typeof window.applyGlobalLanguage === 'function') {
+          window.applyGlobalLanguage();
+        }
       }
     });
   });

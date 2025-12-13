@@ -2,44 +2,33 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Navigation from '../components/Navigation/Navigation.astro';
 import Footer from '../components/Footer/Footer.astro';
-
-const currentLang = 'es';
-
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'page.title': 'Noticias | Verbena Films',
-    'page.description': 'Últimas noticias de Verbena Films',
-    'news.title': 'Noticias',
-    'news.subtitle': 'Últimas actualizaciones y proyectos',
-  },
-  en: {
-    'page.title': 'News | Verbena Films',
-    'page.description': 'Latest news from Verbena Films',
-    'news.title': 'News',
-    'news.subtitle': 'Latest updates and projects',
-  },
-};
-
-function t(key: string, lang: string = 'es'): string {
-  return translations[lang]?.[key] || key;
-}
+import { t } from '../utils/i18n';
 ---
 
 <MainLayout 
-  title={t('page.title', currentLang)}
-  description={t('page.description', currentLang)}
+  title="Noticias | Verbena Films"
+  description="Últimas noticias de Verbena Films"
 >
-  <Navigation currentLang={currentLang as 'es' | 'en'} />
+  <Navigation />
   
   <section class="news-section">
     <div class="container">
-      <h1>{t('news.title', currentLang)}</h1>
-      <p>{t('news.subtitle', currentLang)}</p>
-      <p>Contenido en desarrollo...</p>
+      <h1>
+        <span class="lang-es">{t('nav.news', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('nav.news', 'en')}</span>
+      </h1>
+      <p>
+        <span class="lang-es">Últimas actualizaciones y proyectos</span>
+        <span class="lang-en" style="display:none;">Latest updates and projects</span>
+      </p>
+      <p>
+        <span class="lang-es">Contenido en desarrollo...</span>
+        <span class="lang-en" style="display:none;">Content in development...</span>
+      </p>
     </div>
   </section>
 
-  <Footer currentLang={currentLang as 'es' | 'en'} />
+  <Footer />
 </MainLayout>
 
 <style>

@@ -3,30 +3,7 @@
  * 🎬 HERO COMPONENT
  * Sección hero con carrusel de 3 videos (10 segundos cada uno)
  */
-
-// Simple translation helper
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'hero.title': 'Verbena Films',
-    'hero.subtitle': 'Producciones audiovisuales de excelencia',
-    'hero.cta': 'Explora nuestro trabajo',
-  },
-  en: {
-    'hero.title': 'Verbena Films',
-    'hero.subtitle': 'Outstanding audiovisual productions',
-    'hero.cta': 'Explore our work',
-  },
-};
-
-function t(key: string, lang: string = 'es'): string {
-  return translations[lang]?.[key] || key;
-}
-
-interface Props {
-  currentLang?: 'es' | 'en';
-}
-
-const { currentLang = 'es' } = Astro.props;
+import { t } from '../../utils/i18n';
 
 // Videos del hero con información
 const heroVideos = [
@@ -79,8 +56,14 @@ const heroVideos = [
   <!-- Content -->
   <div class="hero-content">
     <div class="container">
-      <h1 class="hero-title">{t('hero.title', currentLang)}</h1>
-      <p class="hero-subtitle">{t('hero.subtitle', currentLang)}</p>
+      <h1 class="hero-title">
+        <span class="lang-es">{t('hero.title', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('hero.title', 'en')}</span>
+      </h1>
+      <p class="hero-subtitle">
+        <span class="lang-es">{t('hero.subtitle', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('hero.subtitle', 'en')}</span>
+      </p>
       
       <!-- Video Info -->
       <div class="video-info" id="videoInfo">
@@ -92,7 +75,8 @@ const heroVideos = [
       </div>
 
       <a href="/films" class="hero-cta">
-        {t('hero.cta', currentLang)}
+        <span class="lang-es">{t('hero.cta', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('hero.cta', 'en')}</span>
         <span class="arrow">→</span>
       </a>
     </div>

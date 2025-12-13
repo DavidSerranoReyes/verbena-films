@@ -3,44 +3,7 @@
  * 🎬 FILMS GRID COMPONENT
  * Galería de películas con información detallada
  */
-
-// Simple translation helper
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'films.title': 'Nuestras Películas',
-    'films.description': 'Una selección de nuestros trabajos audiovisuales más destacados',
-    'films.type': 'Tipo',
-    'films.director': 'Director',
-    'films.year': 'Año',
-    'films.country': 'País',
-    'films.language': 'Idioma',
-    'films.writer': 'Guionista y Directora',
-    'films.producers': 'Productoras',
-    'films.production': 'Producción',
-    'films.synopsis': 'Sinopsis',
-    'films.awards': 'Premios y Festivales',
-    'films.watch': 'Ver tráiler',
-  },
-  en: {
-    'films.title': 'Our Films',
-    'films.description': 'A selection of our most outstanding audiovisual works',
-    'films.type': 'Type',
-    'films.director': 'Director',
-    'films.year': 'Year',
-    'films.country': 'Country',
-    'films.language': 'Language',
-    'films.writer': 'Writer and Director',
-    'films.producers': 'Producers',
-    'films.production': 'Production',
-    'films.synopsis': 'Synopsis',
-    'films.awards': 'Awards & Festivals',
-    'films.watch': 'Watch Trailer',
-  },
-};
-
-function t(key: string, lang: string = 'es'): string {
-  return translations[lang]?.[key] || key;
-}
+import { t } from '../../utils/i18n';
 
 // Function to convert Vimeo URLs to embed format
 function getVimeoEmbedUrl(url: string): string {
@@ -53,23 +16,14 @@ function getVimeoEmbedUrl(url: string): string {
   return url;
 }
 
-interface Props {
-  currentLang?: 'es' | 'en';
-}
-
-const { currentLang = 'es' } = Astro.props;
-
-// Películas
+// Películas - ahora solo datos estáticos, las traducciones vienen de i18n.ts
 const films = [
   {
     id: 'taranta',
     title: 'Taranta',
     director: 'Samuel Nacar',
-    year: 'En Rodaje',
-    type: 'Largometraje Documental',
     country: 'España',
-    language: 'Español',
-    synopsis: `Taranta es el retrato del mundo alrededor de la fábrica Santana en Linares que sigue a sus habitantes cuando la ciudad experimenta un insólito proceso de reindustrialización. La película acompaña a cuatro jóvenes —dos linarenses y dos ingenieros chinos— justo cuando la antigua fábrica Santana, símbolo de la ciudad, se reabre. En ese contexto, los protagonistas debaten entre quedarse y apostar por la nueva era industrial o marcharse, arrastrando con ellos el orgullo obrero, la memoria de decadencia y la desconfianza generacional.`,
+    year: '2018',
     awards: [
       'Premio Abycine Lanza',
       'Premio Abycine WIP',
@@ -86,11 +40,8 @@ const films = [
     id: 'flores',
     title: 'Flores para una madre',
     director: 'Ana Puentes',
-    year: 'En Financiación',
-    type: 'Largometraje Ficción',
     country: 'España',
-    language: 'Español',
-    synopsis: `ROMA (25) vive en Helsinki pero se ve obligada a volver a Albacete porque su madre ha desaparecido. Tras ocho años sin ver a su padre lo encuentra demacrado, pero tan amargado como siempre. Descubre que tiene cáncer terminal. La tensión entre ambos es evidente, pero encuentran un punto en común: el enfado contra su madre, que sigue sin aparecer. Cuando María vuelve, Roma descubre que su padre quiere poner fin a su enfermedad. La desaparición de María era la única manera de forzar el regreso de Roma para estar presente en esa despedida.`,
+    year: '2025',
     awards: [
       'Premio Alice Guy de Guión',
       'ICAA - Selectivas 2025',
@@ -105,11 +56,8 @@ const films = [
     id: 'audicion',
     title: 'Audición',
     director: 'Ana Puentes',
-    year: 'En Financiación',
-    type: 'Cortometraje Ficción',
     country: 'España',
-    language: 'Español',
-    synopsis: `El día de la audición más importante de su vida, Rita no tiene con quién dejar a su hija enferma.`,
+    year: '2025',
     awards: [
       'ICAA 2025',
       'Comunidad de Madrid 2025',
@@ -122,15 +70,10 @@ const films = [
     title: 'Bienvenus',
     director: 'Ana Puentes',
     year: '2018',
-    type: 'Cortometraje Documental',
     country: 'España',
-    language: 'Español - Francés',
     writer: 'Ana Puentes',
     producers: 'Ana Puentes y Sergy Moreno',
     production: 'Verbena Films y White Leaf Producciones',
-    synopsis: `Bienvenus es la historia de Nuria, una estudiante de traducción de 24 años, y de Salif, Chiaka y Pape, migrantes forzados procedentes de África que viven temporalmente en Granada.
-A través de su relación con Nuria descubriremos su realidad en una ciudad y un país extraño para ellos, las dificultades que sufren: las normales por su propia situación y las ocasionadas por los diferentes códigos culturales entre su país y España.
-Pero también, y sobre todo, el cambio que supone en la vida de estas personas el que alguien de esta cultura, en este caso Nuria, se implique a nivel emocional con ellos, les ayude a integrarse y conseguir sus objetivos, y en el camino ir descubriendo que son ellos los que tienen muchas más cosas que enseñarnos a nosotros de las que podríamos imaginar.`,
     awards: [
       'Premio Filmadrid',
       'Seleccionado en ABYCINE',
@@ -147,17 +90,14 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     ],
   },
   {
-    id: 'mi-vida',
+    id: 'mivida',
     title: 'Mi vida al principio',
     director: 'Ana Puentes',
     year: '2022',
-    type: 'Cortometraje Ficción',
     country: 'España',
-    language: 'Español',
     writer: 'Ana Puentes',
     producers: 'Sergy Moreno y Ana Puentes',
     production: 'White Leaf Producciones y Verbena Films',
-    synopsis: `Es Nochevieja en un pequeño pueblo de la sierra de Madrid, inhóspito y helado. ROMA tiene 9 años y su sitio favorito es el regazo de su padre, RODOLFO. Pero el ambiente está enrarecido después de que su madre haya decidido no pasar las fiestas con la familia paterna. Cuando ROMA se viste de chico para cantar en medio de la celebración familiar descubre la intolerancia de su padre. Nada volverá a ser como antes.`,
     awards: [
       'Candidato al Goya 2024',
       'Sección oficial en la 35º Semana de Cine de Medina del Campo',
@@ -178,13 +118,10 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
     title: 'En la noche caminamos solos',
     director: 'Rafa Alberola',
     year: '2024',
-    type: 'Cortometraje Ficción',
     country: 'España',
-    language: 'Español',
     writer: 'Rafa Alberola',
     producers: 'Ana Puentes, Jesús Choya, Guillermo Benet y Rafa Alberola',
     production: 'Verbena Films, Pico 3 Cine, Guillermo Benet y Rafa Alberola, Marvin & Wayne',
-    synopsis: `Un rider sin bicicleta y una mujer vampiro caminan por la noche, abandonando el trabajo y la ciudad en busca de la libertad. Mientras, en su casa, un escritor se devana los sesos por tratar de entender y dirigir a estos personajes que cada vez están más lejos de su autoridad.`,
     awards: [
       'Estreno en Sección Oficial de SEMINCI',
       'Sección Oficial Abycine',
@@ -204,8 +141,14 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
   <div class="container">
     <!-- Header -->
     <div class="films-header">
-      <h1 class="films-title">{t('films.title', currentLang)}</h1>
-      <p class="films-description">{t('films.description', currentLang)}</p>
+      <h1 class="films-title">
+        <span class="lang-es">{t('films.title', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('films.title', 'en')}</span>
+      </h1>
+      <p class="films-description">
+        <span class="lang-es">{t('films.description', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('films.description', 'en')}</span>
+      </p>
     </div>
 
     <!-- Films Grid -->
@@ -286,53 +229,79 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
           <div class="modal-info">
             <h2 class="modal-title">{film.title}</h2>
             
-            {film.year && <p class="modal-year">{film.year}</p>}
+            <p class="modal-year">
+              <span class="lang-es">{t(`film.${film.id}.year`, 'es')}</span>
+              <span class="lang-en" style="display:none;">{t(`film.${film.id}.year`, 'en')}</span>
+            </p>
             
-            {film.type && (
-              <p class="modal-meta">
-                <span class="modal-label">{t('films.type', currentLang)}:</span>
-                <span>{film.type}</span>
-              </p>
-            )}
+            <p class="modal-meta">
+              <span class="modal-label">
+                <span class="lang-es">{t('films.type', 'es')}:</span>
+                <span class="lang-en" style="display:none;">{t('films.type', 'en')}:</span>
+              </span>
+              <span>
+                <span class="lang-es">{t(`film.${film.id}.type`, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(`film.${film.id}.type`, 'en')}</span>
+              </span>
+            </p>
 
             {film.director && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.director', currentLang)}:</span>
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.director', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.director', 'en')}:</span>
+                </span>
                 <span>{film.director}</span>
               </p>
             )}
 
             {film.country && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.country', currentLang)}:</span>
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.country', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.country', 'en')}:</span>
+                </span>
                 <span>{film.country}</span>
               </p>
             )}
 
-            {film.language && (
-              <p class="modal-meta">
-                <span class="modal-label">{t('films.language', currentLang)}:</span>
-                <span>{film.language}</span>
-              </p>
-            )}
+            <p class="modal-meta">
+              <span class="modal-label">
+                <span class="lang-es">{t('films.language', 'es')}:</span>
+                <span class="lang-en" style="display:none;">{t('films.language', 'en')}:</span>
+              </span>
+              <span>
+                <span class="lang-es">{t(`film.${film.id}.language`, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(`film.${film.id}.language`, 'en')}</span>
+              </span>
+            </p>
 
             {film.writer && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.writer', currentLang)}:</span>
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.writer', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.writer', 'en')}:</span>
+                </span>
                 <span>{film.writer}</span>
               </p>
             )}
 
             {film.producers && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.producers', currentLang)}:</span>
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.producers', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.producers', 'en')}:</span>
+                </span>
                 <span>{film.producers}</span>
               </p>
             )}
 
             {film.production && (
               <p class="modal-meta">
-                <span class="modal-label">{t('films.production', currentLang)}:</span>
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.production', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.production', 'en')}:</span>
+                </span>
                 <span>{film.production}</span>
               </p>
             )}
@@ -352,16 +321,23 @@ Pero también, y sobre todo, el cambio que supone en la vida de estas personas e
               </div>
             )}
 
-            {film.synopsis && (
-              <div class="modal-synopsis">
-                <h3 class="modal-section-title">{t('films.synopsis', currentLang)}</h3>
-                <p>{film.synopsis}</p>
-              </div>
-            )}
+            <div class="modal-synopsis">
+              <h3 class="modal-section-title">
+                <span class="lang-es">{t('films.synopsis', 'es')}</span>
+                <span class="lang-en" style="display:none;">{t('films.synopsis', 'en')}</span>
+              </h3>
+              <p>
+                <span class="lang-es">{t(`film.${film.id}.synopsis`, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(`film.${film.id}.synopsis`, 'en')}</span>
+              </p>
+            </div>
 
             {film.awards && film.awards.length > 0 && (
               <div class="modal-awards">
-                <h3 class="modal-section-title">{t('films.awards', currentLang)}</h3>
+                <h3 class="modal-section-title">
+                  <span class="lang-es">{t('films.awards', 'es')}</span>
+                  <span class="lang-en" style="display:none;">{t('films.awards', 'en')}</span>
+                </h3>
                 <div class="modal-awards-list">
                   {film.awards.map((award) => (
                     <div class="award-item">

@@ -3,44 +3,7 @@
  * 🎬 FOOTER COMPONENT - MEJORADO
  * Diseño moderno inspirado en Avalon
  */
-
-// Simple translation helper
-const translations: Record<string, Record<string, string>> = {
-  es: {
-    'nav.home': 'Inicio',
-    'nav.films': 'Películas',
-    'nav.about': 'Nosotros',
-    'nav.news': 'Noticias',
-    'footer.location': 'Ubicación',
-    'footer.contact': 'Contacto',
-    'footer.follow': 'Síguenos',
-    'footer.legal': 'Aviso legal y Protección de Datos',
-    'footer.cookies': 'Cookies',
-    'footer.copyright': '© 2025 Verbena Films. Todos los derechos reservados.',
-  },
-  en: {
-    'nav.home': 'Home',
-    'nav.films': 'Films',
-    'nav.about': 'About',
-    'nav.news': 'News',
-    'footer.location': 'Location',
-    'footer.contact': 'Contact',
-    'footer.follow': 'Follow',
-    'footer.legal': 'Legal Notice & Data Protection',
-    'footer.cookies': 'Cookies',
-    'footer.copyright': '© 2025 Verbena Films. All rights reserved.',
-  },
-};
-
-function t(key: string, lang: string = 'es'): string {
-  return translations[lang]?.[key] || key;
-}
-
-interface Props {
-  currentLang?: 'es' | 'en';
-}
-
-const { currentLang = 'es' } = Astro.props;
+import { t } from '../../utils/i18n';
 ---
 
 <footer class="footer">
@@ -50,40 +13,49 @@ const { currentLang = 'es' } = Astro.props;
       <div class="footer-top">
         <!-- Location -->
         <div class="footer-column">
-          <h4 class="footer-column-title">{t('footer.location', currentLang)}</h4>
+          <h4 class="footer-column-title">
+            <span class="lang-es">{t('footer.location', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.location', 'en')}</span>
+          </h4>
           <div class="footer-info">
-            {
-              currentLang === 'es' ? (
-                <>
-                  <p>Plaza del Cordón 2</p>
-                  <p>28005 Madrid</p>
-                  <p>Spain</p>
-                </>
-              ) : (
-                <>
-                  <p>Plaza del Cordón 2</p>
-                  <p>28005 Madrid</p>
-                  <p>Spain</p>
-                </>
-              )
-            }
+            <p>Plaza del Cordón 2</p>
+            <p>28005 Madrid</p>
+            <p>Spain</p>
           </div>
         </div>
 
         <!-- Navigation -->
         <div class="footer-column">
-          <h4 class="footer-column-title">{t('nav.about', currentLang)}</h4>
+          <h4 class="footer-column-title">
+            <span class="lang-es">{t('nav.about', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('nav.about', 'en')}</span>
+          </h4>
           <nav class="footer-nav">
-            <a href="/">{t('nav.home', currentLang)}</a>
-            <a href="/films">{t('nav.films', currentLang)}</a>
-            <a href="/about">{t('nav.about', currentLang)}</a>
-            <a href="/news">{t('nav.news', currentLang)}</a>
+            <a href="/">
+              <span class="lang-es">{t('nav.home', 'es')}</span>
+              <span class="lang-en" style="display:none;">{t('nav.home', 'en')}</span>
+            </a>
+            <a href="/films">
+              <span class="lang-es">{t('nav.films', 'es')}</span>
+              <span class="lang-en" style="display:none;">{t('nav.films', 'en')}</span>
+            </a>
+            <a href="/about">
+              <span class="lang-es">{t('nav.about', 'es')}</span>
+              <span class="lang-en" style="display:none;">{t('nav.about', 'en')}</span>
+            </a>
+            <a href="/news">
+              <span class="lang-es">{t('nav.news', 'es')}</span>
+              <span class="lang-en" style="display:none;">{t('nav.news', 'en')}</span>
+            </a>
           </nav>
         </div>
 
         <!-- Contact -->
         <div class="footer-column">
-          <h4 class="footer-column-title">{t('footer.contact', currentLang)}</h4>
+          <h4 class="footer-column-title">
+            <span class="lang-es">{t('footer.contact', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.contact', 'en')}</span>
+          </h4>
           <div class="footer-contact">
             <a href="mailto:ana@verbenafilms.com">ana@verbenafilms.com</a>
           </div>
@@ -91,7 +63,10 @@ const { currentLang = 'es' } = Astro.props;
 
         <!-- Social -->
         <div class="footer-column">
-          <h4 class="footer-column-title">{t('footer.follow', currentLang)}</h4>
+          <h4 class="footer-column-title">
+            <span class="lang-es">{t('footer.follow', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.follow', 'en')}</span>
+          </h4>
           <div class="footer-social">
             <a
               href="https://www.instagram.com/verbena_films/?hl=es"
@@ -111,12 +86,19 @@ const { currentLang = 'es' } = Astro.props;
       <!-- Bottom Section - Legal & Copyright -->
       <div class="footer-bottom">
         <div class="footer-bottom-left">
-          <a href="#" class="footer-link-small">{t('footer.legal', currentLang)}</a>
-          <a href="#" class="footer-link-small">{t('footer.cookies', currentLang)}</a>
+          <a href="#" class="footer-link-small">
+            <span class="lang-es">{t('footer.legal', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.legal', 'en')}</span>
+          </a>
+          <a href="#" class="footer-link-small">
+            <span class="lang-es">{t('footer.cookies', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.cookies', 'en')}</span>
+          </a>
         </div>
         <div class="footer-bottom-right">
           <p class="footer-copyright">
-            {t('footer.copyright', currentLang)}
+            <span class="lang-es">{t('footer.copyright', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('footer.copyright', 'en')}</span>
           </p>
         </div>
       </div>

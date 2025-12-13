@@ -8,16 +8,13 @@ import MainLayout from '../layouts/MainLayout.astro';
 import Navigation from '../components/Navigation/Navigation.astro';
 import Hero from '../components/Hero/Hero.astro';
 import Footer from '../components/Footer/Footer.astro';
-
-// Get language from localStorage or browser preference (default: es)
-const currentLang = 'es'; // En Astro, esto se puede mejorar con middleware en el futuro
 ---
 
 <MainLayout
   title="Verbena Films"
   description="Producciones audiovisuales de excelencia"
 >
-  <Navigation currentLang={currentLang} />
-  <Hero currentLang={currentLang} />
-  <Footer currentLang={currentLang} />
+  <Navigation />
+  <Hero />
+  <Footer />
 </MainLayout>

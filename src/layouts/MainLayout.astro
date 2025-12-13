@@ -4,13 +4,18 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'es' | 'en';
 }
 
-const { title = 'Verbena Films', description = 'Producciones audiovisuales de excelencia' } = Astro.props;
+const { 
+  title = 'Verbena Films', 
+  description = 'Producciones audiovisuales de excelencia',
+  lang = 'es'
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,34 +45,70 @@ const { title = 'Verbena Films', description = 'Producciones audiovisuales de ex
   <body>
     <slot />
     
-    <!-- Language Toggle Script -->
+    <!-- Language System Script -->
     <script is:inline>
-      // Detect and set language preference
+      /**
+       * Sistema Global de Idiomas
+       * Sincroniza el idioma entre todos los componentes
+       */
+      
+      // Detecta y establece el idioma preferido del usuario
       function initLanguage() {
-        const stored = localStorage.getItem('language');
-        if (stored) {
-          document.documentElement.lang = stored;
-          return;
+        try {
+          const stored = localStorage.getItem('verbena-lang');
+          
+          // Si ya hay un idioma guardado, usarlo
+          if (stored && (stored === 'es' || stored === 'en')) {
+            document.documentElement.setAttribute('lang', stored);
+            return stored;
+          }
+          
+          // Si no hay idioma guardado, DEFAULT a ESPAÑOL
+          const defaultLang = 'es';
+          localStorage.setItem('verbena-lang', defaultLang);
+          document.documentElement.setAttribute('lang', defaultLang);
+          
+          return defaultLang;
+        } catch (error) {
+          console.error('Error initializing language:', error);
+          return 'es';
         }
-        
-        const browserLang = navigator.language.split('-')[0];
-        const lang = ['es', 'en'].includes(browserLang) ? browserLang : 'es';
-        localStorage.setItem('language', lang);
-        document.documentElement.lang = lang;
       }
       
+      // Función global para aplicar idioma a todos los componentes
+      window.applyGlobalLanguage = function() {
+        const lang = localStorage.getItem('verbena-lang') || 'es';
+        
+        // Mostrar/ocultar textos según idioma en TODA la página
+        document.querySelectorAll('.lang-es').forEach(el => {
+          el.style.display = (lang === 'es') ? 'inline' : 'none';
+        });
+        document.querySelectorAll('.lang-en').forEach(el => {
+          el.style.display = (lang === 'en') ? 'inline' : 'none';
+        });
+        
+        // Actualizar botones activos
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          const btnLang = btn.getAttribute('data-lang');
+          if (btnLang === lang) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      };
+      
+      // Inicializar al cargar la página
       initLanguage();
       
-      // Expose function for language switching
-      window.switchLanguage = function(lang) {
-        if (['es', 'en'].includes(lang)) {
-          localStorage.setItem('language', lang);
-          document.documentElement.lang = lang;
-          // Dispatch event for React components
-          window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
-          location.reload();
-        }
-      };
+      // Aplicar idioma cuando el DOM esté listo
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          window.applyGlobalLanguage();
+        });
+      } else {
+        window.applyGlobalLanguage();
+      }
     </script>
   </body>
 </html>
