@@ -13,18 +13,58 @@ import { t } from '../utils/i18n';
   
   <section class="about-section">
     <div class="container">
-      <h1>
-        <span class="lang-es">{t('nav.about', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('nav.about', 'en')}</span>
+      <!-- Título principal -->
+      <h1 class="main-title">
+        <span class="lang-es">{t('about.title', 'es')}</span>
+        <span class="lang-en" style="display:none;">{t('about.title', 'en')}</span>
       </h1>
-      <p>
-        <span class="lang-es">Nuestra Historia y Misión</span>
-        <span class="lang-en" style="display:none;">Our Story and Mission</span>
-      </p>
-      <p>
-        <span class="lang-es">Contenido en desarrollo...</span>
-        <span class="lang-en" style="display:none;">Content in development...</span>
-      </p>
+
+      <!-- Introducción -->
+      <div class="about-block">
+        <h2 class="block-title">
+          <span class="lang-es">{t('about.intro.title', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('about.intro.title', 'en')}</span>
+        </h2>
+        <p class="block-text">
+          <span class="lang-es">{t('about.intro.text', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('about.intro.text', 'en')}</span>
+        </p>
+      </div>
+
+      <!-- Filosofía -->
+      <div class="about-block">
+        <h2 class="block-title">
+          <span class="lang-es">{t('about.philosophy.title', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('about.philosophy.title', 'en')}</span>
+        </h2>
+        <p class="block-text">
+          <span class="lang-es">{t('about.philosophy.text', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('about.philosophy.text', 'en')}</span>
+        </p>
+      </div>
+
+      <!-- Equipo -->
+      <div class="about-block team-block">
+        <h2 class="block-title">
+          <span class="lang-es">{t('about.team.title', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('about.team.title', 'en')}</span>
+        </h2>
+        
+        <div class="team-member">
+          <h3 class="member-name">
+            <span class="lang-es">{t('about.team.ana.name', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('about.team.ana.name', 'en')}</span>
+          </h3>
+          <p class="member-role">
+            <span class="lang-es">{t('about.team.ana.role', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('about.team.ana.role', 'en')}</span>
+          </p>
+          <p class="member-description">
+            <span class="lang-es">{t('about.team.ana.description', 'es')}</span>
+            <span class="lang-en" style="display:none;">{t('about.team.ana.description', 'en')}</span>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -40,21 +80,105 @@ import { t } from '../utils/i18n';
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
   }
 
-  h1 {
-    font-size: 3rem;
-    font-weight: var(--font-weight-bold);
+  .main-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: var(--font-weight-thin);
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+    letter-spacing: 0.02em;
   }
 
-  p {
+  .about-block {
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-2xl);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .about-block:last-child {
+    border-bottom: none;
+  }
+
+  .block-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.01em;
+  }
+
+  .block-text {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    max-width: 800px;
+  }
+
+  .team-block {
+    margin-top: var(--spacing-xl);
+  }
+
+  .team-member {
+    background: rgba(255, 255, 255, 0.03);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    margin-top: var(--spacing-lg);
+    border-left: 3px solid var(--color-accent, #d4af37);
+  }
+
+  .member-name {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .member-role {
+    font-size: 1rem;
+    color: var(--color-accent, #d4af37);
+    font-weight: var(--font-weight-regular);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .member-description {
     font-size: 1rem;
     color: var(--color-text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-section {
+      padding: var(--spacing-xl) 0;
+    }
+
+    .container {
+      padding: 0 var(--spacing-md);
+    }
+
+    .main-title {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .about-block {
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-xl);
+    }
+
+    .team-member {
+      padding: var(--spacing-md);
+    }
+
+    .block-text,
+    .member-description {
+      font-size: 1rem;
+    }
   }
 </style>

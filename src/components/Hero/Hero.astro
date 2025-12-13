@@ -57,13 +57,8 @@ const heroVideos = [
   <div class="hero-content">
     <div class="container">
       <h1 class="hero-title">
-        <span class="lang-es">{t('hero.title', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('hero.title', 'en')}</span>
+        <img src="/images/logo/Logo_films_negro.png" alt="Verbena Films" class="hero-logo" />
       </h1>
-      <p class="hero-subtitle">
-        <span class="lang-es">{t('hero.subtitle', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('hero.subtitle', 'en')}</span>
-      </p>
       
       <!-- Video Info -->
       <div class="video-info" id="videoInfo">
@@ -155,18 +150,27 @@ const heroVideos = [
   }
 
   .hero-title {
-    font-size: clamp(3rem, 8vw, 5rem);
-    font-weight: var(--font-weight-thin);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: var(--spacing-lg);
-    letter-spacing: 2px;
-    text-transform: uppercase;
 
     @media (max-width: 768px) {
-      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+  }
+
+  .hero-logo {
+    height: clamp(120px, 18vw, 320px);
+    width: auto;
+    object-fit: contain;
+    
+    @media (max-width: 768px) {
+      height: 100px;
     }
 
     @media (max-width: 480px) {
-      font-size: 2rem;
+      height: 80px;
     }
   }
 

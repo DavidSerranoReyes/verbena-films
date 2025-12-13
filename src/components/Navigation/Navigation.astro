@@ -27,8 +27,7 @@ const { currentLang = 'es' } = Astro.props;
     <!-- Logo -->
     <div class="navbar-logo">
       <a href="/">
-        <span class="logo-text">Verbena</span>
-        <span class="logo-text accent">Films</span>
+        <img src="/images/logo/verbenafilms.png" alt="Verbena Films" class="logo-image" />
       </a>
     </div>
 
@@ -77,6 +76,9 @@ const { currentLang = 'es' } = Astro.props;
   </div>
 </nav>
 
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
 <style>
   .navbar {
     position: fixed;
@@ -98,24 +100,39 @@ const { currentLang = 'es' } = Astro.props;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    gap: var(--spacing-md);
 
     @media (max-width: 768px) {
       padding: 0 var(--spacing-md);
+      gap: var(--spacing-sm);
     }
+  }
+
+  .navbar-logo {
+    flex-shrink: 0;
+    margin-right: auto;
   }
 
   .navbar-logo a {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    font-size: 1.5rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
     text-decoration: none;
     transition: opacity var(--transition-default);
 
     &:hover {
       opacity: 0.8;
+    }
+  }
+
+  .logo-image {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: invert(1) brightness(1.1);
+    
+    @media (max-width: 768px) {
+      height: 32px;
     }
   }
 
@@ -174,40 +191,53 @@ const { currentLang = 'es' } = Astro.props;
     }
 
     @media (max-width: 768px) {
-      position: absolute;
-      top: var(--spacing-2xl);
-      left: 0;
-      width: 100%;
+      display: flex;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      max-width: 400px;
+      height: 100vh;
       flex-direction: column;
       gap: 0;
-      background: linear-gradient(180deg, var(--color-dark-secondary) 0%, rgba(26, 26, 26, 0.95) 100%);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--color-border);
-      border-top: 1px solid var(--color-accent);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(20px);
+      border-left: 2px solid rgba(212, 165, 116, 0.3);
+      padding-top: calc(var(--spacing-2xl) + var(--spacing-md));
+      padding-bottom: var(--spacing-lg);
+      overflow-y: auto;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
 
       &.active {
-        display: flex;
-        max-height: 400px;
+        right: 0;
       }
     }
 
     li {
       @media (max-width: 768px) {
-        border-bottom: 1px solid rgba(51, 51, 51, 0.5);
-        animation: slideInMenu 0.3s ease-out;
-
-        @keyframes slideInMenu {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+        border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+        opacity: 1 !important;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: rgba(212, 165, 116, 0.05);
+        }
+        
+        &:active {
+          background-color: rgba(212, 165, 116, 0.1);
+        }
+      }
+      
+      @keyframes slideInMenuItem {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
       }
     }
@@ -225,9 +255,34 @@ const { currentLang = 'es' } = Astro.props;
     font-size: 0.85rem;
     letter-spacing: 1px;
     position: relative;
+    cursor: pointer;
 
     @media (max-width: 768px) {
-      padding: var(--spacing-md);
+      padding: var(--spacing-lg) var(--spacing-lg);
+      font-size: 1rem;
+      color: #ffffff !important;
+      font-weight: 400;
+      position: relative;
+      z-index: 10000;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+      
+      span {
+        color: #ffffff !important;
+        pointer-events: none;
+      }
+      
+      &:hover {
+        color: var(--color-accent) !important;
+        
+        span {
+          color: var(--color-accent) !important;
+        }
+      }
+      
+      &:active {
+        transform: translateX(4px);
+      }
     }
 
     &::before {
@@ -362,63 +417,139 @@ const { currentLang = 'es' } = Astro.props;
   .dropdown-overlay {
     display: none;
   }
+
+  /* Mobile Menu Overlay */
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    z-index: 9998;
+    backdrop-filter: blur(4px);
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 </style>
 
-<script is:inline>
-  // Desktop Menu Toggle
-  const desktopMenuBtn = document.getElementById('desktopMenuBtn');
-  const navbarLinks = document.getElementById('navbarLinks');
+<script>
+  // Esperar a que el DOM esté completamente cargado
+  document.addEventListener('DOMContentLoaded', () => {
+    // Desktop Menu Toggle
+    const desktopMenuBtn = document.getElementById('desktopMenuBtn');
+    const navbarLinks = document.getElementById('navbarLinks');
 
-  if (desktopMenuBtn && navbarLinks) {
-    desktopMenuBtn.addEventListener('click', () => {
-      navbarLinks.classList.toggle('active');
-    });
-
-    // Close menu when clicking a link
-    const links = navbarLinks.querySelectorAll('a');
-    links.forEach((link) => {
-      link.addEventListener('click', () => {
-        navbarLinks.classList.remove('active');
+    if (desktopMenuBtn && navbarLinks) {
+      desktopMenuBtn.addEventListener('click', () => {
+        navbarLinks.classList.toggle('active');
       });
-    });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!desktopMenuBtn.contains(e.target) && !navbarLinks.contains(e.target)) {
-        navbarLinks.classList.remove('active');
-      }
-    });
-  }
+      // Close menu when clicking a link
+      const links = navbarLinks.querySelectorAll('a');
+      links.forEach((link) => {
+        link.addEventListener('click', () => {
+          navbarLinks.classList.remove('active');
+        });
+      });
 
-  // Mobile menu toggle (hamburger)
-  const menuToggle = document.getElementById('menuToggle');
-
-  if (menuToggle && navbarLinks) {
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('active');
-      navbarLinks.classList.toggle('active');
-    });
-  }
-
-  // Language switcher - USA FUNCIÓN GLOBAL
-  const langButtons = document.querySelectorAll('.lang-btn');
-  langButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const lang = btn.getAttribute('data-lang');
-      
-      if (lang === 'es' || lang === 'en') {
-        // Guardar en localStorage
-        localStorage.setItem('verbena-lang', lang);
-        
-        // Actualizar atributo lang del HTML
-        document.documentElement.setAttribute('lang', lang);
-        
-        // Aplicar cambios inmediatamente usando la función global
-        if (typeof window.applyGlobalLanguage === 'function') {
-          window.applyGlobalLanguage();
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!desktopMenuBtn.contains(e.target as Node) && !navbarLinks.contains(e.target as Node)) {
+          navbarLinks.classList.remove('active');
         }
-      }
+      });
+    }
+
+    // Mobile menu toggle (hamburger)
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+
+    if (menuToggle && navbarLinks && mobileOverlay) {
+      console.log('Mobile menu elements found'); // Debug
+      
+      // Toggle menu
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('Menu toggle clicked'); // Debug
+        
+        menuToggle.classList.toggle('active');
+        navbarLinks.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = menuToggle.classList.contains('active') ? 'hidden' : '';
+      });
+
+      // Close menu when clicking overlay
+      mobileOverlay.addEventListener('click', () => {
+        console.log('Overlay clicked'); // Debug
+        menuToggle.classList.remove('active');
+        navbarLinks.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      // Close menu when clicking a link - Mobile specific handling
+      const mobileLinks = navbarLinks.querySelectorAll('a');
+      console.log('Found mobile links:', mobileLinks.length); // Debug
+      
+      mobileLinks.forEach((link, index) => {
+        // Usar tanto click como touchend para móvil
+        const handleLinkClick = (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const href = link.getAttribute('href');
+          console.log(`Link ${index} clicked/touched, href:`, href); // Debug
+          
+          // Close the menu
+          menuToggle.classList.remove('active');
+          navbarLinks.classList.remove('active');
+          mobileOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+          
+          // Force navigation after a tiny delay
+          setTimeout(() => {
+            if (href) {
+              console.log('Navigating to:', href); // Debug
+              window.location.href = href;
+            }
+          }, 50);
+        };
+        
+        link.addEventListener('click', handleLinkClick);
+        link.addEventListener('touchend', handleLinkClick);
+      });
+    } else {
+      console.error('Mobile menu elements not found:', { menuToggle, navbarLinks, mobileOverlay }); // Debug
+    }
+
+    // Language switcher
+    const langButtons = document.querySelectorAll('.lang-btn');
+    langButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const lang = btn.getAttribute('data-lang');
+        
+        if (lang === 'es' || lang === 'en') {
+          // Guardar en localStorage
+          localStorage.setItem('verbena-lang', lang);
+          
+          // Actualizar atributo lang del HTML
+          document.documentElement.setAttribute('lang', lang);
+          
+          // Aplicar cambios inmediatamente usando la función global
+          if (typeof (window as any).applyGlobalLanguage === 'function') {
+            (window as any).applyGlobalLanguage();
+          }
+        }
+      });
     });
   });
 </script>

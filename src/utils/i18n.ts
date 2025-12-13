@@ -10,7 +10,7 @@ export const translations: Record<Language, Record<string, string>> = {
     /* Navigation */
     'nav.home': 'Inicio',
     'nav.films': 'Películas',
-    'nav.about': 'Nosotros',
+    'nav.about': 'Nosotras',
     'nav.news': 'Noticias',
     'nav.contact': 'Contacto',
 
@@ -77,8 +77,23 @@ export const translations: Record<Language, Record<string, string>> = {
     'film.noche.synopsis':
       'Un rider sin bicicleta y una mujer vampiro caminan por la noche, abandonando el trabajo y la ciudad en busca de la libertad. Mientras, en su casa, un escritor se devana los sesos por tratar de entender y dirigir a estos personajes que cada vez están más lejos de su autoridad.',
 
+    /* About */
+    'about.title': 'Nosotras',
+    'about.intro.title': 'Productora de cine independiente',
+    'about.intro.text':
+      'Productora de cine independiente con cinco años de trayectoria. El proyecto nace para acompañar los proyectos de jóvenes talentos con especial atención a temas relacionados con la mujer. Nuestros trabajos han sido candidatos a Premios Goya y seleccionados en diversos festivales nacionales e internacionales.',
+    'about.philosophy.title': 'Nuestra filosofía',
+    'about.philosophy.text':
+      'Trabajamos desde la cercanía y el respeto al creador y a la obra. Nuestra forma de trabajar es siempre en coproducción y abordando muy pocos proyectos para poder prestarles el cariño necesario.',
+    'about.team.title': 'Equipo',
+    'about.team.ana.name': 'Ana Puentes',
+    'about.team.ana.role': 'CEO de Verbena Films',
+    'about.team.ana.description':
+      'Ana Puentes, CEO de Verbena Films presta también el servicio de script doctor y ha trabajado con empresas como Tandem Films, Garde, La Incubadora, Abycine, Another Way Film Festival, Africanauan...',
+
     /* Footer */
     'footer.location': 'Ubicación',
+    'footer.navigation': 'Navegación',
     'footer.contact': 'Contacto',
     'footer.follow': 'Síguenos',
     'footer.legal': 'Aviso legal y Protección de Datos',
@@ -163,8 +178,23 @@ export const translations: Record<Language, Record<string, string>> = {
     'film.noche.synopsis':
       'A delivery rider without a bicycle and a vampire woman walk through the night, leaving work and the city in search of freedom. Meanwhile, at home, a writer racks his brain trying to understand and direct these characters who are increasingly beyond his authority.',
 
+    /* About */
+    'about.title': 'About Us',
+    'about.intro.title': 'Independent film production company',
+    'about.intro.text':
+      "Independent film production company with five years of experience. The project was born to support young talents' projects with special attention to women-related topics. Our works have been nominated for Goya Awards and selected in various national and international festivals.",
+    'about.philosophy.title': 'Our philosophy',
+    'about.philosophy.text':
+      'We work with closeness and respect for the creator and the work. Our way of working is always in co-production and tackling very few projects so we can give them the necessary care.',
+    'about.team.title': 'Team',
+    'about.team.ana.name': 'Ana Puentes',
+    'about.team.ana.role': 'CEO of Verbena Films',
+    'about.team.ana.description':
+      'Ana Puentes, CEO of Verbena Films, also provides script doctor services and has worked with companies such as Tandem Films, Garde, La Incubadora, Abycine, Another Way Film Festival, Africanauan...',
+
     /* Footer */
     'footer.location': 'Location',
+    'footer.navigation': 'Navigation',
     'footer.contact': 'Contact',
     'footer.follow': 'Follow',
     'footer.legal': 'Legal Notice & Data Protection',
