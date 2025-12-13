@@ -56,9 +56,7 @@ const heroVideos = [
   <!-- Content -->
   <div class="hero-content">
     <div class="container">
-      <h1 class="hero-title">
-        <img src="/images/logo/Logo_films_negro.png" alt="Verbena Films" class="hero-logo" />
-      </h1>
+      <h1 class="hero-title"></h1>
       
       <!-- Video Info -->
       <div class="video-info" id="videoInfo">
@@ -160,20 +158,6 @@ const heroVideos = [
     }
   }
 
-  .hero-logo {
-    height: clamp(120px, 18vw, 320px);
-    width: auto;
-    object-fit: contain;
-    
-    @media (max-width: 768px) {
-      height: 100px;
-    }
-
-    @media (max-width: 480px) {
-      height: 80px;
-    }
-  }
-
   .hero-subtitle {
     font-size: clamp(1rem, 2vw, 1.5rem);
     color: var(--color-text-secondary);
@@ -192,7 +176,20 @@ const heroVideos = [
 
   .video-info {
     margin-bottom: var(--spacing-xl);
+    margin-top: var(--spacing-3xl);
     animation: fadeInUp 1s ease-out forwards;
+    position: relative;
+    top: 160px;
+
+    @media (max-width: 768px) {
+      top: 80px;
+      margin-top: var(--spacing-2xl);
+    }
+
+    @media (max-width: 480px) {
+      top: 60px;
+      margin-top: var(--spacing-xl);
+    }
   }
 
   .video-title {
@@ -251,6 +248,21 @@ const heroVideos = [
     transition: all var(--transition-default);
     backdrop-filter: blur(10px);
     background: rgba(212, 165, 116, 0.05);
+    position: relative;
+    top: 120px;
+    margin-top: var(--spacing-lg);
+
+    @media (max-width: 768px) {
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
+      top: 80px;
+      margin-top: var(--spacing-md);
+    }
+
+    @media (max-width: 480px) {
+      top: 60px;
+      margin-top: var(--spacing-sm);
+    }
 
     &:hover {
       background: var(--color-accent);
@@ -260,11 +272,6 @@ const heroVideos = [
       .arrow {
         transform: translateX(5px);
       }
-    }
-
-    @media (max-width: 768px) {
-      padding: 0.65rem 1.5rem;
-      font-size: 0.85rem;
     }
   }
 

@@ -13,11 +13,10 @@ import { t } from '../utils/i18n';
   
   <section class="about-section">
     <div class="container">
-      <!-- Título principal -->
-      <h1 class="main-title">
-        <span class="lang-es">{t('about.title', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('about.title', 'en')}</span>
-      </h1>
+      <!-- Logo principal -->
+      <div class="logo-container">
+        <img src="/images/logo/Logo_films_negro.png" alt="Verbena Films" class="main-logo" />
+      </div>
 
       <!-- Introducción -->
       <div class="about-block">
@@ -151,6 +150,21 @@ import { t } from '../utils/i18n';
     font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.7;
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .main-logo {
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
   }
 
   /* Responsive */

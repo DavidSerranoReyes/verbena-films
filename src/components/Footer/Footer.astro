@@ -19,6 +19,7 @@ import { t } from '../../utils/i18n';
           </h4>
           <div class="footer-info">
             <p>Madrid - España</p>
+            <img src="/images/logo/Logo_films_negro.png" alt="Verbena Films" class="footer-logo" />
           </div>
         </div>
 
@@ -213,6 +214,20 @@ import { t } from '../../utils/i18n';
     }
   }
 
+  .footer-logo {
+    width: 220px;
+    height: auto;
+    object-fit: contain;
+    margin-top: calc(var(--spacing-md) * -0.5);
+    margin-left: calc(var(--spacing-xl) * -1);
+    transition: opacity var(--transition-default);
+    filter: brightness(0) invert(1);
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
   /* Navigation Links */
   .footer-nav {
     display: flex;
@@ -297,7 +312,7 @@ import { t } from '../../utils/i18n';
     width: fit-content;
 
     &::before {
-      content: '🔗';
+      content: '🔲';
       opacity: 0;
       transition: opacity var(--transition-default);
     }
@@ -320,7 +335,7 @@ import { t } from '../../utils/i18n';
       var(--color-border),
       transparent
     );
-    margin: var(--spacing-2xl) 0;
+    margin: var(--spacing-2xl) 0 var(--spacing-3xl) 0;
   }
 
   /* Bottom Section */
@@ -330,6 +345,7 @@ import { t } from '../../utils/i18n';
     align-items: center;
     gap: var(--spacing-lg);
     flex-wrap: wrap;
+    margin-top: var(--spacing-2xl);
 
     @media (max-width: 768px) {
       flex-direction: column;
