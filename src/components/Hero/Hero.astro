@@ -75,6 +75,26 @@ const heroVideos = [
     </div>
   </div>
 
+  <!-- Volume Control -->
+  <button class="volume-toggle" id="volumeToggle" aria-label="Toggle video volume" title="Activar/Desactivar sonido">
+    <!-- Muted icon (simple speaker + x) -->
+    <svg class="volume-icon volume-muted" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <!-- Speaker shape -->
+      <polygon points="2,7 2,13 5,13 8,16 8,4 5,7" fill="white"/>
+      <!-- X lines for muted -->
+      <line x1="12" y1="6" x2="18" y2="12" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="18" y1="6" x2="12" y2="12" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <!-- Unmuted icon (simple speaker + waves) -->
+    <svg class="volume-icon volume-unmuted" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <!-- Speaker shape -->
+      <polygon points="2,7 2,13 5,13 8,16 8,4 5,7" fill="white"/>
+      <!-- Wave lines for unmuted -->
+      <path d="M11 8 Q12 9 12 10 Q12 11 11 12" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <path d="M14 6 Q16 8 16 10 Q16 12 14 14" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
+    </svg>
+  </button>
+
   <!-- Video Indicators -->
   <div class="hero-indicators">
     {
@@ -295,6 +315,47 @@ const heroVideos = [
     }
   }
 
+  .volume-toggle {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(212, 165, 116, 0.3);
+    border-radius: 50%;
+    background: rgba(15, 15, 15, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-default);
+    backdrop-filter: blur(10px);
+    padding: 0;
+
+    &:hover {
+      border-color: var(--color-accent);
+      background: rgba(15, 15, 15, 0.9);
+      box-shadow: 0 0 20px rgba(212, 165, 116, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      width: 36px;
+      height: 36px;
+      bottom: var(--spacing-md);
+      right: var(--spacing-md);
+    }
+  }
+
+  .volume-icon {
+    width: 22px;
+    height: 22px;
+    transition: all var(--transition-default);
+    flex-shrink: 0;
+  }
+
+  .hero-indicators {
+
   .indicator {
     width: 8px;
     height: 8px;
@@ -435,8 +496,44 @@ const heroVideos = [
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       new HeroVideoCarousel();
+      initVolumeToggle();
     });
   } else {
     new HeroVideoCarousel();
+    initVolumeToggle();
+  }
+
+  // Volume Toggle Functionality
+  function initVolumeToggle() {
+    const volumeToggle = document.getElementById('volumeToggle');
+    const mutedIcon = volumeToggle.querySelector('.volume-muted');
+    const unmutedIcon = volumeToggle.querySelector('.volume-unmuted');
+    const heroVideos = document.querySelectorAll('.hero-video');
+    
+    // Check if volume is muted on first load
+    let isMuted = true;
+    
+    // Update icon display based on muted state
+    function updateIcon() {
+      if (isMuted) {
+        mutedIcon.style.display = 'block';
+        unmutedIcon.style.display = 'none';
+      } else {
+        mutedIcon.style.display = 'none';
+        unmutedIcon.style.display = 'block';
+      }
+    }
+    
+    // Initialize icon
+    updateIcon();
+    
+    // Toggle volume on button click
+    volumeToggle.addEventListener('click', () => {
+      isMuted = !isMuted;
+      heroVideos.forEach(video => {
+        video.muted = isMuted;
+      });
+      updateIcon();
+    });
   }
 </script>
