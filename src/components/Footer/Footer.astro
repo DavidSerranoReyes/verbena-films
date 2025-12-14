@@ -75,8 +75,14 @@ import { t } from '../../utils/i18n';
               target="_blank"
               rel="noopener noreferrer"
               class="social-link"
+              title="Instagram"
             >
-              Instagram
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <circle cx="17.5" cy="6.5" r="1.5"></circle>
+              </svg>
+              <span>Instagram</span>
             </a>
           </div>
         </div>
@@ -300,28 +306,26 @@ import { t } from '../../utils/i18n';
   .social-link {
     color: var(--color-text-secondary);
     text-decoration: none;
-    font-size: 0.95rem;
-    transition: color var(--transition-default);
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    font-size: 0.95rem;
     transition: all var(--transition-default);
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     width: fit-content;
 
-    &::before {
-      content: '🔲';
-      opacity: 0;
-      transition: opacity var(--transition-default);
+    svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    span {
+      font-size: 0.95rem;
     }
 
     &:hover {
       color: var(--color-accent);
+    }
+  }
 
       &::before {
         opacity: 1;
