@@ -26,6 +26,7 @@ STRAPI_API_TOKEN = your-api-token-here
 ```
 
 **Importante:**
+
 - `PUBLIC_STRAPI_URL` debe estar disponible en el cliente (es pública)
 - `STRAPI_API_TOKEN` es privada y solo en backend
 
@@ -50,12 +51,14 @@ Después del deploy automático:
 ## 📊 Lighthouse Performance
 
 **Objetivos Iniciales:**
+
 - Performance: > 80
 - Accessibility: > 95
 - Best Practices: > 90
 - SEO: > 95
 
 **Optimizaciones Ya Aplicadas:**
+
 - ✅ Imágenes en WebP (60-97% reducción)
 - ✅ Lazy loading de imágenes
 - ✅ CSS crítico inlining
@@ -67,16 +70,21 @@ Después del deploy automático:
 ## 🔧 Troubleshooting
 
 ### Problema: "Cannot find module 'astro-icon'"
+
 **Solución:** Ya fue removido en refactor. No debería ocurrir.
 
 ### Problema: Imágenes no cargan
+
 **Solución:**
+
 - Verificar que `PUBLIC_STRAPI_URL` está correcto
 - Comprobar rutas relativas en `/public/images/`
 - Revisar CORS en Strapi si aplica
 
 ### Problema: Build falla en Vercel
+
 **Pasos:**
+
 1. Verificar logs en Vercel dashboard
 2. Ejecutar `npm run build` localmente para reproducir
 3. Comprobar que no hay imports circulares
@@ -98,16 +106,19 @@ Después del deploy automático:
 ### Después del Deploy Inicial:
 
 1. **Configurar Dominio Custom**
+
    - Agregar DNS records
    - Verificar SSL/HTTPS automático
 
 2. **Conectar Strapi**
+
    - Crear cuenta en Strapi Cloud (o self-hosted)
    - Configurar API endpoints
    - Agregar token en Vercel env vars
    - Migrar datos gradualmente
 
 3. **Monitoreo Continuo**
+
    - Configurar Web Analytics en Vercel
    - Monitorear errores (Sentry, etc)
    - Performance monitoring
@@ -122,6 +133,7 @@ Después del deploy automático:
 ## 📧 Contacto & Soporte
 
 Para preguntas sobre el deployment:
+
 - Repo Issues: https://github.com/DavidSerranoReyes/verbena-films/issues
 - Documentación Vercel: https://vercel.com/docs
 - Documentación Astro: https://docs.astro.build
