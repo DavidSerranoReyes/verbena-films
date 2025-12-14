@@ -17,7 +17,7 @@ import { teamMembers } from '../data/team';
       <!-- Logo principal -->
       <div class="logo-container">
         <picture>
-          <source srcset="/images/logo/Logo_films_negro.webp" type="image/webp" />
+          <source src="/images/logo/Logo_films_negro.webp" type="image/webp" />
           <img src="/images/logo/Logo_films_negro.png" alt="Verbena Films" class="main-logo" />
         </picture>
       </div>
@@ -194,17 +194,17 @@ import { teamMembers } from '../data/team';
   .member-name {
     font-size: 1.5rem;
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+    color: var(--color-text-primary) !important;
     margin-bottom: var(--spacing-xs);
   }
 
   .member-role {
     font-size: 1rem;
-    color: var(--color-accent, #d4af37);
+    color: var(--color-text-primary) !important;
     font-weight: var(--font-weight-regular);
     margin-bottom: var(--spacing-md);
     letter-spacing: 0.05em;
-    text-transform: uppercase;
+    text-transform: uppercase !important;
   }
 
   .member-description {

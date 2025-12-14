@@ -31,7 +31,7 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
             <!-- Poster -->
             <div class="film-poster-container">
               <picture>
-                <source srcset={getWebpPath(film.poster)} type="image/webp" />
+                <source src={getWebpPath(film.poster)} type="image/webp" />
                 <img
                   src={film.poster}
                   alt={film.title}
@@ -67,7 +67,7 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
           <div class="modal-inner">
             <!-- Primary Image -->
             <picture>
-              <source srcset={getWebpPath(film.images && film.images.length > 0 ? film.images[0] : film.poster)} type="image/webp" />
+              <source src={getWebpPath(film.images && film.images.length > 0 ? film.images[0] : film.poster)} type="image/webp" />
               <img
                 src={film.images && film.images.length > 0 ? film.images[0] : film.poster}
                 alt={film.title}
