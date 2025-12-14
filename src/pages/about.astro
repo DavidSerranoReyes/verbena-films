@@ -3,6 +3,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 import Navigation from '../components/Navigation/Navigation.astro';
 import Footer from '../components/Footer/Footer.astro';
 import { t } from '../utils/i18n';
+import { teamMembers } from '../data/team';
 ---
 
 <MainLayout 
@@ -52,20 +53,15 @@ import { t } from '../utils/i18n';
           <span class="lang-en" style="display:none;">{t('about.team.title', 'en')}</span>
         </h2>
         
-        <div class="team-member">
-          <h3 class="member-name">
-            <span class="lang-es">{t('about.team.ana.name', 'es')}</span>
-            <span class="lang-en" style="display:none;">{t('about.team.ana.name', 'en')}</span>
-          </h3>
-          <p class="member-role">
-            <span class="lang-es">{t('about.team.ana.role', 'es')}</span>
-            <span class="lang-en" style="display:none;">{t('about.team.ana.role', 'en')}</span>
-          </p>
-          <p class="member-description">
-            <span class="lang-es">{t('about.team.ana.description', 'es')}</span>
-            <span class="lang-en" style="display:none;">{t('about.team.ana.description', 'en')}</span>
-          </p>
-        </div>
+        {
+          teamMembers.map((member) => (
+            <div class="team-member">
+              <h3 class="member-name">{member.name}</h3>
+              <p class="member-role">{member.role}</p>
+              <p class="member-description">{member.description}</p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>

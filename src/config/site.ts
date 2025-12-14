@@ -4,21 +4,37 @@
  */
 
 export const SITE_CONFIG = {
+  // Metadata
   title: 'Verbena Films',
   description: 'Producciones audiovisuales de excelencia',
   author: 'Verbena Films',
   siteName: 'Verbena Films',
   siteUrl: 'https://verbena-films.com',
+  language: 'es',
 
+  // Social Links
   socialLinks: {
     instagram: 'https://instagram.com/verbeafilms',
     linkedin: 'https://linkedin.com/company/verbena-films',
     youtube: 'https://youtube.com/@verbeafilms',
+    email: 'ana@verbenafilms.com',
   },
 
-  // API Configuration
+  // API Configuration - Strapi
   api: {
-    strapiUrl: process.env.PUBLIC_STRAPI_URL || 'http://localhost:1337',
+    strapiUrl: import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337',
+    strapiToken: import.meta.env.STRAPI_API_TOKEN || '',
+    // Endpoints
+    endpoints: {
+      films: '/api/films',
+      news: '/api/news',
+      team: '/api/team',
+    },
+    // Cache configuration
+    cache: {
+      enabled: true,
+      ttl: 3600000, // 1 hora en ms
+    },
   },
 
   // Navigation items
@@ -28,19 +44,18 @@ export const SITE_CONFIG = {
     { id: 'about', label: 'about', href: '/about' },
     { id: 'news', label: 'news', href: '/news' },
   ],
-};
 
-// Breakpoints
-export const BREAKPOINTS = {
-  mobile: '320px',
-  tablet: '768px',
-  desktop: '1024px',
-  wide: '1200px',
-};
+  // Features
+  features: {
+    darkMode: true,
+    i18n: true,
+    seo: true,
+  },
 
-// Animation timing
-export const TIMING = {
-  fast: '0.2s',
-  default: '0.3s',
-  slow: '0.5s',
+  // Contact information
+  contact: {
+    email: 'ana@verbenafilms.com',
+    location: 'Madrid - España',
+    phone: '', // Agregar si es necesario
+  },
 };
