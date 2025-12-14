@@ -2,7 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "astro",
-  "nodeVersion": "18.x",
   "installCommand": "npm install",
   "env": {
     "PUBLIC_STRAPI_URL": "@strapi_url",
