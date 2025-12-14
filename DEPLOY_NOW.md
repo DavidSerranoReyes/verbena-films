@@ -5,14 +5,17 @@
 ### **Opción 1: Auto-Deploy (Recomendado - 5 minutos)**
 
 1. **Abre este enlace:**
+
    ```
    https://vercel.com/new?utm_medium=cli&utm_source=github_cli_cli_m62
    ```
 
 2. **Selecciona el repositorio:**
+
    - Busca y selecciona: `DavidSerranoReyes/verbena-films`
 
 3. **Vercel detectará automáticamente:**
+
    - Framework: Astro ✅
    - Build Command: `npm run build` ✅
    - Output Directory: `dist` ✅
@@ -50,26 +53,29 @@
 
 ## 📈 ESTADÍSTICAS
 
-| Métrica | Valor |
-|---------|-------|
-| Commits | 12 bien documentados |
-| Build Time | ~4 segundos |
-| Total Size | ~2.2 MB (optimizado) |
-| Pages | 4 rutas estáticas |
-| TypeScript | ✅ Strict mode |
-| Performance | 85+ (Lighthouse) |
+| Métrica     | Valor                |
+| ----------- | -------------------- |
+| Commits     | 12 bien documentados |
+| Build Time  | ~4 segundos          |
+| Total Size  | ~2.2 MB (optimizado) |
+| Pages       | 4 rutas estáticas    |
+| TypeScript  | ✅ Strict mode       |
+| Performance | 85+ (Lighthouse)     |
 
 ---
 
 ## 🎯 LO QUE PASARÁ DESPUÉS DEL DEPLOY
 
 ### URL en Vivo
+
 ```
 https://verbena-films.vercel.app
 ```
-*(O tu dominio personalizado si lo deseas)*
+
+_(O tu dominio personalizado si lo deseas)_
 
 ### Automático
+
 - ✅ Redeploy con cada push a GitHub
 - ✅ SSL/HTTPS automático
 - ✅ CDN global
@@ -104,6 +110,7 @@ Vercel detectará automáticamente:
 ```
 
 **Variables de Entorno (Opcionales por ahora):**
+
 - `PUBLIC_STRAPI_URL` - Para Strapi (más adelante)
 - `STRAPI_API_TOKEN` - Para Strapi (más adelante)
 
@@ -112,22 +119,26 @@ Vercel detectará automáticamente:
 ## 🎬 CARACTERÍSTICAS DEL SITIO
 
 ### Home
+
 - Hero con carrusel de 3 videos
 - Control de volumen interactivo
 - Información destacada
 
 ### Films
+
 - Grid de 6 películas
 - Modal con detalles completos
 - Créditos, premios, información
 - Imágenes optimizadas
 
 ### About
+
 - Información de la productora
 - Filosofía de trabajo
 - Equipo (Ana Puentes)
 
 ### News
+
 - Estructura lista para contenido futuro
 - Ready para Strapi
 
@@ -144,24 +155,26 @@ Vercel detectará automáticamente:
 
 ## ⚡ OPTIMIZACIONES APLICADAS
 
-| Optimización | Resultado |
-|-------------|-----------|
-| Imágenes WebP | 60-97% reducción tamaño |
-| Lazy loading | Carga bajo demanda |
-| CSS minificado | Automático en build |
-| JS code-split | Astro lo hace automáticamente |
-| CDN global | Vercel lo proporciona |
+| Optimización   | Resultado                     |
+| -------------- | ----------------------------- |
+| Imágenes WebP  | 60-97% reducción tamaño       |
+| Lazy loading   | Carga bajo demanda            |
+| CSS minificado | Automático en build           |
+| JS code-split  | Astro lo hace automáticamente |
+| CDN global     | Vercel lo proporciona         |
 
 ---
 
 ## 📞 DESPUÉS DEL DEPLOY
 
 ### Próximos Pasos (1-2 semanas)
+
 1. Validar con cliente
 2. Hacer ajustes menores (si aplica)
 3. Compartir feedback
 
 ### Luego (2-4 semanas)
+
 1. Setup de Strapi
 2. Conectar API endpoints
 3. Cliente administra contenido
@@ -171,6 +184,7 @@ Vercel detectará automáticamente:
 ## 📚 DOCUMENTACIÓN COMPLETA
 
 En el repositorio encontrarás:
+
 - **README.md** - Información del proyecto
 - **DEPLOYMENT.md** - Guía detallada
 - **DEPLOY_QUICK.md** - Instrucciones rápidas
@@ -184,9 +198,11 @@ En el repositorio encontrarás:
 ## 🎯 ÚLTIMO PASO: DEPLOY
 
 ### Hacer click aquí para desplegar:
+
 👉 **https://vercel.com/new?repository-url=https://github.com/DavidSerranoReyes/verbena-films**
 
 O manualmente:
+
 1. Ir a https://vercel.com/dashboard
 2. "Add New" → "Project"
 3. Seleccionar `verbena-films`
@@ -201,6 +217,7 @@ Tu sitio web profesional estará en vivo en **2-5 minutos**.
 **URL:** `https://verbena-films.vercel.app`
 
 Después puedes:
+
 - Compartir con cliente
 - Configurar dominio personalizado
 - Conectar Strapi

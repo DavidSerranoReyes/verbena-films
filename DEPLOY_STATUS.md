@@ -10,12 +10,14 @@
 ### ✅ Completado
 
 #### **Fase 1: Setup & Configuración**
+
 - ✅ Proyecto Astro + React + TypeScript (strict mode)
 - ✅ Configuración i18n (ES/EN) con detección automática
 - ✅ Sistema de fuentes (Montserrat 100, 400, 700)
 - ✅ Variables CSS y tema dark mode
 
 #### **Fase 2: Home**
+
 - ✅ Navigation con selector de idioma
 - ✅ Hero section con carrusel de 3 videos
 - ✅ Control de volumen interactivo
@@ -23,22 +25,26 @@
 - ✅ Animaciones suaves y responsivo
 
 #### **Fase 3: Films**
+
 - ✅ Grid de 2 columnas con 6 películas
 - ✅ Modal con detalles completos (créditos, premios, etc)
 - ✅ Todas las imágenes convertidas a WebP
 - ✅ Información completa de cada película
 
 #### **Fase 4: About**
+
 - ✅ Sección de información de la productora
 - ✅ Filosofía de trabajo
 - ✅ Equipo (Ana Puentes)
 - ✅ Animaciones y hover effects
 
 #### **Fase 5: News**
+
 - ✅ Página creada y estructurada
 - ✅ Ready para contenido desde Strapi
 
 #### **Fase 6: Refactor & Optimización**
+
 - ✅ Arquitectura limpia (separation of concerns)
 - ✅ Capa de datos (`src/data/`)
 - ✅ Servicios API (`src/services/api.ts`)
@@ -51,6 +57,7 @@
 ## 📈 Métricas & Performance
 
 ### Optimizaciones Aplicadas
+
 - **Imágenes:** WebP (60-97% reducción de tamaño)
 - **Lazy loading:** Implementado en imágenes
 - **CSS:** Minificado automáticamente en build
@@ -58,12 +65,14 @@
 - **Caché:** Configurado en Vercel CDN
 
 ### Tamaño Final
+
 - **HTML:** ~50KB (comprimido)
 - **CSS:** ~80KB (comprimido)
 - **JS:** ~143KB (comprimido)
 - **Imágenes:** ~2MB total (optimizadas en WebP)
 
 ### Lighthouse Score Esperado
+
 - **Performance:** 85-90 (sin cargas externas)
 - **Accessibility:** 95+
 - **Best Practices:** 90+
@@ -90,13 +99,13 @@ src/
 
 ## 🔧 Stack Tecnológico Final
 
-| Tecnología | Versión | Propósito |
-|------------|---------|----------|
-| Astro | 5.16.4 | Meta-framework (SSG) |
-| React | 18.2.0 | Componentes interactivos |
-| TypeScript | 5.3.0 | Type safety |
-| Astro Integrations | - | @astrojs/react |
-| Sharp | 0.34.5 | Procesamiento de imágenes |
+| Tecnología         | Versión | Propósito                 |
+| ------------------ | ------- | ------------------------- |
+| Astro              | 5.16.4  | Meta-framework (SSG)      |
+| React              | 18.2.0  | Componentes interactivos  |
+| TypeScript         | 5.3.0   | Type safety               |
+| Astro Integrations | -       | @astrojs/react            |
+| Sharp              | 0.34.5  | Procesamiento de imágenes |
 
 ---
 
@@ -123,6 +132,7 @@ Total: **11 commits** bien documentados y organizados
 ## 📋 Instrucciones para Deploy en Vercel
 
 ### Opción 1: Automático (Recomendado)
+
 1. Ir a https://vercel.com/dashboard
 2. Click "Add New" → "Project"
 3. Seleccionar repositorio `verbena-films`
@@ -132,6 +142,7 @@ Total: **11 commits** bien documentados y organizados
 6. Click "Deploy"
 
 ### Opción 2: Manual (CLI)
+
 ```bash
 npm install -g vercel
 vercel
@@ -139,6 +150,7 @@ vercel
 ```
 
 ### Resultado
+
 - **URL:** https://verbena-films.vercel.app
 - **Redeploy automático:** Con cada push a `main` en GitHub
 - **SSL/HTTPS:** Automático
@@ -149,9 +161,11 @@ vercel
 ## 🔐 Variables de Entorno
 
 ### Requeridas Ahora
+
 Ninguna (sitio funciona completamente)
 
 ### Opcionales para Strapi (después)
+
 ```env
 PUBLIC_STRAPI_URL=https://tu-strapi.com
 STRAPI_API_TOKEN=tu-token-aqui
@@ -173,6 +187,7 @@ STRAPI_API_TOKEN=tu-token-aqui
 ## ✨ Características Destacadas
 
 ### UI/UX
+
 - ✨ Dark mode nativo y elegante
 - ✨ Animaciones suaves (fade-in, slide, scale)
 - ✨ Responsive design (mobile-first)
@@ -181,6 +196,7 @@ STRAPI_API_TOKEN=tu-token-aqui
 - ✨ Indicadores de video en carousel
 
 ### Funcionalidad
+
 - 🌍 Bilingüe (ES/EN) con cambio instantáneo
 - 🎬 Carrusel de videos autoplay
 - 🎨 6 películas con información completa
@@ -188,6 +204,7 @@ STRAPI_API_TOKEN=tu-token-aqui
 - ⚡ Carga rápida (imágenes WebP optimizadas)
 
 ### Código
+
 - 🏗️ Arquitectura limpia y escalable
 - 📦 Separación de datos del UI
 - 🔌 Ready para Strapi
@@ -199,18 +216,21 @@ STRAPI_API_TOKEN=tu-token-aqui
 ## 🎯 Próximos Pasos Después del Deploy
 
 ### Inmediatos (1-2 semanas)
+
 1. ✅ Compartir URL con cliente
 2. ✅ Recopilar feedback sobre diseño
 3. ✅ Hacer ajustes menores si aplica
 4. ✅ Validar en diferentes dispositivos
 
 ### Corto Plazo (2-4 semanas)
+
 1. Setup de Strapi (local o cloud)
 2. Crear schema de colecciones
 3. Conectar API endpoints
 4. Migrar datos gradualmente
 
 ### Mediano Plazo (1-2 meses)
+
 1. Cliente administra contenido en Strapi
 2. Webhooks automáticos en Vercel
 3. Redeploy automático con cambios
@@ -221,12 +241,14 @@ STRAPI_API_TOKEN=tu-token-aqui
 ## 🎓 Recursos para Cliente
 
 Para que el cliente entienda qué tiene:
+
 - URL en vivo y funcional
 - Sitio completamente responsive
 - Sistema de idiomas automático
 - Fácil de mantener (una vez Strapi esté conectado)
 
 Para que entienda qué viene:
+
 - Sistema de administración de contenido (Strapi)
 - Dashboard para editar películas, noticias, equipo
 - Sin necesidad de intervención técnica

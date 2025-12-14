@@ -1,36 +1,5 @@
 /* ===================================== */
-/* 🎬 MONTSERRAT FONT IMPORT            */
+/* 🎬 MONTSERRAT FONT FROM GOOGLE FONTS */
 /* ===================================== */
 
-/* Montserrat Thin - 100 */
-@font-face {
-  font-family: 'Montserrat';
-  src:
-    url('/fonts/Montserrat-Thin.woff2') format('woff2'),
-    url('/fonts/Montserrat-Thin.woff') format('woff');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Montserrat Regular - 400 */
-@font-face {
-  font-family: 'Montserrat';
-  src:
-    url('/fonts/Montserrat-Regular.woff2') format('woff2'),
-    url('/fonts/Montserrat-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Montserrat Bold - 700 */
-@font-face {
-  font-family: 'Montserrat';
-  src:
-    url('/fonts/Montserrat-Bold.woff2') format('woff2'),
-    url('/fonts/Montserrat-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap');

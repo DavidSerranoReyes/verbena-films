@@ -36,6 +36,7 @@ Tu sitio será desplegado en **Vercel** (servidor profesional y confiable):
 3. Cualquier cambio futuro se desplegará automáticamente
 
 ### ¿Cuándo estará en vivo?
+
 - **Hoy o mañana** (depende de tu confirmación)
 - La URL será tuya permanentemente
 - Puedes compartirla con tu equipo y clientes
@@ -69,11 +70,13 @@ Una vez que estés contento con el diseño, implementaremos **Strapi** para que 
 ## 📞 ¿Qué Necesitas de Ti?
 
 ### Ahora
+
 - ✅ Revisar el sitio (te enviaré la URL)
 - ✅ Dar feedback sobre diseño o cambios
 - ✅ Confirmar que todo está bien
 
 ### Después (para Strapi)
+
 - Fotografías/videos adicionales (si quieres agregar más películas)
 - Textos o descripciones (si quieres cambiar algo)
 - Información de contacto actualizada
@@ -82,13 +85,13 @@ Una vez que estés contento con el diseño, implementaremos **Strapi** para que 
 
 ## 🎯 Timeline Estimado
 
-| Actividad | Tiempo |
-|-----------|--------|
-| Deploy en Vercel | Hoy/Mañana |
-| Validación y feedback | 1-2 días |
-| Ajustes menores (si aplica) | 2-3 días |
-| Setup de Strapi | 1 semana |
-| Entrenamiento en Strapi | 2-3 horas |
+| Actividad                   | Tiempo     |
+| --------------------------- | ---------- |
+| Deploy en Vercel            | Hoy/Mañana |
+| Validación y feedback       | 1-2 días   |
+| Ajustes menores (si aplica) | 2-3 días   |
+| Setup de Strapi             | 1 semana   |
+| Entrenamiento en Strapi     | 2-3 horas  |
 
 ---
 
@@ -105,6 +108,7 @@ Una vez que estés contento con el diseño, implementaremos **Strapi** para que 
 ## 📧 Próxima Comunicación
 
 Dentro de **X horas/días**, recibirás:
+
 1. 🔗 URL en vivo del sitio
 2. 📋 Checklist de validación
 3. 📞 Disponibilidad para ajustes
@@ -123,4 +127,4 @@ Dentro de **X horas/días**, recibirás:
 
 ---
 
-*Documento preparado: 14 de diciembre de 2025*
+_Documento preparado: 14 de diciembre de 2025_

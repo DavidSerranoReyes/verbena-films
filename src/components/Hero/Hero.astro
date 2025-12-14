@@ -382,7 +382,8 @@ import { heroVideos } from '../../data/hero';
       this.video2 = document.getElementById('heroVideo2');
       this.videoInfoElement = document.getElementById('videoInfo');
       this.indicators = document.querySelectorAll('.indicator');
-      this.currentTimeout = null;
+      this.isTransitioning = false;
+      this.isPlaying = false;
 
       if (this.video1 && this.video2) {
         this.init();
@@ -390,12 +391,21 @@ import { heroVideos } from '../../data/hero';
     }
 
     init() {
-      // Listen to video end events on both videos
+      // Set initial video on video1
+      this.video1.src = this.videos[0].src;
+      this.video1.load();
+
+      // Listen to video ended events - play next after completion
       this.video1.addEventListener('ended', () => {
-        this.nextVideo();
+        if (!this.isTransitioning) {
+          this.nextVideo();
+        }
       });
+
       this.video2.addEventListener('ended', () => {
-        this.nextVideo();
+        if (!this.isTransitioning) {
+          this.nextVideo();
+        }
       });
 
       // Indicator clicks
@@ -406,7 +416,13 @@ import { heroVideos } from '../../data/hero';
       });
 
       // Start first video
-      this.playVideo(0);
+      this.startPlayback();
+    }
+
+    startPlayback() {
+      this.video1.classList.add('active');
+      this.video1.play().catch(err => console.log('Play error:', err));
+      this.isPlaying = true;
     }
 
     getActiveVideo() {
@@ -418,31 +434,26 @@ import { heroVideos } from '../../data/hero';
     }
 
     nextVideo() {
+      if (this.isTransitioning) return;
       this.currentIndex = (this.currentIndex + 1) % this.videos.length;
       this.playVideo(this.currentIndex);
     }
 
     goToVideo(index) {
+      if (this.isTransitioning) return;
       this.currentIndex = index;
       this.playVideo(index);
     }
 
     playVideo(index) {
-      // Clear any existing timeout
-      if (this.currentTimeout) {
-        clearTimeout(this.currentTimeout);
-      }
+      if (this.isTransitioning) return;
+      this.isTransitioning = true;
 
       const video = this.videos[index];
       const activeVideo = this.getActiveVideo();
       const inactiveVideo = this.getInactiveVideo();
 
-      // Set up the new video on the inactive element
-      inactiveVideo.src = video.src;
-      inactiveVideo.load();
-      inactiveVideo.currentTime = 0;
-
-      // Update video info
+      // Update video info before transition
       if (this.videoInfoElement) {
         this.videoInfoElement.innerHTML = `
           <h2 class="video-title">${video.title}</h2>
@@ -462,12 +473,30 @@ import { heroVideos } from '../../data/hero';
         }
       });
 
-      // Play new video immediately
-      inactiveVideo.play().catch(err => console.log('Play error:', err));
+      // Preload and setup the new video
+      inactiveVideo.src = video.src;
+      inactiveVideo.load();
+      inactiveVideo.currentTime = 0;
 
-      // Fade transition immediately
-      activeVideo.classList.remove('active');
-      inactiveVideo.classList.add('active');
+      // Wait a bit for video to be ready, then play
+      const playAttempt = () => {
+        const playPromise = inactiveVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Video started, fade transition
+              activeVideo.classList.remove('active');
+              inactiveVideo.classList.add('active');
+              this.isTransitioning = false;
+            })
+            .catch(error => {
+              console.log('Play error, retrying:', error);
+              setTimeout(playAttempt, 100);
+            });
+        }
+      };
+
+      playAttempt();
     }
   }
 
@@ -489,10 +518,8 @@ import { heroVideos } from '../../data/hero';
     const unmutedIcon = volumeToggle.querySelector('.volume-unmuted');
     const heroVideos = document.querySelectorAll('.hero-video');
     
-    // Check if volume is muted on first load
     let isMuted = true;
     
-    // Update icon display based on muted state
     function updateIcon() {
       if (isMuted) {
         mutedIcon.style.display = 'block';
@@ -503,10 +530,8 @@ import { heroVideos } from '../../data/hero';
       }
     }
     
-    // Initialize icon
     updateIcon();
     
-    // Toggle volume on button click
     volumeToggle.addEventListener('click', () => {
       isMuted = !isMuted;
       heroVideos.forEach(video => {
