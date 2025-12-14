@@ -3,7 +3,6 @@
  * 🎬 NAVIGATION COMPONENT
  * Barra de navegación con selector de idiomas
  */
-import { Icon } from 'astro-icon/components';
 import { t, type Language } from '../../utils/i18n';
 
 const SITE_CONFIG = {
@@ -36,12 +35,20 @@ const { currentLang = 'es' } = Astro.props;
 
     <!-- Menu Toggle (Mobile) -->
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-      <Icon name="mdi:menu" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
 
     <!-- Desktop Menu Button -->
     <button class="desktop-menu-btn" id="desktopMenuBtn" aria-label="Open menu">
-      <Icon name="mdi:menu" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
 
     <!-- Navigation Links -->

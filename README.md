@@ -1,43 +1,71 @@
-# Astro Starter Kit: Minimal
+# 🎬 Verbena Films
 
-```sh
-npm create astro@latest -- --template minimal
+Página web profesional para una productora audiovisual. Sitio dinámico, sobrio y elegante con dark mode nativo, construido con **Astro + React + TypeScript**.
+
+## 🛠️ Tech Stack
+
+- **Framework:** Astro 5 + React 18
+- **Lenguaje:** TypeScript (strict mode)
+- **Estilos:** CSS-in-Astro con variables personalizadas
+- **Tipografía:** Montserrat (100, 400, 700)
+- **Internacionalización:** i18n (ES/EN)
+- **Optimización:** WebP, lazy loading, responsive design
+
+## 🚀 Comandos
+
+```bash
+# Instalar dependencias
+npm install
+
+# Desarrollo local (http://localhost:4321)
+npm run dev
+
+# Build para producción
+npm run build
+
+# Preview del build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 📁 Estructura del Proyecto
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+├── components/        # Componentes Astro + React
+│   ├── Hero/         # Hero section con carrusel de videos
+│   ├── Navigation/   # Navbar con logo y selector de idioma
+│   ├── Films/        # Grid de películas
+│   ├── Footer/       # Footer con ubicación y redes
+├── pages/            # Rutas (home, films, about, news)
+├── layouts/          # Layout base (MainLayout.astro)
+├── styles/           # CSS global y variables
+├── utils/            # Utilidades (i18n, etc)
+├── types/            # Tipos TypeScript
+└── config/           # Configuración del sitio
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🌍 Internacionalización
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Soporta **Español (ES) e Inglés (EN)** con detección automática del navegador y almacenamiento en localStorage.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🎨 Características
 
-## 🧞 Commands
+- ✅ Dark Mode nativo
+- ✅ Responsive (Mobile-first)
+- ✅ Animaciones suaves
+- ✅ Accesibilidad (WCAG AA)
+- ✅ SEO optimizado
+- ✅ Carrusel de videos en hero
+- ✅ Control de volumen interactivo
+- ✅ Modal de detalles de películas
+- ✅ Imágenes optimizadas en WebP
 
-All commands are run from the root of the project, from a terminal:
+## 📝 Próximos Pasos
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- [ ] Integración con Strapi CMS
+- [ ] Deploy en Vercel
+- [ ] Configurar webhooks para redeploy automático
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+**Desarrollado con ❤️ para Verbena Films**
