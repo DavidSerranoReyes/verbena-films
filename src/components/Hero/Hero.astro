@@ -41,8 +41,8 @@ import { heroVideos } from '../../data/hero';
       
       <!-- Video Info -->
       <div class="video-info" id="videoInfo">
-        <h2 class="video-title">{heroVideos[0].title}</h2>
-        <p class="video-meta">
+        <h2 class="video-title" style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">{heroVideos[0].title}</h2>
+        <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
           <span class="director">{heroVideos[0].director}</span>
           <span class="year">({heroVideos[0].year})</span>
         </p>
@@ -195,37 +195,36 @@ import { heroVideos } from '../../data/hero';
   }
 
   .video-info .video-title {
-    font-size: 1.5rem !important;
-    font-weight: 700 !important;
-    margin-bottom: var(--spacing-sm) !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase !important;
-    color: var(--color-text-primary) !important;
-    line-height: 1.2 !important;
-    margin-bottom: 0.5rem !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    line-height: 1.2;
 
     @media (max-width: 768px) {
-      font-size: 1.2rem !important;
+      font-size: 1.2rem;
     }
 
     @media (max-width: 480px) {
-      font-size: 1rem !important;
+      font-size: 1rem;
     }
   }
 
   .video-meta {
-    font-size: 0.95rem !important;
-    color: var(--color-text-secondary) !important;
-    letter-spacing: 0.5px !important;
-    text-transform: uppercase !important;
-    line-height: 1.4 !important;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.4;
 
     @media (max-width: 768px) {
-      font-size: 0.85rem !important;
+      font-size: 0.85rem;
     }
 
     @media (max-width: 480px) {
-      font-size: 0.75rem !important;
+      font-size: 0.75rem;
     }
   }
 
@@ -457,8 +456,8 @@ import { heroVideos } from '../../data/hero';
       // Update video info before transition
       if (this.videoInfoElement) {
         this.videoInfoElement.innerHTML = `
-          <h2 class="video-title">${video.title}</h2>
-          <p class="video-meta">
+          <h2 class="video-title" style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">${video.title}</h2>
+          <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
             <span class="director">${video.director}</span>
             <span class="year">(${video.year})</span>
           </p>
