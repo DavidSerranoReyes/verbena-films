@@ -17,6 +17,7 @@ import { heroVideos } from '../../data/hero';
       muted
       loop={false}
       playsinline
+      preload="auto"
     >
       <source src={heroVideos[0].src} type="video/mp4" />
     </video>
@@ -26,6 +27,7 @@ import { heroVideos } from '../../data/hero';
       muted
       loop={false}
       playsinline
+      preload="metadata"
     >
       <source src={heroVideos[1].src} type="video/mp4" />
     </video>
@@ -117,6 +119,7 @@ import { heroVideos } from '../../data/hero';
     object-fit: cover;
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
+    background-color: #0f0f0f; /* Fondo oscuro mientras carga */
 
     &.active {
       opacity: 1;
@@ -228,7 +231,7 @@ import { heroVideos } from '../../data/hero';
   }
 
   .year {
-    color: var(--color-accent);
+    color: var(--color-accent) !important;
   }
 
   .hero-cta {
@@ -391,8 +394,7 @@ import { heroVideos } from '../../data/hero';
     }
 
     init() {
-      // Set initial video on video1
-      this.video1.src = this.videos[0].src;
+      // Video1 already has src from HTML, just ensure it's loaded
       this.video1.load();
 
       // Listen to video ended events - play next after completion
