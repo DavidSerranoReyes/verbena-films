@@ -24,7 +24,7 @@ export const heroVideos: HeroVideoData[] = [
     year: '2022',
   },
   {
-    src: '/videos/ELNCS_HOME.mp4',
+    src: '/videos/ELNCS_HOME.mov',
     title: 'EN LA NOCHE CAMINAMOS SOLOS',
     director: 'Rafa Alberola',
     year: '2024',
