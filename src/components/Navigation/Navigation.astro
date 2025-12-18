@@ -100,7 +100,7 @@ const { currentLang = 'es' } = Astro.props;
     height: var(--spacing-2xl);
     background: rgba(15, 15, 15, 0.3);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+    border-bottom: 1px solid rgba(212, 168, 184, 0.2);
     z-index: 1000;
   }
 
@@ -226,7 +226,7 @@ const { currentLang = 'es' } = Astro.props;
       gap: 0;
       background: rgba(15, 15, 15, 0.95);
       backdrop-filter: blur(20px);
-      border-left: 2px solid rgba(212, 165, 116, 0.3);
+      border-left: 2px solid rgba(212, 168, 184, 0.3);
       padding-top: calc(var(--spacing-2xl) + var(--spacing-md));
       padding-bottom: var(--spacing-lg);
       overflow-y: auto;
@@ -239,22 +239,20 @@ const { currentLang = 'es' } = Astro.props;
       }
     }
 
-    li {
-      @media (max-width: 768px) {
-        border-bottom: 1px solid rgba(212, 165, 116, 0.1);
-        opacity: 1 !important;
-        transition: background-color 0.2s ease;
-        
-        &:hover {
-          background-color: rgba(212, 165, 116, 0.05);
-        }
-        
-        &:active {
-          background-color: rgba(212, 165, 116, 0.1);
-        }
-      }
-      
-      @keyframes slideInMenuItem {
+      li {
+        @media (max-width: 768px) {
+          border-bottom: 1px solid rgba(212, 168, 184, 0.1);
+          opacity: 1 !important;
+          transition: background-color 0.2s ease;
+          
+          &:hover {
+            background-color: rgba(212, 168, 184, 0.05);
+          }
+          
+          &:active {
+            background-color: rgba(212, 168, 184, 0.1);
+          }
+        }      @keyframes slideInMenuItem {
         from {
           opacity: 0;
           transform: translateX(20px);

@@ -12,8 +12,8 @@
   --color-dark-tertiary: #2a2a2a;
   --color-text-primary: #ffffff;
   --color-text-secondary: #b0b0b0;
-  --color-accent: #d4a574;
-  --color-accent-hover: #e8b88a;
+  --color-accent: #d4a8b8;
+  --color-accent-hover: #e0b8c8;
   --color-border: #333333;
   --color-error: #ff4444;
   --color-success: #44ff44;
@@ -156,7 +156,7 @@ button,
     background-color: var(--color-accent);
     color: var(--color-dark-bg);
     border-color: var(--color-accent);
-    box-shadow: 0 4px 16px rgba(212, 165, 116, 0.25);
+    box-shadow: 0 4px 16px rgba(212, 168, 184, 0.25);
   }
 
   &:active {
