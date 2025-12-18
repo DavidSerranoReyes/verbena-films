@@ -33,24 +33,6 @@ const { currentLang = 'es' } = Astro.props;
       </a>
     </div>
 
-    <!-- Menu Toggle (Mobile) -->
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-
-    <!-- Desktop Menu Button -->
-    <button class="desktop-menu-btn" id="desktopMenuBtn" aria-label="Open menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-
     <!-- Navigation Links -->
     <ul class="navbar-links" id="navbarLinks">
       {
@@ -65,22 +47,43 @@ const { currentLang = 'es' } = Astro.props;
       }
     </ul>
 
-    <!-- Language Switcher -->
-    <div class="language-switcher">
-      <button
-        class={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
-        data-lang="es"
-        aria-label="Cambiar a Español"
-      >
-        ES
+    <!-- Right Controls Group: Language Switcher + Menu -->
+    <div class="navbar-right-controls">
+      <!-- Language Switcher -->
+      <div class="language-switcher">
+        <button
+          class={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
+          data-lang="es"
+          aria-label="Cambiar a Español"
+        >
+          ES
+        </button>
+        <span class="lang-divider">/</span>
+        <button
+          class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+          data-lang="en"
+          aria-label="Switch to English"
+        >
+          EN
+        </button>
+      </div>
+
+      <!-- Menu Toggle (Mobile) -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
       </button>
-      <span class="lang-divider">/</span>
-      <button
-        class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
-        data-lang="en"
-        aria-label="Switch to English"
-      >
-        EN
+
+      <!-- Desktop Menu Button -->
+      <button class="desktop-menu-btn" id="desktopMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
       </button>
     </div>
   </div>
@@ -102,8 +105,7 @@ const { currentLang = 'es' } = Astro.props;
   }
 
   .navbar-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     padding: 0 var(--spacing-lg);
     height: 100%;
     display: flex;
@@ -120,7 +122,16 @@ const { currentLang = 'es' } = Astro.props;
 
   .navbar-logo {
     flex-shrink: 0;
-    margin-right: auto;
+    margin-left: var(--spacing-md);
+  }
+
+  .navbar-right-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-left: auto;
+    margin-right: var(--spacing-sm);
+    flex-shrink: 0;
   }
 
   .navbar-logo a {
@@ -171,6 +182,7 @@ const { currentLang = 'es' } = Astro.props;
       display: flex;
       align-items: center;
       justify-content: center;
+      order: 2;
     }
 
     &:hover {
@@ -193,6 +205,8 @@ const { currentLang = 'es' } = Astro.props;
     gap: var(--spacing-xl);
     margin: 0;
     padding: 0;
+    flex: 1;
+    justify-content: center;
 
     @media (min-width: 769px) {
       &.active {
@@ -318,12 +332,13 @@ const { currentLang = 'es' } = Astro.props;
   .language-switcher {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    margin-left: auto;
+    gap: 4px;
+    flex-shrink: 0;
 
     @media (max-width: 768px) {
-      margin-left: auto;
-      margin-right: var(--spacing-md);
+      position: static;
+      margin: 0;
+      order: 1;
     }
   }
 
@@ -384,10 +399,10 @@ const { currentLang = 'es' } = Astro.props;
     align-items: center;
     justify-content: center;
     position: relative;
-    margin-right: var(--spacing-xl);
     width: 32px;
     height: 32px;
     font-size: 28px;
+    flex-shrink: 0;
 
     @media (min-width: 769px) {
       display: flex;
