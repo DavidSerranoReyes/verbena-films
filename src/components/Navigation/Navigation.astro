@@ -33,8 +33,8 @@ const { currentLang = 'es' } = Astro.props;
       </a>
     </div>
 
-    <!-- Navigation Links -->
-    <ul class="navbar-links" id="navbarLinks">
+    <!-- Desktop Navigation Links -->
+    <ul class="navbar-links-desktop" id="navbarLinksDesktop">
       {
         SITE_CONFIG.navigation.map((item) => (
           <li>
@@ -70,16 +70,9 @@ const { currentLang = 'es' } = Astro.props;
 
       <!-- Menu Toggle (Mobile) -->
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-
-      <!-- Mobile Close Button (positioned fixed, appears when menu is open) -->
-      <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Cerrar menú" style="display: none;">
-        ✕
+        <span class="hamburger-line line-1"></span>
+        <span class="hamburger-line line-2"></span>
+        <span class="hamburger-line line-3"></span>
       </button>
 
       <!-- Desktop Menu Button -->
@@ -97,6 +90,20 @@ const { currentLang = 'es' } = Astro.props;
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 
+<!-- Mobile Menu (Outside navbar) -->
+<ul class="navbar-links-mobile" id="navbarLinks">
+  {
+    SITE_CONFIG.navigation.map((item) => (
+      <li>
+        <a href={item.href} class="nav-link">
+          <span class="lang-es">{t(`nav.${item.label}`, 'es')}</span>
+          <span class="lang-en" style="display:none;">{t(`nav.${item.label}`, 'en')}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
 <style>
   .navbar {
     position: fixed;
@@ -106,7 +113,7 @@ const { currentLang = 'es' } = Astro.props;
     background: rgba(15, 15, 15, 0.3);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(212, 168, 184, 0.2);
-    z-index: 1000;
+    z-index: 10002;
   }
 
   .navbar-container {
@@ -141,6 +148,8 @@ const { currentLang = 'es' } = Astro.props;
     margin-left: auto;
     margin-right: var(--spacing-sm);
     flex-shrink: 0;
+    position: relative;
+    z-index: 10003;
 
     @media (max-width: 768px) {
       margin-right: 0;
@@ -184,19 +193,22 @@ const { currentLang = 'es' } = Astro.props;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 8px;
     position: relative;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     color: var(--color-text-primary);
-    transition: color var(--transition-default);
-    font-size: 28px;
+    transition: all var(--transition-default);
+    order: 2;
+    overflow: hidden;
+    z-index: 10003;
 
     @media (max-width: 768px) {
       display: flex;
       align-items: center;
       justify-content: center;
-      order: 2;
+      flex-direction: column;
+      gap: 6px;
     }
 
     &:hover {
@@ -205,15 +217,36 @@ const { currentLang = 'es' } = Astro.props;
 
     &.active {
       color: var(--color-accent);
-    }
-
-    :global(svg) {
-      width: 1em;
-      height: 1em;
+      gap: 0;
     }
   }
 
-  .navbar-links {
+  .hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center center;
+  }
+
+  .menu-toggle.active {
+    .line-1 {
+      transform: rotate(45deg);
+    }
+
+    .line-2 {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .line-3 {
+      transform: rotate(-45deg);
+    }
+  }
+
+  .navbar-links-desktop {
     display: none;
     list-style: none;
     gap: var(--spacing-xl);
@@ -227,60 +260,53 @@ const { currentLang = 'es' } = Astro.props;
         display: flex;
       }
     }
+  }
 
-    @media (max-width: 768px) {
-      display: flex;
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      max-width: 400px;
-      height: 100vh;
-      flex-direction: column;
-      gap: 0;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px);
-      border-left: 2px solid rgba(212, 168, 184, 0.3);
-      padding-top: var(--spacing-2xl);
-      padding-bottom: var(--spacing-lg);
-      padding-left: 0;
-      padding-right: 0;
-      overflow-y: auto;
-      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 9999;
-      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
-      justify-content: flex-start;
-      flex: initial;
+  .navbar-links-mobile {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 70%;
+    max-width: 400px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(15, 15, 15, 0.98);
+    backdrop-filter: blur(20px);
+    border-left: 2px solid rgba(212, 168, 184, 0.3);
+    padding-top: calc(var(--spacing-2xl) + var(--spacing-lg));
+    padding-bottom: var(--spacing-lg);
+    padding-left: 0;
+    padding-right: 0;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10001;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
 
-      &.active {
-        right: 0;
-      }
+    &.active {
+      transform: translateX(0);
+    }
+
+    @media (min-width: 769px) {
+      display: none;
     }
 
     li {
-      @media (max-width: 768px) {
-        opacity: 1 !important;
-        transition: background-color 0.2s ease;
-        margin-bottom: var(--spacing-md);
-        
-        &:hover {
-          background-color: rgba(212, 168, 184, 0.05);
-        }
-        
-        &:active {
-          background-color: rgba(212, 168, 184, 0.1);
-        }
+      opacity: 1 !important;
+      transition: background-color 0.2s ease;
+      margin-bottom: var(--spacing-md);
+      
+      &:hover {
+        background-color: rgba(212, 168, 184, 0.05);
       }
-    }
-
-    @keyframes slideInMenuItem {
-      from {
-        opacity: 0;
-        transform: translateX(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
+      
+      &:active {
+        background-color: rgba(212, 168, 184, 0.1);
       }
     }
   }
@@ -299,34 +325,6 @@ const { currentLang = 'es' } = Astro.props;
     position: relative;
     cursor: pointer;
 
-    @media (max-width: 768px) {
-      padding: var(--spacing-md) var(--spacing-xl);
-      font-size: 1.25rem;
-      color: #ffffff !important;
-      font-weight: 400;
-      position: relative;
-      z-index: 10000;
-      transition: all 0.2s ease;
-      letter-spacing: 1px;
-      
-      span {
-        color: #ffffff !important;
-        pointer-events: none;
-      }
-      
-      &:hover {
-        color: var(--color-accent) !important;
-        
-        span {
-          color: var(--color-accent) !important;
-        }
-      }
-      
-      &:active {
-        transform: translateX(4px);
-      }
-    }
-
     &::before {
       content: '';
       position: absolute;
@@ -336,10 +334,6 @@ const { currentLang = 'es' } = Astro.props;
       height: 2px;
       background: linear-gradient(90deg, var(--color-accent), transparent);
       transition: width var(--transition-default);
-
-      @media (max-width: 768px) {
-        display: none;
-      }
     }
 
     &:hover {
@@ -351,31 +345,35 @@ const { currentLang = 'es' } = Astro.props;
     }
   }
 
-  .mobile-close-btn {
-    background: none;
-    border: none;
-    color: var(--color-text-primary);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color var(--transition-default);
-    flex-shrink: 0;
-    position: fixed;
-    top: var(--spacing-md);
-    right: var(--spacing-sm);
-    z-index: 10001;
-
-    @media (min-width: 769px) {
-      display: none !important;
+  .navbar-links-mobile .nav-link {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.25rem;
+    color: #ffffff !important;
+    font-weight: 400;
+    position: relative;
+    z-index: 10000;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+    
+    span {
+      color: #ffffff !important;
+      pointer-events: none;
     }
 
+    &::before {
+      display: none;
+    }
+    
     &:hover {
-      color: var(--color-accent);
+      color: var(--color-accent) !important;
+      
+      span {
+        color: var(--color-accent) !important;
+      }
+    }
+    
+    &:active {
+      transform: translateX(4px);
     }
   }
 
@@ -498,18 +496,20 @@ const { currentLang = 'es' } = Astro.props;
     position: fixed;
     top: 0;
     left: 0;
-    width: 30%;
+    width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s ease;
-    z-index: 9998;
+    z-index: 10000;
     backdrop-filter: blur(4px);
+    pointer-events: none;
 
     &.active {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
   }
 </style>
@@ -517,118 +517,67 @@ const { currentLang = 'es' } = Astro.props;
 <script>
   // Esperar a que el DOM esté completamente cargado
   document.addEventListener('DOMContentLoaded', () => {
-    // Desktop Menu Toggle
-    const desktopMenuBtn = document.getElementById('desktopMenuBtn');
-    const navbarLinks = document.getElementById('navbarLinks');
-
-    if (desktopMenuBtn && navbarLinks) {
-      desktopMenuBtn.addEventListener('click', () => {
-        navbarLinks.classList.toggle('active');
-      });
-
-      // Close menu when clicking a link
-      const links = navbarLinks.querySelectorAll('a');
-      links.forEach((link) => {
-        link.addEventListener('click', () => {
-          navbarLinks.classList.remove('active');
-        });
-      });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!desktopMenuBtn.contains(e.target as Node) && !navbarLinks.contains(e.target as Node)) {
-          navbarLinks.classList.remove('active');
-        }
-      });
-    }
-
-    // Mobile menu toggle (hamburger)
+    // ==================== MOBILE MENU ====================
     const menuToggle = document.getElementById('menuToggle');
+    const navbarLinks = document.getElementById('navbarLinks');
     const mobileOverlay = document.getElementById('mobileOverlay');
-    const mobileCloseBtn = document.getElementById('mobileCloseBtn');
 
     if (menuToggle && navbarLinks && mobileOverlay) {
-      console.log('Mobile menu elements found'); // Debug
-      
-      // Toggle menu
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
+      // Toggle mobile menu
+      menuToggle.addEventListener('click', () => {
         console.log('Menu toggle clicked'); // Debug
-        
         menuToggle.classList.toggle('active');
         navbarLinks.classList.toggle('active');
         mobileOverlay.classList.toggle('active');
-        
-        // Show/hide close button
-        if (mobileCloseBtn) {
-          mobileCloseBtn.style.display = menuToggle.classList.contains('active') ? 'flex' : 'none';
-        }
-        
-        // Prevent body scroll when menu is open
         document.body.style.overflow = menuToggle.classList.contains('active') ? 'hidden' : '';
       });
 
       // Close menu when clicking overlay
       mobileOverlay.addEventListener('click', () => {
-        console.log('Overlay clicked'); // Debug
         menuToggle.classList.remove('active');
         navbarLinks.classList.remove('active');
         mobileOverlay.classList.remove('active');
-        if (mobileCloseBtn) {
-          mobileCloseBtn.style.display = 'none';
-        }
         document.body.style.overflow = '';
       });
 
-      // Close menu when clicking a link - Mobile specific handling
+      // Close menu when clicking a link
       const mobileLinks = navbarLinks.querySelectorAll('a');
-      console.log('Found mobile links:', mobileLinks.length); // Debug
-      
-      mobileLinks.forEach((link, index) => {
-        // Usar tanto click como touchend para móvil
-        const handleLinkClick = (e: Event) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const href = link.getAttribute('href');
-          console.log(`Link ${index} clicked/touched, href:`, href); // Debug
-          
-          // Close the menu
+      mobileLinks.forEach((link) => {
+        link.addEventListener('click', () => {
           menuToggle.classList.remove('active');
           navbarLinks.classList.remove('active');
           mobileOverlay.classList.remove('active');
-          if (mobileCloseBtn) {
-            mobileCloseBtn.style.display = 'none';
-          }
-          document.body.style.overflow = '';
-          
-          // Force navigation after a tiny delay
-          setTimeout(() => {
-            if (href) {
-              console.log('Navigating to:', href); // Debug
-              window.location.href = href;
-            }
-          }, 50);
-        };
-        
-        link.addEventListener('click', handleLinkClick);
-        link.addEventListener('touchend', handleLinkClick);
-      });
-
-      // Mobile close button
-      if (mobileCloseBtn) {
-        mobileCloseBtn.addEventListener('click', () => {
-          menuToggle.classList.remove('active');
-          navbarLinks.classList.remove('active');
-          mobileOverlay.classList.remove('active');
-          mobileCloseBtn.style.display = 'none';
           document.body.style.overflow = '';
         });
-      }
-    } else {
-      console.error('Mobile menu elements not found:', { menuToggle, navbarLinks, mobileOverlay }); // Debug
+      });
     }
 
-    // Language switcher
+    // ==================== DESKTOP MENU ====================
+    const desktopMenuBtn = document.getElementById('desktopMenuBtn');
+    const navbarLinksDesktop = document.getElementById('navbarLinksDesktop');
+
+    if (desktopMenuBtn && navbarLinksDesktop) {
+      desktopMenuBtn.addEventListener('click', () => {
+        navbarLinksDesktop.classList.toggle('active');
+      });
+
+      // Close menu when clicking a link
+      const links = navbarLinksDesktop.querySelectorAll('a');
+      links.forEach((link) => {
+        link.addEventListener('click', () => {
+          navbarLinksDesktop.classList.remove('active');
+        });
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!desktopMenuBtn.contains(e.target as Node) && !navbarLinksDesktop.contains(e.target as Node)) {
+          navbarLinksDesktop.classList.remove('active');
+        }
+      });
+    }
+
+    // ==================== LANGUAGE SWITCHER ====================
     const langButtons = document.querySelectorAll('.lang-btn');
     langButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -636,13 +585,9 @@ const { currentLang = 'es' } = Astro.props;
         const lang = btn.getAttribute('data-lang');
         
         if (lang === 'es' || lang === 'en') {
-          // Guardar en localStorage
           localStorage.setItem('verbena-lang', lang);
-          
-          // Actualizar atributo lang del HTML
           document.documentElement.setAttribute('lang', lang);
           
-          // Aplicar cambios inmediatamente usando la función global
           if (typeof (window as any).applyGlobalLanguage === 'function') {
             (window as any).applyGlobalLanguage();
           }
