@@ -207,8 +207,8 @@ const { currentLang = 'es' } = Astro.props;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      gap: 6px;
+      /* Use absolute positioned lines for a smooth morphing animation */
+      flex-direction: row;
     }
 
     &:hover {
@@ -217,7 +217,7 @@ const { currentLang = 'es' } = Astro.props;
 
     &.active {
       color: var(--color-accent);
-      gap: 0;
+      /* Avoid changing gap which causes abrupt layout shifts; animations handled on the lines */
     }
   }
 
@@ -243,22 +243,70 @@ const { currentLang = 'es' } = Astro.props;
     height: 2px;
     background: currentColor;
     border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Position lines absolutely so transforms don't affect layout (prevents jumpiness) */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     transform-origin: center center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  }
+
+  /* stack the three lines vertically centered */
+  .line-1 {
+    top: calc(50% - 8px);
+  }
+
+  .line-2 {
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .line-3 {
+    top: calc(50% + 8px);
+  }
+
+  /* Keyframes for an asymmetric morph into X (opening animation) */
+  @keyframes lineTopToX {
+    /* Start shifted to the right and animate to the centered X -> gives right-to-left motion */
+    0% {
+      transform: translateX(20px) translateY(0) rotate(0);
+    }
+    40% {
+      transform: translateX(8px) translateY(6px) rotate(30deg);
+    }
+    100% {
+      transform: translateX(-50%) translateY(8px) rotate(45deg);
+    }
+  }
+
+  @keyframes lineBottomToX {
+    /* Start shifted to the right and animate to the centered X (slightly different curve) */
+    0% {
+      transform: translateX(24px) translateY(0) rotate(0);
+    }
+    40% {
+      transform: translateX(10px) translateY(-2px) rotate(-20deg);
+    }
+    100% {
+      transform: translateX(-50%) translateY(-8px) rotate(-45deg);
+    }
   }
 
   .menu-toggle.active {
+    /* Smooth cross animation: rotate top and bottom into an X and fade the middle */
     .line-1 {
-      transform: rotate(45deg);
+      /* Opening uses keyframe for an asymmetric path into the X */
+      animation: lineTopToX 360ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
     .line-2 {
       opacity: 0;
-      transform: scaleX(0);
+      transform: translateX(-50%) translateY(-50%) scaleX(0.6);
     }
 
     .line-3 {
-      transform: rotate(-45deg);
+      /* Slightly delayed/different path for an asymmetric feel */
+      animation: lineBottomToX 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 40ms forwards;
     }
   }
 
