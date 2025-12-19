@@ -17,7 +17,6 @@ export const translations: Record<Language, Record<string, string>> = {
     /* Hero */
     'hero.title': 'Verbena Films',
     'hero.subtitle': 'Producciones audiovisuales de excelencia',
-    'hero.cta': 'Explora nuestro trabajo',
 
     /* Films */
     'films.title': 'Nuestras Películas',
@@ -119,7 +118,6 @@ export const translations: Record<Language, Record<string, string>> = {
     /* Hero */
     'hero.title': 'Verbena Films',
     'hero.subtitle': 'Outstanding audiovisual productions',
-    'hero.cta': 'Explore our work',
 
     /* Films */
     'films.title': 'Our Films',

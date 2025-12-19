@@ -3,7 +3,6 @@
  * 🎬 HERO COMPONENT
  * Sección hero con carrusel de 3 videos (10 segundos cada uno)
  */
-import { t } from '../../utils/i18n';
 import { heroVideos } from '../../data/hero';
 ---
 
@@ -49,22 +48,20 @@ import { heroVideos } from '../../data/hero';
     <div class="container">
       <h1 class="hero-title"></h1>
       
-      <!-- Video Info -->
-      <div class="video-info" id="videoInfo">
-        <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">{heroVideos[0].title}</h2>
-        <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
-          <span class="director">{heroVideos[0].director}</span>
-          <span class="year">({heroVideos[0].year})</span>
-        </p>
-      </div>
+      
 
-      <a href="/films" class="hero-cta">
-        <span class="lang-es">{t('hero.cta', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('hero.cta', 'en')}</span>
-        <span class="arrow">→</span>
-      </a>
+      
     </div>
   </div>
+
+    <!-- Video Info (moved outside hero-content so it's positioned relative to .hero) -->
+    <div class="video-info" id="videoInfo">
+      <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">{heroVideos[0].title}</h2>
+      <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
+        <span class="director">{heroVideos[0].director}</span>
+        <span class="year">({heroVideos[0].year})</span>
+      </p>
+    </div>
 
   <!-- Volume Control -->
   <button class="volume-toggle" id="volumeToggle" aria-label="Toggle video volume" title="Activar/Desactivar sonido">
@@ -157,6 +154,7 @@ import { heroVideos } from '../../data/hero';
     text-align: center;
     color: var(--color-text-primary);
     animation: fadeInUp 1s ease-out forwards;
+    height: 100%;
   }
 
   .hero-title {
@@ -187,20 +185,23 @@ import { heroVideos } from '../../data/hero';
   }
 
   .video-info {
-    margin-bottom: var(--spacing-xl);
-    margin-top: var(--spacing-3xl);
+    margin-bottom: 0;
+    margin-top: 0;
     animation: fadeInUp 1s ease-out forwards;
-    position: relative;
-    top: 160px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    bottom: calc(var(--spacing-lg) + 8px);
+    z-index: 4;
 
     @media (max-width: 768px) {
-      top: 80px;
-      margin-top: var(--spacing-2xl);
+      bottom: calc(var(--spacing-md) + 6px);
     }
 
     @media (max-width: 480px) {
-      top: 60px;
-      margin-top: var(--spacing-xl);
+      bottom: calc(var(--spacing-md) + 4px);
     }
   }
 
@@ -242,48 +243,6 @@ import { heroVideos } from '../../data/hero';
     margin-right: var(--spacing-sm);
   }
 
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: 0.75rem 1.75rem;
-    border: 1.5px solid var(--color-accent);
-    color: var(--color-text-primary);
-    text-decoration: none;
-    font-weight: var(--font-weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-    border-radius: 12px;
-    transition: all var(--transition-default);
-    backdrop-filter: blur(10px);
-    background: rgba(212, 168, 184, 0.05);
-    position: relative;
-    top: 120px;
-    margin-top: var(--spacing-lg);
-
-    @media (max-width: 768px) {
-      padding: 0.65rem 1.5rem;
-      font-size: 0.85rem;
-      top: 80px;
-      margin-top: var(--spacing-md);
-    }
-
-    @media (max-width: 480px) {
-      top: 60px;
-      margin-top: var(--spacing-sm);
-    }
-
-    &:hover {
-      background: var(--color-accent);
-      color: var(--color-dark-bg);
-      box-shadow: 0 8px 24px rgba(212, 168, 184, 0.3);
-
-      .arrow {
-        transform: translateX(5px);
-      }
-    }
-  }
 
   .arrow {
     display: inline-block;
@@ -304,24 +263,47 @@ import { heroVideos } from '../../data/hero';
       gap: 0.3rem;
     }
   }
-
   .indicator {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: transparent;
     border: none;
-    background: rgba(212, 168, 184, 0.3);
-    cursor: default;
-    transition: all var(--transition-default);
+    cursor: pointer;
+    line-height: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    position: relative;
+    min-width: 0;
 
-    &.active {
+    &::after {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: rgba(212, 168, 184, 0.35);
+      transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+      box-shadow: none;
+      opacity: 0.95;
+    }
+
+    &.active::after {
       background: var(--color-accent);
-      box-shadow: 0 0 6px rgba(212, 168, 184, 0.5);
+      transform: scale(1.45);
+      box-shadow: 0 0 8px rgba(212, 168, 184, 0.45);
+      opacity: 1;
     }
 
     @media (max-width: 768px) {
-      width: 3px;
-      height: 3px;
+      padding: 5px;
+
+      &::after {
+        width: 4px;
+        height: 4px;
+      }
     }
   }
 
@@ -330,8 +312,8 @@ import { heroVideos } from '../../data/hero';
     bottom: var(--spacing-lg);
     right: var(--spacing-lg);
     z-index: 10;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border: 1px solid rgba(212, 168, 184, 0.3);
     border-radius: 50%;
     background: rgba(15, 15, 15, 0.6);
@@ -342,6 +324,7 @@ import { heroVideos } from '../../data/hero';
     transition: all var(--transition-default);
     backdrop-filter: blur(10px);
     padding: 0;
+    touch-action: manipulation;
 
     &:hover {
       border-color: var(--color-accent);
@@ -350,8 +333,8 @@ import { heroVideos } from '../../data/hero';
     }
 
     @media (max-width: 768px) {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
       bottom: var(--spacing-md);
       right: var(--spacing-md);
     }
@@ -524,13 +507,17 @@ import { heroVideos } from '../../data/hero';
   // Volume Toggle Functionality
   function initVolumeToggle() {
     const volumeToggle = document.getElementById('volumeToggle');
+    if (!volumeToggle) return;
+
     const mutedIcon = volumeToggle.querySelector('.volume-muted');
     const unmutedIcon = volumeToggle.querySelector('.volume-unmuted');
     const heroVideos = document.querySelectorAll('.hero-video');
     
     let isMuted = true;
-    
+    let lastToggle = 0;
+
     function updateIcon() {
+      if (!mutedIcon || !unmutedIcon) return;
       if (isMuted) {
         mutedIcon.style.display = 'block';
         unmutedIcon.style.display = 'none';
@@ -539,15 +526,34 @@ import { heroVideos } from '../../data/hero';
         unmutedIcon.style.display = 'block';
       }
     }
-    
-    updateIcon();
-    
-    volumeToggle.addEventListener('click', () => {
+
+    function toggleVolume() {
+      const now = Date.now();
+      if (now - lastToggle < 250) return; // debounce double events
+      lastToggle = now;
       isMuted = !isMuted;
       heroVideos.forEach(video => {
-        video.muted = isMuted;
+        try {
+          video.muted = isMuted;
+        } catch (e) {
+          // ignore
+        }
       });
       updateIcon();
+    }
+
+    updateIcon();
+
+    // Use pointerdown for immediate response on touch/mouse (falls back to click)
+    volumeToggle.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      toggleVolume();
+    }, { passive: false });
+
+    // Also keep click for non-pointer environments
+    volumeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleVolume();
     });
   }
 </script>
