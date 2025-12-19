@@ -77,6 +77,11 @@ const { currentLang = 'es' } = Astro.props;
         </svg>
       </button>
 
+      <!-- Mobile Close Button (positioned fixed, appears when menu is open) -->
+      <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Cerrar menú" style="display: none;">
+        ✕
+      </button>
+
       <!-- Desktop Menu Button -->
       <button class="desktop-menu-btn" id="desktopMenuBtn" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -115,14 +120,18 @@ const { currentLang = 'es' } = Astro.props;
     gap: var(--spacing-md);
 
     @media (max-width: 768px) {
-      padding: 0 var(--spacing-md);
+      padding: 0 var(--spacing-sm);
       gap: var(--spacing-sm);
     }
   }
 
   .navbar-logo {
     flex-shrink: 0;
-    margin-left: var(--spacing-md);
+    margin-left: 0;
+
+    @media (max-width: 768px) {
+      margin-left: 0;
+    }
   }
 
   .navbar-right-controls {
@@ -132,6 +141,11 @@ const { currentLang = 'es' } = Astro.props;
     margin-left: auto;
     margin-right: var(--spacing-sm);
     flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      margin-right: 0;
+      gap: var(--spacing-sm);
+    }
   }
 
   .navbar-logo a {
@@ -227,40 +241,46 @@ const { currentLang = 'es' } = Astro.props;
       background: rgba(15, 15, 15, 0.95);
       backdrop-filter: blur(20px);
       border-left: 2px solid rgba(212, 168, 184, 0.3);
-      padding-top: calc(var(--spacing-2xl) + var(--spacing-md));
+      padding-top: var(--spacing-2xl);
       padding-bottom: var(--spacing-lg);
+      padding-left: 0;
+      padding-right: 0;
       overflow-y: auto;
       transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 9999;
       box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+      justify-content: flex-start;
+      flex: initial;
 
       &.active {
         right: 0;
       }
     }
 
-      li {
-        @media (max-width: 768px) {
-          border-bottom: 1px solid rgba(212, 168, 184, 0.1);
-          opacity: 1 !important;
-          transition: background-color 0.2s ease;
-          
-          &:hover {
-            background-color: rgba(212, 168, 184, 0.05);
-          }
-          
-          &:active {
-            background-color: rgba(212, 168, 184, 0.1);
-          }
-        }      @keyframes slideInMenuItem {
-        from {
-          opacity: 0;
-          transform: translateX(20px);
+    li {
+      @media (max-width: 768px) {
+        opacity: 1 !important;
+        transition: background-color 0.2s ease;
+        margin-bottom: var(--spacing-md);
+        
+        &:hover {
+          background-color: rgba(212, 168, 184, 0.05);
         }
-        to {
-          opacity: 1;
-          transform: translateX(0);
+        
+        &:active {
+          background-color: rgba(212, 168, 184, 0.1);
         }
+      }
+    }
+
+    @keyframes slideInMenuItem {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
       }
     }
   }
@@ -280,14 +300,14 @@ const { currentLang = 'es' } = Astro.props;
     cursor: pointer;
 
     @media (max-width: 768px) {
-      padding: var(--spacing-lg) var(--spacing-lg);
-      font-size: 1rem;
+      padding: var(--spacing-md) var(--spacing-xl);
+      font-size: 1.25rem;
       color: #ffffff !important;
       font-weight: 400;
       position: relative;
       z-index: 10000;
       transition: all 0.2s ease;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       
       span {
         color: #ffffff !important;
@@ -316,6 +336,10 @@ const { currentLang = 'es' } = Astro.props;
       height: 2px;
       background: linear-gradient(90deg, var(--color-accent), transparent);
       transition: width var(--transition-default);
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
 
     &:hover {
@@ -324,6 +348,34 @@ const { currentLang = 'es' } = Astro.props;
       &::before {
         width: 100%;
       }
+    }
+  }
+
+  .mobile-close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-default);
+    flex-shrink: 0;
+    position: fixed;
+    top: var(--spacing-md);
+    right: var(--spacing-sm);
+    z-index: 10001;
+
+    @media (min-width: 769px) {
+      display: none !important;
+    }
+
+    &:hover {
+      color: var(--color-accent);
     }
   }
 
@@ -493,6 +545,7 @@ const { currentLang = 'es' } = Astro.props;
     // Mobile menu toggle (hamburger)
     const menuToggle = document.getElementById('menuToggle');
     const mobileOverlay = document.getElementById('mobileOverlay');
+    const mobileCloseBtn = document.getElementById('mobileCloseBtn');
 
     if (menuToggle && navbarLinks && mobileOverlay) {
       console.log('Mobile menu elements found'); // Debug
@@ -506,6 +559,11 @@ const { currentLang = 'es' } = Astro.props;
         navbarLinks.classList.toggle('active');
         mobileOverlay.classList.toggle('active');
         
+        // Show/hide close button
+        if (mobileCloseBtn) {
+          mobileCloseBtn.style.display = menuToggle.classList.contains('active') ? 'flex' : 'none';
+        }
+        
         // Prevent body scroll when menu is open
         document.body.style.overflow = menuToggle.classList.contains('active') ? 'hidden' : '';
       });
@@ -516,6 +574,9 @@ const { currentLang = 'es' } = Astro.props;
         menuToggle.classList.remove('active');
         navbarLinks.classList.remove('active');
         mobileOverlay.classList.remove('active');
+        if (mobileCloseBtn) {
+          mobileCloseBtn.style.display = 'none';
+        }
         document.body.style.overflow = '';
       });
 
@@ -535,6 +596,9 @@ const { currentLang = 'es' } = Astro.props;
           menuToggle.classList.remove('active');
           navbarLinks.classList.remove('active');
           mobileOverlay.classList.remove('active');
+          if (mobileCloseBtn) {
+            mobileCloseBtn.style.display = 'none';
+          }
           document.body.style.overflow = '';
           
           // Force navigation after a tiny delay
@@ -549,6 +613,17 @@ const { currentLang = 'es' } = Astro.props;
         link.addEventListener('click', handleLinkClick);
         link.addEventListener('touchend', handleLinkClick);
       });
+
+      // Mobile close button
+      if (mobileCloseBtn) {
+        mobileCloseBtn.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navbarLinks.classList.remove('active');
+          mobileOverlay.classList.remove('active');
+          mobileCloseBtn.style.display = 'none';
+          document.body.style.overflow = '';
+        });
+      }
     } else {
       console.error('Mobile menu elements not found:', { menuToggle, navbarLinks, mobileOverlay }); // Debug
     }
