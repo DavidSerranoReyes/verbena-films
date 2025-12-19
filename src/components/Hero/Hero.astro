@@ -206,8 +206,8 @@ import { heroVideos } from '../../data/hero';
   }
 
   .video-info .video-title {
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 1.2rem;
+    font-weight: 300;
     margin-bottom: 0.5rem;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -215,11 +215,11 @@ import { heroVideos } from '../../data/hero';
     line-height: 1.2;
 
     @media (max-width: 768px) {
-      font-size: 1.2rem;
+      font-size: 0.8rem;
     }
 
     @media (max-width: 480px) {
-      font-size: 1rem;
+      font-size: 0.5rem;
     }
   }
 
@@ -235,7 +235,7 @@ import { heroVideos } from '../../data/hero';
     }
 
     @media (max-width: 480px) {
-      font-size: 0.75rem;
+      font-size: 0.6rem;
     }
   }
 
@@ -338,6 +338,36 @@ import { heroVideos } from '../../data/hero';
       bottom: var(--spacing-md);
       right: var(--spacing-md);
     }
+
+    @media (max-width: 480px) {
+      /* Make the audio button smaller on small devices */
+      width: 36px;
+      height: 36px;
+      bottom: calc(var(--spacing-sm) + 2px);
+      right: calc(var(--spacing-sm) + 2px);
+    }
+  }
+
+  .volume-toggle .volume-hint {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 20;
+  }
+
+  .volume-toggle .volume-hint.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .volume-icon {
@@ -345,6 +375,10 @@ import { heroVideos } from '../../data/hero';
     height: 22px;
     transition: all var(--transition-default);
     flex-shrink: 0;
+    @media (max-width: 480px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   @keyframes fadeInUp {
@@ -540,20 +574,60 @@ import { heroVideos } from '../../data/hero';
         }
       });
       updateIcon();
+      // If we just unmuted, some browsers require a play() call to actually enable audio
+      if (!isMuted) {
+        heroVideos.forEach(video => {
+          // Attempt to play; if it fails due to autoplay/user-gesture policy, revert and show hint
+          const p = video.play();
+          if (p && typeof p.then === 'function') {
+            p.catch((err) => {
+              console.warn('Unmuting failed, likely due to autoplay policy:', err);
+              // Revert mute state
+              isMuted = true;
+              try { video.muted = true; } catch (e) {}
+              updateIcon();
+              showVolumeHint();
+            });
+          }
+        });
+      }
     }
 
     updateIcon();
 
     // Use pointerdown for immediate response on touch/mouse (falls back to click)
-    volumeToggle.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      toggleVolume();
-    }, { passive: false });
-
-    // Also keep click for non-pointer environments
-    volumeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
+    // Use pointerdown for immediate response on touch/mouse (falls back to click)
+    // Do NOT call preventDefault here so the event counts as a user interaction for autoplay policies
+    volumeToggle.addEventListener('pointerdown', (_e) => {
       toggleVolume();
     });
+
+    // Also keep click for non-pointer environments
+    // Also keep click for non-pointer environments
+    volumeToggle.addEventListener('click', (_e) => {
+      toggleVolume();
+    });
+
+    // Show a small temporary hint to the user when unmuting is blocked by the browser
+    function showVolumeHint() {
+      if (!volumeToggle) return;
+      // Prevent multiple hints
+      if (volumeToggle.dataset.hint === '1') return;
+      volumeToggle.dataset.hint = '1';
+      const hint = document.createElement('div');
+      hint.className = 'volume-hint';
+      hint.textContent = 'Toca otra vez para activar el sonido';
+      volumeToggle.appendChild(hint);
+      setTimeout(() => {
+        hint.classList.add('visible');
+      }, 10);
+      setTimeout(() => {
+        hint.classList.remove('visible');
+        setTimeout(() => {
+          volumeToggle.removeChild(hint);
+          delete volumeToggle.dataset.hint;
+        }, 300);
+      }, 2500);
+    }
   }
 </script>
