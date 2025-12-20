@@ -61,8 +61,8 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
     films.map((film) => (
       <div class="film-modal" id={`modal-${film.id}`} data-film-id={film.id}>
         <div class="modal-overlay" data-modal-close></div>
-        <button class="modal-close" data-modal-close aria-label="Close">✕</button>
         <div class="modal-content">
+          <button class="modal-close" data-modal-close aria-label="Close">✕</button>
           
           <div class="modal-inner">
             <!-- Primary Image -->
@@ -537,7 +537,7 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2000;
+    z-index: 10010;
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-default);
@@ -582,9 +582,9 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
   }
 
   .modal-close {
-    position: fixed;
-    top: var(--spacing-lg);
-    right: var(--spacing-lg);
+    position: absolute;
+    top: calc(var(--spacing-sm));
+    right: calc(var(--spacing-sm));
     width: 44px;
     height: 44px;
     background: rgba(212, 165, 116, 0.15);
@@ -596,7 +596,7 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
     align-items: center;
     justify-content: center;
     transition: all var(--transition-default);
-    z-index: 2001;
+    z-index: 10;
     border-radius: 12px;
 
     &:hover {
@@ -609,7 +609,6 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
   .modal-inner {
     position: relative;
     width: 100%;
-    /* Reduce modal image height so it doesn't force extra page scrolling */
     height: 60vh;
     overflow: hidden;
     background: #000;
