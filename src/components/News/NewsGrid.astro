@@ -1,0 +1,343 @@
+---
+import type { NewsItem } from '../../data/news';
+import { t } from '../../utils/i18n';
+
+interface Props {
+  news: NewsItem[];
+}
+
+const { news: unsortedNews } = Astro.props;
+
+// Ordenar noticias por fecha (más reciente primero)
+const news = [...unsortedNews].sort((a, b) => {
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+});
+
+// Separar automáticamente: primeras 2 como destacadas
+const featuredNews = news.slice(0, 2);
+const regularNews = news.slice(2);
+
+const categoryLabels = {
+  es: {
+    award: 'Premio',
+    competition: 'Competencia',
+    team: 'Equipo',
+    general: 'Noticia',
+  },
+  en: {
+    award: 'Award',
+    competition: 'Competition',
+    team: 'Team',
+    general: 'News',
+  },
+};
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const optionsES: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const optionsEN: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const dateES = date.toLocaleDateString('es-ES', optionsES);
+  const dateEN = date.toLocaleDateString('en-US', optionsEN);
+  
+  return { es: dateES, en: dateEN };
+};
+---
+
+<div class="news-container">
+  {/* Featured News */}
+  {featuredNews.length > 0 && (
+    <div class="featured-section">
+      <h2 class="section-title">
+        <span class="lang-es">Destacados</span>
+        <span class="lang-en" style="display:none;">Featured</span>
+      </h2>
+      <div class="featured-grid">
+        {featuredNews.map((item) => {
+          const dates = formatDate(item.date);
+          return (
+            <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card featured">
+              <div class="news-header">
+                <span class={`category-badge category-${item.category}`}>
+                  <span class="lang-es">{categoryLabels.es[item.category]}</span>
+                  <span class="lang-en" style="display:none;">{categoryLabels.en[item.category]}</span>
+                </span>
+                <time class="date">
+                  <span class="lang-es">{dates.es}</span>
+                  <span class="lang-en" style="display:none;">{dates.en}</span>
+                </time>
+              </div>
+              <h3>
+                <span class="lang-es">{t(item.titleKey, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(item.titleKey, 'en')}</span>
+              </h3>
+              <p>
+                <span class="lang-es">{t(item.descriptionKey, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(item.descriptionKey, 'en')}</span>
+              </p>
+              <div class="read-more">
+                <span class="lang-es">Leer más →</span>
+                <span class="lang-en" style="display:none;">Read more →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
+  {/* All News Grid */}
+  {regularNews.length > 0 && (
+    <div class="all-news-section">
+      <h2 class="section-title">
+        <span class="lang-es">Todas las noticias</span>
+        <span class="lang-en" style="display:none;">All news</span>
+      </h2>
+      <div class="news-grid">
+        {regularNews.map((item) => {
+          const dates = formatDate(item.date);
+          return (
+            <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card">
+              <div class="news-header">
+                <span class={`category-badge category-${item.category}`}>
+                  <span class="lang-es">{categoryLabels.es[item.category]}</span>
+                  <span class="lang-en" style="display:none;">{categoryLabels.en[item.category]}</span>
+                </span>
+                <time class="date">
+                  <span class="lang-es">{dates.es}</span>
+                  <span class="lang-en" style="display:none;">{dates.en}</span>
+                </time>
+              </div>
+              <h3>
+                <span class="lang-es">{t(item.titleKey, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(item.titleKey, 'en')}</span>
+              </h3>
+              <p>
+                <span class="lang-es">{t(item.descriptionKey, 'es')}</span>
+                <span class="lang-en" style="display:none;">{t(item.descriptionKey, 'en')}</span>
+              </p>
+              <div class="read-more">
+                <span class="lang-es">Leer más →</span>
+                <span class="lang-en" style="display:none;">Read more →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
+  {/* Empty State */}
+  {news.length === 0 && (
+    <div class="empty-state">
+      <p>
+        <span class="lang-es">No hay noticias disponibles en este momento.</span>
+        <span class="lang-en" style="display:none;">No news available at this moment.</span>
+      </p>
+    </div>
+  )}
+</div>
+
+<style>
+  .news-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3xl);
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-2xl);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Featured Section */
+  .featured-section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-2xl);
+  }
+
+  /* News Grid */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+  }
+
+  /* News Card */
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(212, 168, 184, 0.2);
+    border-radius: 8px;
+    background: rgba(212, 168, 184, 0.05);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .news-card:hover {
+    background: rgba(212, 168, 184, 0.1);
+    border-color: rgba(212, 168, 184, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .news-card.featured {
+    grid-column: 1 / -1;
+    padding: var(--spacing-2xl);
+    border: 1px solid rgba(212, 168, 184, 0.25);
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 184, 0.08) 0%,
+      rgba(212, 168, 184, 0.05) 100%
+    );
+  }
+
+  .news-card.featured h3 {
+    font-size: 1.5rem;
+  }
+
+  /* News Header */
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(212, 168, 184, 0.15);
+    color: var(--color-accent);
+  }
+
+  .category-award {
+    background: rgba(212, 168, 184, 0.15);
+    color: var(--color-accent);
+  }
+
+  .category-competition {
+    background: rgba(212, 168, 184, 0.15);
+    color: var(--color-accent);
+  }
+
+  .category-team {
+    background: rgba(212, 168, 184, 0.15);
+    color: var(--color-accent);
+  }
+
+  .category-general {
+    background: rgba(212, 168, 184, 0.15);
+    color: var(--color-accent);
+  }
+
+  /* Date */
+  .date {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Content */
+  .news-card h3 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.4;
+  }
+
+  .news-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+    flex-grow: 1;
+  }
+
+  /* Read More Link */
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-accent);
+    font-weight: 400;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+
+  .news-card:hover .read-more {
+    color: var(--color-accent-hover);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    color: var(--color-text-secondary);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .featured-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .news-card {
+      padding: var(--spacing-lg);
+    }
+
+    .news-card.featured {
+      padding: var(--spacing-xl);
+    }
+
+    .news-card h3 {
+      font-size: 1.1rem;
+    }
+
+    .news-card.featured h3 {
+      font-size: 1.3rem;
+    }
+
+    .news-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .date {
+      width: 100%;
+    }
+  }
+</style>

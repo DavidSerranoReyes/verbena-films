@@ -2,7 +2,9 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Navigation from '../components/Navigation/Navigation.astro';
 import Footer from '../components/Footer/Footer.astro';
+import NewsGrid from '../components/News/NewsGrid.astro';
 import { t } from '../utils/i18n';
+import { news } from '../data/news';
 ---
 
 <MainLayout 
@@ -13,18 +15,18 @@ import { t } from '../utils/i18n';
   
   <section class="news-section">
     <div class="container">
-      <h1>
-        <span class="lang-es">{t('nav.news', 'es')}</span>
-        <span class="lang-en" style="display:none;">{t('nav.news', 'en')}</span>
-      </h1>
-      <p>
-        <span class="lang-es">Últimas actualizaciones y proyectos</span>
-        <span class="lang-en" style="display:none;">Latest updates and projects</span>
-      </p>
-      <p>
-        <span class="lang-es">Contenido en desarrollo...</span>
-        <span class="lang-en" style="display:none;">Content in development...</span>
-      </p>
+      <div class="header">
+        <h1>
+          <span class="lang-es">{t('nav.news', 'es')}</span>
+          <span class="lang-en" style="display:none;">{t('nav.news', 'en')}</span>
+        </h1>
+        <p class="subtitle">
+          <span class="lang-es">Últimas actualizaciones, premios y proyectos</span>
+          <span class="lang-en" style="display:none;">Latest updates, awards and projects</span>
+        </p>
+      </div>
+
+      <NewsGrid news={news} />
     </div>
   </section>
 
@@ -36,7 +38,7 @@ import { t } from '../utils/i18n';
     padding: var(--spacing-2xl) 0;
     background: var(--color-dark-bg);
     margin-top: var(--spacing-2xl);
-    min-height: calc(100vh - var(--spacing-2xl));
+    min-height: auto;
   }
 
   .container {
@@ -45,16 +47,35 @@ import { t } from '../utils/i18n';
     padding: 0 var(--spacing-lg);
   }
 
-  h1 {
-    font-size: 3rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--spacing-lg);
+  .header {
+    margin-bottom: var(--spacing-3xl);
   }
 
-  p {
-    font-size: 1rem;
+  h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 0 var(--spacing-md);
+    }
   }
 </style>
