@@ -1,6 +1,5 @@
 ---
 import type { NewsItem } from '../../data/news';
-import { t } from '../../utils/i18n';
 
 interface Props {
   news: NewsItem[];
@@ -18,36 +17,20 @@ const featuredNews = news.slice(0, 2);
 const regularNews = news.slice(2);
 
 const categoryLabels = {
-  es: {
-    award: 'Premio',
-    competition: 'Competencia',
-    team: 'Equipo',
-    general: 'Noticia',
-  },
-  en: {
-    award: 'Award',
-    competition: 'Competition',
-    team: 'Team',
-    general: 'News',
-  },
+  award: 'Premio',
+  competition: 'Competencia',
+  team: 'Equipo',
+  general: 'Noticia',
 };
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  const optionsES: Intl.DateTimeFormatOptions = {
+  const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   };
-  const optionsEN: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  const dateES = date.toLocaleDateString('es-ES', optionsES);
-  const dateEN = date.toLocaleDateString('en-US', optionsEN);
-  
-  return { es: dateES, en: dateEN };
+  return date.toLocaleDateString('es-ES', options);
 };
 ---
 
@@ -60,35 +43,22 @@ const formatDate = (dateString: string) => {
         <span class="lang-en" style="display:none;">Featured</span>
       </h2>
       <div class="featured-grid">
-        {featuredNews.map((item) => {
-          const dates = formatDate(item.date);
-          return (
-            <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card featured">
-              <div class="news-header">
-                <span class={`category-badge category-${item.category}`}>
-                  <span class="lang-es">{categoryLabels.es[item.category]}</span>
-                  <span class="lang-en" style="display:none;">{categoryLabels.en[item.category]}</span>
-                </span>
-                <time class="date">
-                  <span class="lang-es">{dates.es}</span>
-                  <span class="lang-en" style="display:none;">{dates.en}</span>
-                </time>
-              </div>
-              <h3>
-                <span class="lang-es">{t(item.titleKey, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(item.titleKey, 'en')}</span>
-              </h3>
-              <p>
-                <span class="lang-es">{t(item.descriptionKey, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(item.descriptionKey, 'en')}</span>
-              </p>
-              <div class="read-more">
-                <span class="lang-es">Leer más →</span>
-                <span class="lang-en" style="display:none;">Read more →</span>
-              </div>
-            </a>
-          );
-        })}
+        {featuredNews.map((item) => (
+          <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card featured">
+            <div class="news-header">
+              <span class={`category-badge category-${item.category}`}>
+                {categoryLabels[item.category]}
+              </span>
+              <time class="date">{formatDate(item.date)}</time>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <div class="read-more">
+              <span class="lang-es">Leer más →</span>
+              <span class="lang-en" style="display:none;">Read more →</span>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   )}
@@ -101,35 +71,22 @@ const formatDate = (dateString: string) => {
         <span class="lang-en" style="display:none;">All news</span>
       </h2>
       <div class="news-grid">
-        {regularNews.map((item) => {
-          const dates = formatDate(item.date);
-          return (
-            <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card">
-              <div class="news-header">
-                <span class={`category-badge category-${item.category}`}>
-                  <span class="lang-es">{categoryLabels.es[item.category]}</span>
-                  <span class="lang-en" style="display:none;">{categoryLabels.en[item.category]}</span>
-                </span>
-                <time class="date">
-                  <span class="lang-es">{dates.es}</span>
-                  <span class="lang-en" style="display:none;">{dates.en}</span>
-                </time>
-              </div>
-              <h3>
-                <span class="lang-es">{t(item.titleKey, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(item.titleKey, 'en')}</span>
-              </h3>
-              <p>
-                <span class="lang-es">{t(item.descriptionKey, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(item.descriptionKey, 'en')}</span>
-              </p>
-              <div class="read-more">
-                <span class="lang-es">Leer más →</span>
-                <span class="lang-en" style="display:none;">Read more →</span>
-              </div>
-            </a>
-          );
-        })}
+        {regularNews.map((item) => (
+          <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" class="news-card">
+            <div class="news-header">
+              <span class={`category-badge category-${item.category}`}>
+                {categoryLabels[item.category]}
+              </span>
+              <time class="date">{formatDate(item.date)}</time>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <div class="read-more">
+              <span class="lang-es">Leer más →</span>
+              <span class="lang-en" style="display:none;">Read more →</span>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   )}

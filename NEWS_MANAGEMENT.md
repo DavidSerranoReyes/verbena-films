@@ -12,14 +12,14 @@ La sección de **Noticias** está lista para ser gestionada completamente desde 
 - Las **demás noticias** aparecen en el grid "Todas las noticias"
 - **Sin necesidad de marcar nada manualmente** - ¡simplemente sube la noticia y aparecerá automáticamente!
 
-### 🌍 Multiidioma Integrado
+### 🌍 Noticias en Español
 
-**Las noticias se muestran automáticamente en el idioma del usuario:**
+**Las noticias se muestran siempre en español:**
 
-- Todos los títulos y descripciones están disponibles en **Español** e **Inglés**
-- El cambio de idioma es **instantáneo** en toda la página
-- Las fechas también se adaptan al idioma seleccionado
-- **Sin trabajo adicional** - el sistema se encarga automáticamente
+- El cliente sube noticias solo en **español**
+- Si un usuario visita en otro idioma, los menús/botones se adaptan pero el contenido de noticias permanece en español
+- Los usuarios pueden usar el **traductor del navegador** (Google Translate, etc.) si lo desean
+- **Más simple y eficiente** - no requiere mantener múltiples idiomas
 
 ---
 
@@ -112,20 +112,17 @@ URL Externa: https://www.audiovisual451.com/las-mujeres-jasp-de-la-industria-esp
 1. **Accede a Strapi** en tu panel de administración
 2. **Navega** a Colecciones → **News**
 3. **Haz clic** en "+ Crear nueva noticia"
-4. **Completa los campos en AMBOS idiomas:**
-   - Título (Español)
-   - Título (English)
-   - Descripción (Español)
-   - Descripción (English)
+4. **Completa los campos:**
+   - Título (en español)
+   - Descripción (en español)
    - Fecha (YYYY-MM-DD) ← **¡Lo más importante!**
    - Categoría
    - URL Externa (opcional)
    - Imagen (opcional)
 5. **Haz clic** en "Guardar"
-6. **¡Listo!** La noticia aparecerá automáticamente en ambos idiomas:
+6. **¡Listo!** La noticia aparecerá automáticamente:
    - Si es una de las 2 más recientes → En "Destacados"
    - Si es más antigua → En "Todas las noticias"
-   - Cambia automáticamente al idioma seleccionado por el usuario
 
 ---
 

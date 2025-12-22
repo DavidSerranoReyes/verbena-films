@@ -88,27 +88,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'news.category.general': 'Noticia',
     'news.readmore': 'Leer más →',
 
-    /* News Items */
-    'news.taranta-zinebi-award.title':
-      'TARANTA gana el premio ZINEBI NETWORKING de 10.000€',
-    'news.taranta-zinebi-award.description':
-      'El documental de Samuel Nacar ha sido galardonado con el premio Zinebi Networking, reconocimiento que destaca la excelencia profesional del proyecto.',
-
-    'news.flores-alice-guy.title':
-      'FLORES PARA UNA MADRE AUSENTE gana el premio de guion ALICE GUY',
-    'news.flores-alice-guy.description':
-      'El guion de Ana Puentes es reconocido en los premios Alice Guy, destacando la escritura cinematográfica de calidad en la industria española.',
-
-    'news.taranta-zinebi-competition.title':
-      'TARANTA compite por el premio de ZINEBI NETWORKING',
-    'news.taranta-zinebi-competition.description':
-      'El proyecto de Samuel Nacar es seleccionado entre 11 largometrajes documentales que compiten por los 30.000 euros del octavo foro profesional Zinebi Networking.',
-
-    'news.ana-puentes-jasp.title':
-      'ANA PUENTES en la lista de MUJERES "Jóvenes aunque sobradamente preparadas"',
-    'news.ana-puentes-jasp.description':
-      'Ana Puentes es incluida en la selección de mujeres JASP de la industria española por Audiovisual 451, reconociendo su talento y preparación profesional.',
-
     /* About */
     'about.title': 'Nosotras',
     'about.intro.title': 'Productora de cine independiente',
@@ -220,27 +199,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'news.category.team': 'Team',
     'news.category.general': 'News',
     'news.readmore': 'Read more →',
-
-    /* News Items */
-    'news.taranta-zinebi-award.title':
-      'TARANTA wins the ZINEBI NETWORKING award of €10,000',
-    'news.taranta-zinebi-award.description':
-      "Samuel Nacar's documentary has been awarded the Zinebi Networking prize, recognition that highlights the professional excellence of the project.",
-
-    'news.flores-alice-guy.title':
-      'FLORES PARA UNA MADRE AUSENTE wins the ALICE GUY screenplay award',
-    'news.flores-alice-guy.description':
-      "Ana Puentes' screenplay is recognized at the Alice Guy Awards, highlighting quality cinematographic writing in the Spanish film industry.",
-
-    'news.taranta-zinebi-competition.title':
-      'TARANTA competes for the ZINEBI NETWORKING award',
-    'news.taranta-zinebi-competition.description':
-      "Samuel Nacar's project is selected among 11 documentary feature films competing for the €30,000 of the eighth professional forum Zinebi Networking.",
-
-    'news.ana-puentes-jasp.title':
-      'ANA PUENTES included in the list of WOMEN "Young but more than adequately prepared"',
-    'news.ana-puentes-jasp.description':
-      'Ana Puentes is included in the selection of JASP women from the Spanish industry by Audiovisual 451, recognizing her talent and professional preparation.',
 
     /* About */
     'about.title': 'About Us',
