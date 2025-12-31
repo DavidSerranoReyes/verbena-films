@@ -23,7 +23,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'films.description':
       'Una selección de nuestros trabajos audiovisuales más destacados',
     'films.type': 'Tipo',
-    'films.director': 'Director',
+    'films.director': 'Directora',
     'films.year': 'Año',
     'films.country': 'País',
     'films.language': 'Idioma',
@@ -34,6 +34,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'films.synopsis': 'Sinopsis',
     'films.awards': 'Premios y Festivales',
     'films.watch': 'Ver tráiler',
+
+    /* Film Titles */
+    'film.title.taranta': 'Taranta',
+    'film.title.flores': 'Flores para una madre ausente',
+    'film.title.audicion': 'Audición',
+    'film.title.bienvenus': 'Bienvenus',
+    'film.title.mivida': 'Mi vida al principio',
+    'film.title.noche': 'En la noche caminamos solos',
 
     /* Films - Taranta */
     'film.taranta.year': 'En Rodaje',
@@ -146,6 +154,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'films.synopsis': 'Synopsis',
     'films.awards': 'Awards & Festivals',
     'films.watch': 'Watch Trailer',
+
+    /* Film Titles */
+    'film.title.taranta': 'Taranta',
+    'film.title.flores': 'Flowers for an Absent Mother',
+    'film.title.audicion': 'Audition',
+    'film.title.bienvenus': 'Bienvenus',
+    'film.title.mivida': 'My Life at the Beginning',
+    'film.title.noche': 'In the Night We Walk Alone',
 
     /* Films - Taranta */
     'film.taranta.year': 'In Production',

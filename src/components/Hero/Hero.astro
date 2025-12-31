@@ -56,7 +56,10 @@ import { heroVideos } from '../../data/hero';
 
     <!-- Video Info (moved outside hero-content so it's positioned relative to .hero) -->
     <div class="video-info" id="videoInfo">
-      <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">{heroVideos[0].title}</h2>
+      <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;" data-title-key={heroVideos[0].titleKey}>
+        <span class="lang-es">{heroVideos[0].title}</span>
+        <span class="lang-en" style="display:none;">{heroVideos[0].title}</span>
+      </h2>
       <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
         <span class="director">{heroVideos[0].director}</span>
         <span class="year">({heroVideos[0].year})</span>
@@ -372,6 +375,33 @@ import { heroVideos } from '../../data/hero';
 </style>
 
 <script define:vars={{ heroVideos }}>
+  // Helper function to get translation from localStorage
+  function getTranslation(key) {
+    const lang = localStorage.getItem('verbena-lang') || 'es';
+    
+    // Translation map (sync with i18n.ts)
+    const translations = {
+      'es': {
+        'film.title.taranta': 'Taranta',
+        'film.title.flores': 'Flores para una madre ausente',
+        'film.title.audicion': 'Audición',
+        'film.title.bienvenus': 'Bienvenus',
+        'film.title.mivida': 'Mi vida al principio',
+        'film.title.noche': 'En la noche caminamos solos',
+      },
+      'en': {
+        'film.title.taranta': 'Taranta',
+        'film.title.flores': 'Flowers for an Absent Mother',
+        'film.title.audicion': 'Audition',
+        'film.title.bienvenus': 'Bienvenus',
+        'film.title.mivida': 'My Life at the Beginning',
+        'film.title.noche': 'In the Night We Walk Alone',
+      }
+    };
+    
+    return translations[lang]?.[key] || key;
+  }
+
   class HeroVideoCarousel {
     constructor() {
       this.videos = heroVideos;
@@ -460,8 +490,9 @@ import { heroVideos } from '../../data/hero';
 
       // Update video info before transition
       if (this.videoInfoElement) {
+        const translatedTitle = getTranslation(video.titleKey);
         this.videoInfoElement.innerHTML = `
-          <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">${video.title}</h2>
+          <h2 class="video-title" style="font-size: 1.5rem; font-weight: 400; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;" data-title-key="${video.titleKey}">${translatedTitle}</h2>
           <p class="video-meta" style="font-size: 0.95rem; color: #b0b0b0; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4;">
             <span class="director">${video.director}</span>
             <span class="year">(${video.year})</span>

@@ -5,7 +5,8 @@
 
 export interface FilmData {
   id: string;
-  title: string;
+  title: string; // Deprecated: use titleKey for translations
+  titleKey: string; // Translation key for i18n (e.g., 'film.title.taranta')
   director: string;
   year: string;
   country: string;
@@ -23,9 +24,10 @@ export const films: FilmData[] = [
   {
     id: 'taranta',
     title: 'Taranta',
+    titleKey: 'film.title.taranta',
     director: 'Samuel Nacar',
     country: 'España',
-    year: '2018',
+    year: '2026',
     writer: 'Claudia Barthelemy y Ana Puentes',
     producers: 'Ana Puentes, José Carlos de Isla y Paco Ortiz',
     production: 'Verbena Films, Sarao Films',
@@ -44,9 +46,10 @@ export const films: FilmData[] = [
   {
     id: 'flores',
     title: 'Flores para una madre ausente',
+    titleKey: 'film.title.flores',
     director: 'Ana Puentes',
     country: 'España',
-    year: '2025',
+    year: '2026',
     writer: 'Ana Puentes',
     producers: 'Sergy Moreno y Ana Puentes',
     executiveProducer: 'Adriana Vera',
@@ -64,9 +67,10 @@ export const films: FilmData[] = [
   {
     id: 'audicion',
     title: 'Audición',
+    titleKey: 'film.title.audicion',
     director: 'Ana Puentes',
     country: 'España',
-    year: '2025',
+    year: '2026',
     writer: 'Ana Puentes',
     producers: 'Sergy Moreno y Ana Puentes',
     executiveProducer: 'Adriana Vera y Sandra Caballero',
@@ -78,6 +82,7 @@ export const films: FilmData[] = [
   {
     id: 'noche',
     title: 'En la noche caminamos solos',
+    titleKey: 'film.title.noche',
     director: 'Rafa Alberola',
     year: '2024',
     country: 'España',
@@ -100,6 +105,7 @@ export const films: FilmData[] = [
   {
     id: 'mivida',
     title: 'Mi vida al principio',
+    titleKey: 'film.title.mivida',
     director: 'Ana Puentes',
     year: '2022',
     country: 'España',
@@ -124,6 +130,7 @@ export const films: FilmData[] = [
   {
     id: 'bienvenus',
     title: 'Bienvenus',
+    titleKey: 'film.title.bienvenus',
     director: 'Ana Puentes',
     year: '2018',
     country: 'España',
