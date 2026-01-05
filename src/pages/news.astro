@@ -4,7 +4,10 @@ import Navigation from '../components/Navigation/Navigation.astro';
 import Footer from '../components/Footer/Footer.astro';
 import NewsGrid from '../components/News/NewsGrid.astro';
 import { t } from '../utils/i18n';
-import { news } from '../data/news';
+import { getNews } from '../services/dataService';
+
+// Obtener noticias (Strapi o estático)
+const news = await getNews();
 ---
 
 <MainLayout 

@@ -1,103 +1,42 @@
 # 🎬 Guía de Desarrollo - Verbena Films
 
-**Última actualización:** 5 de diciembre de 2025
+**Última actualización:** 31 de diciembre de 2025
 
 ---
 
-## 📋 Visión General del Proyecto
+## 📋 Visión del Proyecto
 
-Página web profesional para una productora audiovisual. Sitio dinámico, sobrio y elegante con dark mode nativo. La experiencia del usuario debe reflejar profesionalismo y calidad cinematográfica.
+Página web profesional para productora audiovisual. Dark mode, minimalista, contenido visual impactante.
 
-### Referencia de Inspiración
-
-- **Sitio:** https://avalon.me/
-- **Características clave:** Diseño minimalista, dark mode, navegación limpia, contenido visual impactante
+**Inspiración:** https://avalon.me/
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-### Frontend
-
-- **Framework principal:** React + Astro (meta-framework)
-- **Lenguaje:** TypeScript
-- **Tipado:** Strict mode habilitado
-- **Gestión de Estado:** A definir según necesidad (Context API, Zustand, etc.)
-
-### CMS & Backend
-
-- **Headless CMS:** Strapi
-- **Propósito:** Permitir al cliente hacer cambios sin intervención de desarrollo
-- **Integración:** API REST con React/Astro
-
-### Diseño
-
-- **Fuente principal:** Montserrat
-  - **Pesos:**
-    - Thin: 100 (titulares elegantes)
-    - Regular: 400 (cuerpo de texto)
-    - Ajustar según necesidad visual
-- **Tema:** Dark Mode como default
-- **Idiomas:** Español / Inglés (detección automática del navegador)
-
-### Control de Versiones
-
-- **Integración:** GitHub
-- **Estrategia:** Commits frecuentes, ramas por feature
+- **Framework:** Astro + React
+- **Lenguaje:** TypeScript (strict mode)
+- **CMS:** Strapi (opcional, con fallback estático)
+- **Fuente:** Montserrat (100, 400, 700)
+- **Idiomas:** ES / EN (detección automática)
 
 ---
 
-## 🎯 Estructura de Navegación
+## 🎯 Secciones
 
-La web tendrá **4 secciones principales:**
-
-### 1. **Home**
-
-- Landing page con propuesta de valor
-- Hero section impactante
-- Destacados/últimas producciones
-- Call-to-action principal
-
-### 2. **Films**
-
-- Galería de producciones
-- Filtros por tipo/año (si aplica)
-- Reproducción de videos
-- Detalles de cada proyecto
-
-### 3. **About**
-
-- Información de la productora
-- Equipo creativo
-- Historia y valores
-- Credibilidad y logros
-
-### 4. **News**
-
-- Últimas noticias/actualizaciones
-- Blog de proyectos
-- Comunicados
+1. **Home** - Hero con carrusel de videos
+2. **Films** - Galería de producciones con modales
+3. **About** - Info de la productora y equipo
+4. **News** - Noticias y actualizaciones
 
 ---
 
-## 🌍 Internacionalización (i18n)
+## 🎨 Diseño
 
-- **Detección automática:** Basada en `navigator.language`
-- **Fallback:** Español como idioma por defecto
-- **Almacenamiento:** LocalStorage para preferencia del usuario
-- **Implementación:** Librerías como `react-i18next` o similar
-
----
-
-## 🎨 Guía de Diseño
-
-### Paleta de Colores
-
-- **Base:** Dark Mode (fondos oscuros, textos claros)
-- **Acentos:** A definir según identidad de marca
-- **Contraste:** WCAG AA mínimo para accesibilidad
-
-### Responsividad
+- **Tema:** Dark Mode por defecto
+- **Colores:** Fondos oscuros (#0f0f0f), acentos rosados (#d4a8b8)
+- **Responsive:** Mobile-first
+- **Contraste:** WCAG AA mínimo
 
 - Mobile First
 - Breakpoints: Mobile (320px), Tablet (768px), Desktop (1024px+)
@@ -158,108 +97,43 @@ verbena-films/
 ### **Fase 1: Setup & Configuración** ✅ COMPLETADA
 
 - [x] Inicializar proyecto (Astro + React)
-- [x] Configurar TypeScript (strict mode + esModuleInterop)
-- [x] Instalar dependencias base (react-i18next, i18next)
-- [x] Configurar git y repositorio GitHub
-- [x] Importar fuente Montserrat (Thin 100, Regular 400, Bold 700)
-- [x] Crear MainLayout.astro base
-- [x] Configurar i18n (ES/EN) con detección automática
-- [x] Crear tipos TypeScript y configuración sitio
-- [ ] Setup de Strapi (local o staging) - PRÓXIMO
-
-### **Fase 2: Home** 🎯 (SIGUIENTE)
-
-- [ ] Estructura HTML/Astro
-- [ ] Componente Navigation
-- [ ] Componente Hero
-- [ ] Sección destacados
-- [ ] Componente Footer
-- [ ] Estilos Dark Mode
-- [ ] Responsividad completa
-- [ ] i18n configurado
-- **Verificación:** Todos los elementos renderizan correctamente
-
-### **Fase 3: Films**
-
-- [ ] Conexión a Strapi
-- [ ] Galería dinámica
-- [ ] Filtros
-- [ ] Lightbox/Modal para videos
-- [ ] Responsividad
-
-### **Fase 4: About**
-
-- [ ] Contenido dinámico de Strapi
-- [ ] Sección de equipo
-- [ ] Timeline/Historia
-
-### **Fase 5: News**
-
-- [ ] Blog desde Strapi
-- [ ] Paginación
-- [ ] Categorías
-
-### **Fase 6: Polish & Deployment**
-
-- [ ] Optimización de rendimiento
-- [ ] SEO
-- [ ] Testing
-- [ ] Deploy en producción
 
 ---
 
-## 📊 Verificación Continua
+## 🚀 Estado Actual
 
-Después de **cada fase completada**, verificar:
+### ✅ Completado
 
-- ✅ **Visual:** Coincide con referencia (avalon.me)
-- ✅ **Funcional:** Todas las características funcionan
-- ✅ **Responsivo:** Mobile, tablet, desktop
-- ✅ **Accesibilidad:** Colores, contraste, navegación
-- ✅ **Rendimiento:** Lighthouse score > 80
-- ✅ **i18n:** Ambos idiomas funcionan
-- ✅ **Dark Mode:** Aplicado correctamente
-- ✅ **TypeScript:** Sin errores
-- ✅ **Git:** Cambios commiteados
+- [x] Setup inicial (Astro + React + TypeScript)
+- [x] Sistema i18n (ES/EN) funcionando
+- [x] Configuración centralizada (`src/config/index.ts`)
+- [x] Sistema de datos (Strapi ready con fallback)
+- [x] Componentes principales (Hero, Navigation, Films, News, Footer)
+- [x] Dark mode nativo
+- [x] Responsive design
+- [x] Títulos multiidioma
+- [x] Datos actualizados (años 2026)
 
----
+### 🎯 Próximos Pasos
 
-## 🔗 Integración Strapi
+1. **Setup Strapi** (cuando se necesite)
 
-### Endpoints Básicos
+   - Instalar y configurar
+   - Crear content types
+   - Migrar datos
 
-```
-GET /api/films
-GET /api/films/:id
-GET /api/news
-POST /api/news (administración)
-GET /api/team
-```
-
-### Autenticación
-
-- Si es necesaria: JWT tokens
-- Gestionar credenciales en `.env`
+2. **Deploy** (cuando esté listo)
+   - Vercel/Netlify
+   - Configurar dominio
+   - Variables de entorno
 
 ---
 
-## 📝 Notas Importantes
+## 📚 Documentación
 
-1. **Cliente:** Debe poder actualizar contenido en Strapi sin conocimiento técnico
-2. **Mantenibilidad:** Código limpio, componentes reutilizables
-3. **Performance:** Optimizar imágenes, lazy loading
-4. **SEO:** Meta tags, Open Graph
-5. **Disponibilidad:** 24/7 con HTTPS
+- **`SETUP.md`** - Configuración completa
+- **`README.md`** - Overview del proyecto
 
 ---
 
-## 🎓 Recursos Útiles
-
-- Documentación Astro: https://docs.astro.build
-- Documentación React: https://react.dev
-- Documentación Strapi: https://docs.strapi.io
-- Inspiración: https://avalon.me/
-
----
-
-**Próximo paso:** Inicializar proyecto con Astro + React + TypeScript ✨
+**✨ Proyecto listo para desarrollo y producción ✨**

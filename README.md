@@ -1,58 +1,71 @@
 # 🎬 Verbena Films
 
-Página web profesional para una productora audiovisual. Sitio dinámico, sobrio y elegante con dark mode nativo, construido con **Astro + React + TypeScript**.
+Página web profesional para productora audiovisual. Dark mode nativo, sistema i18n (ES/EN), gestión dinámica de contenido.
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Astro 5 + React 18
-- **Lenguaje:** TypeScript (strict mode)
-- **Estilos:** CSS-in-Astro con variables personalizadas
-- **Tipografía:** Montserrat (100, 400, 700)
-- **Internacionalización:** i18n (ES/EN)
-- **Optimización:** WebP, lazy loading, responsive design
+- **Framework:** Astro + React + TypeScript (strict)
+- **CMS:** Strapi ready (con fallback estático)
+- **i18n:** ES/EN automático
+- **Optimización:** Responsive, WebP, lazy loading
 
-## 🚀 Comandos
+## 🚀 Quick Start
 
 ```bash
-# Instalar dependencias
 npm install
-
-# Desarrollo local (http://localhost:4321)
+cp .env.example .env.local
 npm run dev
-
-# Build para producción
-npm run build
-
-# Preview del build
-npm run preview
 ```
 
-## 📁 Estructura del Proyecto
+## 📦 Comandos
+
+```bash
+npm run dev       # Desarrollo (localhost:4321)
+npm run build     # Build producción
+npm run preview   # Preview build
+npm run check     # TypeScript check
+```
+
+## 📁 Estructura
 
 ```
 src/
-├── components/        # Componentes Astro + React
-│   ├── Hero/         # Hero section con carrusel de videos
-│   ├── Navigation/   # Navbar con logo y selector de idioma
-│   ├── Films/        # Grid de películas
-│   ├── Footer/       # Footer con ubicación y redes
-├── pages/            # Rutas (home, films, about, news)
-├── layouts/          # Layout base (MainLayout.astro)
-├── styles/           # CSS global y variables
-├── utils/            # Utilidades (i18n, etc)
-├── types/            # Tipos TypeScript
-└── config/           # Configuración del sitio
+├── config/index.ts      # Configuración centralizada
+├── services/            # API & Data services
+├── components/          # UI components
+├── pages/              # Rutas (home, films, news, about)
+├── data/               # Datos estáticos (fallback)
+└── utils/              # i18n, transformers, helpers
+```
+
+## ⚙️ Configuración
+
+Ver **`SETUP.md`** para configuración completa.
+
+**Variables principales (.env.local):**
+
+```env
+PUBLIC_USE_STRAPI=false  # Activar Strapi
+PUBLIC_STRAPI_URL=http://localhost:1337
+STRAPI_API_TOKEN=
 ```
 
 ## 🌍 Internacionalización
 
-Soporta **Español (ES) e Inglés (EN)** con detección automática del navegador y almacenamiento en localStorage.
+- **Idiomas:** Español / English
+- **Detección:** Automática por navegador
+- **Storage:** LocalStorage
+- **Config:** `src/utils/i18n.ts`
 
-## 🎨 Características
+## 📚 Documentación
 
-- ✅ Dark Mode nativo
-- ✅ Responsive (Mobile-first)
-- ✅ Animaciones suaves
+- **`SETUP.md`** - Configuración y setup completo
+- **`AGENTS.md`** - Guía de desarrollo detallada
+
+---
+
+**Desarrollado con ❤️ para Verbena Films**
+
 - ✅ Accesibilidad (WCAG AA)
 - ✅ SEO optimizado
 - ✅ Carrusel de videos en hero

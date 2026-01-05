@@ -4,9 +4,29 @@
  * Galería de películas con información detallada
  */
 import { t } from '../../utils/i18n';
-import { films } from '../../data/films';
+import { getFilms } from '../../services/dataService';
 import { getWebpPath } from '../../utils/images';
 import { getVimeoEmbedUrl } from '../../utils/formatting';
+
+// Obtener películas (Strapi o estático)
+const films = await getFilms();
+
+/**
+ * Helper: Obtener texto de film (Strapi directo o i18n estático)
+ * @param film - Película
+ * @param key - Clave del texto
+ * @param lang - Idioma
+ * @returns Texto traducido
+ */
+const getText = (film: any, key: string, lang: 'es' | 'en') => {
+  if ((film as any).fromStrapi) {
+    if (key === 'title') return film.title || '';
+    if (key === 'year') return film.year || '';
+    if (key === 'synopsis') return lang === 'es' ? film.synopsis_es : film.synopsis_en;
+    return '';
+  }
+  return t(`film.${film.id}.${key}`, lang);
+};
 ---
 
 <section class="films-section">
@@ -45,8 +65,13 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
             <!-- Film Info -->
             <div class="film-info">
               <h2 class="film-title">
-                <span class="lang-es">{t(film.titleKey, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(film.titleKey, 'en')}</span>
+                {/* Si viene de Strapi, usar título directo */}
+                {film.title ? film.title : (
+                  <>
+                    <span class="lang-es">{t(film.titleKey, 'es')}</span>
+                    <span class="lang-en" style="display:none;">{t(film.titleKey, 'en')}</span>
+                  </>
+                )}
               </h2>
 
               {film.year && (
@@ -109,25 +134,31 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
           <!-- Info -->
           <div class="modal-info">
             <h2 class="modal-title">
-              <span class="lang-es">{t(film.titleKey, 'es')}</span>
-              <span class="lang-en" style="display:none;">{t(film.titleKey, 'en')}</span>
+              {film.title ? film.title : (
+                <>
+                  <span class="lang-es">{t(film.titleKey, 'es')}</span>
+                  <span class="lang-en" style="display:none;">{t(film.titleKey, 'en')}</span>
+                </>
+              )}
             </h2>
             
             <p class="modal-year">
-              <span class="lang-es">{t(`film.${film.id}.year`, 'es')}</span>
-              <span class="lang-en" style="display:none;">{t(`film.${film.id}.year`, 'en')}</span>
+              <span class="lang-es">{getText(film, 'year', 'es')}</span>
+              <span class="lang-en" style="display:none;">{getText(film, 'year', 'en')}</span>
             </p>
             
-            <p class="modal-meta">
-              <span class="modal-label">
-                <span class="lang-es">{t('films.type', 'es')}:</span>
-                <span class="lang-en" style="display:none;">{t('films.type', 'en')}:</span>
-              </span>
-              <span>
-                <span class="lang-es">{t(`film.${film.id}.type`, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(`film.${film.id}.type`, 'en')}</span>
-              </span>
-            </p>
+            {!(film as any).fromStrapi && (
+              <p class="modal-meta">
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.type', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.type', 'en')}:</span>
+                </span>
+                <span>
+                  <span class="lang-es">{t(`film.${film.id}.type`, 'es')}</span>
+                  <span class="lang-en" style="display:none;">{t(`film.${film.id}.type`, 'en')}</span>
+                </span>
+              </p>
+            )}
 
             {film.director && (
               <p class="modal-meta">
@@ -149,16 +180,18 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
               </p>
             )}
 
-            <p class="modal-meta">
-              <span class="modal-label">
-                <span class="lang-es">{t('films.language', 'es')}:</span>
-                <span class="lang-en" style="display:none;">{t('films.language', 'en')}:</span>
-              </span>
-              <span>
-                <span class="lang-es">{t(`film.${film.id}.language`, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(`film.${film.id}.language`, 'en')}</span>
-              </span>
-            </p>
+            {!(film as any).fromStrapi && (
+              <p class="modal-meta">
+                <span class="modal-label">
+                  <span class="lang-es">{t('films.language', 'es')}:</span>
+                  <span class="lang-en" style="display:none;">{t('films.language', 'en')}:</span>
+                </span>
+                <span>
+                  <span class="lang-es">{t(`film.${film.id}.language`, 'es')}</span>
+                  <span class="lang-en" style="display:none;">{t(`film.${film.id}.language`, 'en')}</span>
+                </span>
+              </p>
+            )}
 
             {film.writer && (
               <p class="modal-meta">
@@ -224,8 +257,8 @@ import { getVimeoEmbedUrl } from '../../utils/formatting';
                 <span class="lang-en" style="display:none;">{t('films.synopsis', 'en')}</span>
               </h3>
               <p>
-                <span class="lang-es">{t(`film.${film.id}.synopsis`, 'es')}</span>
-                <span class="lang-en" style="display:none;">{t(`film.${film.id}.synopsis`, 'en')}</span>
+                <span class="lang-es">{getText(film, 'synopsis', 'es')}</span>
+                <span class="lang-en" style="display:none;">{getText(film, 'synopsis', 'en')}</span>
               </p>
             </div>
 

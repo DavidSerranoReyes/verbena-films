@@ -4,6 +4,8 @@
  * Fácil de mantener y actualizar
  */
 
+import { STRAPI_CONFIG } from '../config';
+
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
 }
@@ -21,13 +23,9 @@ class ApiClient {
   private baseUrl: string;
   private apiToken?: string;
 
-  constructor(
-    baseUrl: string = import.meta.env.PUBLIC_STRAPI_URL ||
-      'http://localhost:1337',
-    apiToken?: string,
-  ) {
+  constructor(baseUrl: string = STRAPI_CONFIG.url, apiToken?: string) {
     this.baseUrl = baseUrl;
-    this.apiToken = apiToken;
+    this.apiToken = apiToken || STRAPI_CONFIG.token;
   }
 
   /**
@@ -159,5 +157,132 @@ class ApiClient {
 
 // Exportar instancia singleton
 export const apiClient = new ApiClient();
+
+/**
+ * 🎬 FILMS API
+ * Métodos específicos para trabajar con películas
+ */
+
+/**
+ * Obtener todas las películas
+ * @param options Opciones de consulta (sort, filters, etc.)
+ * @returns Array de películas de Strapi
+ */
+export async function fetchFilms(options?: {
+  sort?: string;
+  filters?: Record<string, unknown>;
+  populate?: string;
+}) {
+  const params = new URLSearchParams();
+
+  // Sort
+  if (options?.sort) {
+    params.append('sort', options.sort);
+  } else {
+    params.append('sort', 'year:desc'); // Por defecto ordenar por año descendente
+  }
+
+  // Populate (incluir imágenes y relaciones)
+  if (options?.populate) {
+    params.append('populate', options.populate);
+  } else {
+    params.append('populate', '*'); // Incluir todo por defecto
+  }
+
+  // Filters
+  if (options?.filters) {
+    Object.entries(options.filters).forEach(([key, value]) => {
+      params.append(`filters[${key}]`, String(value));
+    });
+  }
+
+  const endpoint = `/api/films?${params.toString()}`;
+  return apiClient.get(endpoint);
+}
+
+/**
+ * Obtener una película por ID
+ * @param id ID de la película
+ * @returns Película específica
+ */
+export async function fetchFilmById(id: string) {
+  return apiClient.get(`/api/films/${id}?populate=*`);
+}
+
+/**
+ * 📰 NEWS API
+ * Métodos específicos para trabajar con noticias
+ */
+
+/**
+ * Obtener todas las noticias
+ * @param options Opciones de consulta
+ * @returns Array de noticias de Strapi
+ */
+export async function fetchNews(options?: {
+  sort?: string;
+  filters?: Record<string, unknown>;
+  populate?: string;
+  pagination?: {
+    page?: number;
+    pageSize?: number;
+  };
+}) {
+  const params = new URLSearchParams();
+
+  // Sort
+  if (options?.sort) {
+    params.append('sort', options.sort);
+  } else {
+    params.append('sort', 'date:desc'); // Por defecto ordenar por fecha descendente
+  }
+
+  // Populate
+  if (options?.populate) {
+    params.append('populate', options.populate);
+  } else {
+    params.append('populate', '*');
+  }
+
+  // Pagination
+  if (options?.pagination?.page) {
+    params.append('pagination[page]', String(options.pagination.page));
+  }
+  if (options?.pagination?.pageSize) {
+    params.append('pagination[pageSize]', String(options.pagination.pageSize));
+  }
+
+  // Filters
+  if (options?.filters) {
+    Object.entries(options.filters).forEach(([key, value]) => {
+      params.append(`filters[${key}]`, String(value));
+    });
+  }
+
+  const endpoint = `${STRAPI_CONFIG.endpoints.news}?${params.toString()}`;
+  return apiClient.get(endpoint);
+}
+
+/**
+ * Obtener una noticia por ID
+ * @param id ID de la noticia
+ * @returns Noticia específica
+ */
+export async function fetchNewsById(id: string) {
+  return apiClient.get(`${STRAPI_CONFIG.endpoints.news}/${id}?populate=*`);
+}
+
+/**
+ * Obtener noticias por categoría
+ * @param category Categoría de las noticias
+ * @returns Array de noticias filtradas
+ */
+export async function fetchNewsByCategory(
+  category: 'award' | 'competition' | 'team' | 'general',
+) {
+  return fetchNews({
+    filters: { category: { $eq: category } },
+  });
+}
 
 export default ApiClient;

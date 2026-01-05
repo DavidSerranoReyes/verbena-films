@@ -1,6 +1,6 @@
 /**
  * 🎬 STRAPI FILMS CONFIGURATION
- * 
+ *
  * Esta es la estructura que debe tener la colección "Films" en Strapi
  * Copia esta estructura al crear la colección en tu instancia de Strapi
  */
@@ -83,7 +83,7 @@ export const FILMS_COLLECTION_SCHEMA = {
       example: [
         'Premio Alice Guy de Guión',
         'ICAA 2025',
-        'Festival de Sevilla'
+        'Festival de Sevilla',
       ],
     },
 
@@ -191,7 +191,7 @@ export const EXAMPLE_FILM_JSON = {
 
 /**
  * PASOS PARA CREAR LA COLECCIÓN EN STRAPI
- * 
+ *
  * 1. Ir al Content-Type Builder
  * 2. Crear nueva colección llamada "films"
  * 3. Agregar los campos según la estructura anterior
@@ -202,9 +202,9 @@ export const EXAMPLE_FILM_JSON = {
 
 /**
  * API ENDPOINT
- * 
+ *
  * GET /api/films
  * Query params: ?sort=createdAt:desc&populate=*
- * 
+ *
  * Respuesta: Array de FilmData
  */
