@@ -41,7 +41,7 @@ export const films: FilmData[] = [
       'RTVE',
     ],
     trailer: '',
-    poster: '/images/movies/TARANTA.png',
+    poster: '/images/movies/TARANTA.webp',
   },
   {
     id: 'flores',
@@ -62,7 +62,7 @@ export const films: FilmData[] = [
       'Abycine Lanza - Premio CMMedia',
     ],
     trailer: '',
-    poster: '/images/movies/FLORES PARA UNA MADRE AUSENTE.jpeg',
+    poster: '/images/movies/FLORES PARA UNA MADRE AUSENTE.webp',
   },
   {
     id: 'audicion',
@@ -77,7 +77,7 @@ export const films: FilmData[] = [
     production: 'White Leaf Producciones, Verbena Films',
     awards: ['ICAA 2025', 'Comunidad de Madrid 2025'],
     trailer: '',
-    poster: '/images/movies/AUDICIÓN.png',
+    poster: '/images/movies/AUDICIÓN.webp',
   },
   {
     id: 'noche',
@@ -96,10 +96,10 @@ export const films: FilmData[] = [
       'Festival de Sevilla',
     ],
     trailer: '',
-    poster: '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.jpg',
+    poster: '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.webp',
     images: [
-      '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.jpg',
-      '/images/movies/ELNCS_cartel.jpg',
+      '/images/movies/EN LA NOCHE CAMINAMOS SOLOS.webp',
+      '/images/movies/ELNCS_cartel.webp',
     ],
   },
   {
@@ -121,10 +121,10 @@ export const films: FilmData[] = [
       'Premios FUGAZ',
     ],
     trailer: 'https://vimeo.com/736976963?fl=pl&fe=sh',
-    poster: '/images/movies/MI VIDA AL PRINCIPIO.jpg',
+    poster: '/images/movies/MI VIDA AL PRINCIPIO.webp',
     images: [
-      '/images/movies/MI VIDA AL PRINCIPIO.jpg',
-      '/images/movies/MVAP_CARTEL.jpeg',
+      '/images/movies/MI VIDA AL PRINCIPIO.webp',
+      '/images/movies/MVAP_CARTEL.webp',
     ],
   },
   {
@@ -146,10 +146,10 @@ export const films: FilmData[] = [
       'St Cloud Film Fest',
     ],
     trailer: 'https://vimeo.com/306275587?fl=pl&fe=sh',
-    poster: '/images/movies/fotograma-bienvenus.jpg',
+    poster: '/images/movies/fotograma-bienvenus.webp',
     images: [
-      '/images/movies/fotograma-bienvenus.jpg',
-      '/images/movies/CARTEL-BIENVENUS_LAURELES.jpg',
+      '/images/movies/fotograma-bienvenus.webp',
+      '/images/movies/CARTEL-BIENVENUS_LAURELES.webp',
     ],
   },
 ];
