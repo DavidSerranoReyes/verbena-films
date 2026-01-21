@@ -34,27 +34,33 @@ export async function getFilms(limit?: number): Promise<FilmData[]> {
 
   try {
     if (USE_STRAPI) {
-      console.log('📡 Fetching films from Strapi...');
+      console.log('📡 [FILMS] Fetching from Strapi (timeout: 5s)...');
+      const startTime = Date.now();
       const response = await fetchFilms();
+      const duration = Date.now() - startTime;
 
       if (!response.error && response.data) {
         // Strapi v5 devuelve response.data.data
         const strapiData = (response.data as any).data || response.data;
         const strapiFilms = transformStrapiFilms(strapiData, STRAPI_URL);
-        console.log(`✅ Loaded ${strapiFilms.length} films from Strapi`);
+        console.log(
+          `✅ [FILMS] Loaded ${strapiFilms.length} from Strapi (${duration}ms)`,
+        );
 
         // Combinar: Strapi primero, luego estáticos
         allFilms = [...strapiFilms, ...staticFilms];
         console.log(
-          `📦 Total: ${allFilms.length} films (${strapiFilms.length} Strapi + ${staticFilms.length} static)`,
+          `📦 [FILMS] Total: ${allFilms.length} (${strapiFilms.length} Strapi + ${staticFilms.length} static)`,
         );
       } else {
-        console.error('❌ Strapi error:', response.error);
-        console.log('📦 Fallback to static data');
+        console.warn(
+          `⚠️  [FILMS] Strapi failed after ${duration}ms: ${response.error}`,
+        );
+        console.log('📦 [FILMS] Using fallback: static data');
         allFilms = staticFilms;
       }
     } else {
-      console.log('📦 Using static films data');
+      console.log('📦 [FILMS] Strapi disabled - using static data');
       allFilms = staticFilms;
     }
 
@@ -100,27 +106,33 @@ export async function getNews(limit?: number): Promise<NewsItem[]> {
 
   try {
     if (USE_STRAPI) {
-      console.log('📡 Fetching news from Strapi...');
+      console.log('📡 [NEWS] Fetching from Strapi (timeout: 5s)...');
+      const startTime = Date.now();
       const response = await fetchNews();
+      const duration = Date.now() - startTime;
 
       if (!response.error && response.data) {
         // Strapi v5 devuelve response.data.data
         const strapiData = (response.data as any).data || response.data;
         const strapiNews = transformStrapiNewsList(strapiData, STRAPI_URL);
-        console.log(`✅ Loaded ${strapiNews.length} news from Strapi`);
+        console.log(
+          `✅ [NEWS] Loaded ${strapiNews.length} from Strapi (${duration}ms)`,
+        );
 
         // Combinar: Strapi primero, luego estáticas
         allNews = [...strapiNews, ...staticNews];
         console.log(
-          `📦 Total: ${allNews.length} news (${strapiNews.length} Strapi + ${staticNews.length} static)`,
+          `📦 [NEWS] Total: ${allNews.length} (${strapiNews.length} Strapi + ${staticNews.length} static)`,
         );
       } else {
-        console.error('❌ Strapi error:', response.error);
-        console.log('📦 Fallback to static data');
+        console.warn(
+          `⚠️  [NEWS] Strapi failed after ${duration}ms: ${response.error}`,
+        );
+        console.log('📦 [NEWS] Using fallback: static data');
         allNews = staticNews;
       }
     } else {
-      console.log('📦 Using static news data');
+      console.log('📦 [NEWS] Strapi disabled - using static data');
       allNews = staticNews;
     }
 

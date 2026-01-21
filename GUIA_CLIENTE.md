@@ -12,9 +12,22 @@ Strapi es el panel de administración donde puedes gestionar el contenido de tu 
 
 ## 🔐 Acceso al Panel
 
-1. Ve a la URL de tu panel Strapi (será proporcionada después del deploy)
+**URL de acceso:**
+
+```
+https://verbena-films-strapi.onrender.com/admin
+```
+
+**Tus credenciales:**
+
+- **Email:** [Tu correo será proporcionado por separado]
+- **Contraseña:** [Tu contraseña será proporcionada por separado]
+
+**Pasos:**
+
+1. Ve a https://verbena-films-strapi.onrender.com/admin
 2. Ingresa con tu correo y contraseña
-3. Verás el panel principal con las opciones de Content Manager
+3. ¡Ya estás dentro! Verás el panel principal con las opciones de Content Manager
 
 ---
 
@@ -180,8 +193,9 @@ Puedes editar cualquier entrada en cualquier momento. No hay problema.
 
 Para cualquier problema técnico o duda:
 
-- Contacta con el desarrollador
-- Email: david-serrano@outlook.com
+- **Contacta con el desarrollador:**
+- **Email:** david-serrano@outlook.com
+- **Website:** https://verbenafilms.com
 
 ---
 

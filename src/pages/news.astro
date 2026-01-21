@@ -39,7 +39,12 @@ const news = await getNews();
 <style>
   .news-section {
     padding: var(--spacing-2xl) 0;
-    background: var(--color-dark-bg);
+    background: linear-gradient(
+      135deg,
+      var(--color-dark-bg) 0%,
+      rgba(212, 168, 184, 0.08) 50%,
+      var(--color-dark-bg) 100%
+    );
     margin-top: var(--spacing-2xl);
     min-height: auto;
   }
@@ -59,6 +64,8 @@ const news = await getNews();
     font-weight: 400;
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid rgba(212, 168, 184, 0.3);
   }
 
   .subtitle {

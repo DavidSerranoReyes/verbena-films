@@ -13,21 +13,21 @@ export interface HeroVideoData {
 
 export const heroVideos: HeroVideoData[] = [
   {
-    src: '/videos/BIENVENUS_HOME.mp4',
+    src: '/videos/bienvenus-home.mp4',
     title: 'BIENVENUS',
     titleKey: 'film.title.bienvenus',
     director: 'Ana Puentes',
     year: '2018',
   },
   {
-    src: '/videos/MVAP_CORTE HOME.mp4',
+    src: '/videos/mvap-corte-home.mp4',
     title: 'MI VIDA AL PRINCIPIO',
     titleKey: 'film.title.mivida',
     director: 'Ana Puentes',
     year: '2022',
   },
   {
-    src: '/videos/ELNCS_HOME.mov',
+    src: '/videos/elncs-home.mp4',
     title: 'EN LA NOCHE CAMINAMOS SOLOS',
     titleKey: 'film.title.noche',
     director: 'Rafa Alberola',

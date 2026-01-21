@@ -6,6 +6,9 @@
 
 import { STRAPI_CONFIG } from '../config';
 
+// Timeout para requests (5 segundos) - para hacer fallback rápido
+const REQUEST_TIMEOUT = 5000;
+
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
 }
@@ -116,20 +119,34 @@ class ApiClient {
         fetchOptions.body = JSON.stringify(data);
       }
 
-      const response = await fetch(url, fetchOptions);
+      // Crear un AbortController para timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-      if (!response.ok) {
+      try {
+        const response = await fetch(url, {
+          ...fetchOptions,
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          return {
+            error: `HTTP ${response.status}: ${response.statusText}`,
+            status: response.status,
+          };
+        }
+
+        const responseData = (await response.json()) as T;
         return {
-          error: `HTTP ${response.status}: ${response.statusText}`,
+          data: responseData,
           status: response.status,
         };
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        throw fetchError;
       }
-
-      const responseData = (await response.json()) as T;
-      return {
-        data: responseData,
-        status: response.status,
-      };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
