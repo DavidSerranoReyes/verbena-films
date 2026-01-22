@@ -23,3 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 *.tar.gz
+dist/
+dist-*.tar.gz
+dist-part-*
