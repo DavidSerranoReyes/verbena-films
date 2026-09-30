@@ -12,8 +12,9 @@
 ```
 Ella publica en Strapi (Content Manager → Save → Publish)
         │
+        │  Strapi avisa a GitHub en el momento (avisarAlCambiarContenido)
         ▼
-GitHub Actions (cada 20 minutos)  .github/workflows/deploy-cdmon.yml
+GitHub Actions  .github/workflows/deploy-cdmon.yml
         │  0. Compara la huella del CMS con la de la web publicada
         │     (si no hay nada nuevo, termina aquí sin tocar nada)
         │  1. Despierta Strapi (el plan Free de Render se duerme)
@@ -23,16 +24,17 @@ GitHub Actions (cada 20 minutos)  .github/workflows/deploy-cdmon.yml
 www.verbenafilms.com ya muestra el cambio
 ```
 
-- **Retraso:** hasta ~20-25 minutos desde que pulsa *Publish*. GitHub puede
-  añadir algunos minutos más si tiene carga.
+- **Retraso:** unos **2-4 minutos** desde que pulsa *Publish*.
+- **Dos disparadores:**
+  1. **Strapi → GitHub** (el normal): al tocar Film o Article, Strapi pide a GitHub
+     que publique. Es inmediato y fiable.
+  2. **Cada 20 minutos** (red de seguridad): por si el aviso no llegara. El
+     planificador de GitHub es **poco fiable** — comprobado: de ~24 turnos en 8
+     horas solo ejecutó 1 —, así que no se depende de él.
 - **Solo publica si hay cambios.** La web genera un `version.json` con la huella
   del contenido. El robot la compara con la del CMS: si son iguales, no construye
-  ni se conecta al FTP. Así no se martillea CDmon (ni se gasta cuota) cuando nadie
-  ha tocado nada.
-- **Por qué cada 20 minutos y no cada 10:** si el robot consultara a Strapi cada
-  10 minutos, el servicio nunca llegaría a dormirse y consumiría sus 750 horas
-  gratis mensuales de Render (riesgo de que Render lo suspenda). Con 20 minutos
-  duerme entre consultas.
+  ni se conecta al FTP. Así los borradores no publican nada, no se martillea CDmon
+  (ni se gasta cuota) y no se despierta Strapi de más.
 - **Solo sube lo que cambia:** compara con lo que ya hay en el servidor, así que
   los vídeos e imágenes grandes no se reenvían en cada ejecución.
 - **No borra nada del servidor:** `dangerous-clean-slate: false`.
@@ -63,6 +65,29 @@ Para probar sin tocar el servidor: pestaña **Actions** → *Publicar la web en
 CDmon* → **Run workflow** → marca `dry_run` → saldrá la lista de archivos que
 subiría. Cuando esté bien, se lanza sin marcar la casilla.
 
+### Y en Render: el token para el aviso instantáneo
+
+En **Render → `verbena-films-strapi` → Environment**, añadir:
+
+| Variable | Valor |
+| --- | --- |
+| `GITHUB_DISPATCH_TOKEN` | un token de GitHub (ver abajo) |
+
+Cómo se crea (2 minutos, una sola vez):
+
+1. GitHub → tu foto → **Settings** → **Developer settings** →
+   **Personal access tokens → Fine-grained tokens** → **Generate new token**.
+2. Nombre: `verbena-deploy-strapi`. Caducidad: 1 año (apunta la fecha para
+   renovarlo).
+3. **Repository access** → *Only select repositories* → `verbena-films`.
+4. **Permissions → Repository permissions → Contents: Read and write**
+   (es lo que exige GitHub para este aviso).
+5. Generate → copiar el token → pegarlo en Render. Guardar (redespliega solo).
+
+Sin ese token tampoco se rompe nada: Strapi lo dice en los logs y la web se
+actualiza en el siguiente turno del robot (hasta 20 minutos, y a veces más si
+GitHub retrasa el programado).
+
 ---
 
 ## Si algo no se actualiza
@@ -76,11 +101,12 @@ subiría. Cuando esté bien, se lanza sin marcar la casilla.
    **Run workflow** (rama `main`). Tarda ~3 minutos y publica lo que haya ahora
    mismo, sin esperar al turno automático. Con la casilla `dry_run` solo simula.
 
-Las tareas programadas de GitHub pueden retrasarse unos minutos (o descartarse
-alguna vez por carga). Por eso el cron es a los minutos 5/25/45 y no a en punto,
-que es cuando más fallan. Si algún día vieras que no se publica solo, avísame:
-existe la opción de que Strapi avise a GitHub **en el mismo momento** en que ella
-pulsa Publish (requiere crear un token de GitHub y guardarlo en Render).
+Las tareas programadas de GitHub pueden retrasarse (o descartarse): comprobado
+que en 8 horas solo ejecutó una vez. Por eso el disparador normal es el aviso de
+Strapi (`GITHUB_DISPATCH_TOKEN`) y las tareas programadas son solo la red de
+seguridad. Si el token caduca, se nota enseguida: en Strapi → Logs aparece
+`GitHub respondió 401 al avisar` y la web tarda en actualizarse. Se genera uno
+nuevo y se actualiza la variable en Render.
 
 ---
 

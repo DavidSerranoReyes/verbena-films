@@ -14,10 +14,14 @@ name: 🌐 Publicar la web en CDmon
 # Render) no llegaría a dormirse nunca y consumiría sus 750 horas mensuales.
 
 on:
+  # Strapi avisa a GitHub en cuanto se publica algo en el panel (es el disparador
+  # principal, porque el programado de GitHub es poco fiable).
+  repository_dispatch:
+    types: [strapi-publish]
   schedule:
-    # Cada 20 minutos, pero a los minutos 5/25/45 y no a en punto: GitHub avisa
-    # de que las tareas programadas "al inicio de la hora" son las que más se
-    # retrasan o se descartan por carga.
+    # Red de seguridad cada 20 minutos, pero a los minutos 5/25/45 y no a en
+    # punto: GitHub avisa de que las tareas "al inicio de la hora" son las que
+    # más se retrasan o se descartan por carga.
     - cron: '5,25,45 * * * *'
   # Si se cambia el código, se publica enseguida (sin esperar al turno siguiente).
   # Los cambios de solo documentación no necesitan publicar la web.
