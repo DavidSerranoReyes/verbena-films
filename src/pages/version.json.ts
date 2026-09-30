@@ -30,7 +30,12 @@ export const GET: APIRoute = async () => {
 
   try {
     const cuerpos = await Promise.all(
-      URLS.map((url) => fetch(url).then((res) => (res.ok ? res.text() : ''))),
+      URLS.map((url) =>
+        // Si Strapi no responde en 20 s no bloqueamos el build
+        fetch(url, { signal: AbortSignal.timeout(20000) }).then((res) =>
+          res.ok ? res.text() : '',
+        ),
+      ),
     );
     huella = createHash('sha256')
       .update(cuerpos.join('\n'))
