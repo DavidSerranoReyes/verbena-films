@@ -23,10 +23,14 @@ const STRAPI_URL = STRAPI_CONFIG.url;
 /**
  * Combina el contenido del CMS con el contenido estático sin duplicar.
  *
- * Si una entrada del CMS tiene el mismo título que una estática, gana la del
- * CMS. Así, por ejemplo, "Taranta" (que ya estaba en los datos estáticos) no
- * sale dos veces en la web cuando la publican desde Strapi, y además se ve la
- * versión actualizada (póster, sinopsis, etc.) que sube la clienta.
+ * Si una entrada del CMS corresponde a una estática, gana la del CMS. Así
+ * "Taranta" (que ya venía en los datos estáticos) no sale dos veces en la web
+ * cuando la publican desde Strapi, y además se ve la versión actualizada
+ * (póster, sinopsis, etc.) que sube la clienta.
+ *
+ * La comparación no es solo por título exacto: también cuenta como duplicado si
+ * uno contiene al otro, porque es muy fácil que en el CMS la titulen
+ * "Taranta (2018)" o "TARANTA - largometraje" y entonces es la misma película.
  */
 function mergeWithStatic<T extends { title?: string }>(
   fromCms: T[],
@@ -40,11 +44,18 @@ function mergeWithStatic<T extends { title?: string }>(
       .replace(/[^a-z0-9]+/g, ' ')
       .trim();
 
-  const titulosDelCms = new Set(fromCms.map(clave).filter(Boolean));
-  const estaticosSinDuplicar = staticItems.filter((item) => {
-    const titulo = clave(item);
-    return !titulo || !titulosDelCms.has(titulo);
-  });
+  const titulosDelCms = fromCms.map(clave).filter(Boolean);
+
+  const esLaMisma = (titulo: string): boolean =>
+    Boolean(titulo) &&
+    titulosDelCms.some(
+      (delCms) =>
+        delCms === titulo ||
+        (titulo.length >= 5 &&
+          (delCms.includes(titulo) || titulo.includes(delCms))),
+    );
+
+  const estaticosSinDuplicar = staticItems.filter((item) => !esLaMisma(clave(item)));
 
   return [...fromCms, ...estaticosSinDuplicar];
 }
