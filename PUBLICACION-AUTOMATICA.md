@@ -69,9 +69,18 @@ subiría. Cuando esté bien, se lanza sin marcar la casilla.
 
 1. GitHub → **Actions** → *Publicar la web en CDmon* → mira la última ejecución.
 2. Si falla en el paso FTP: revisa la contraseña del secret `FTP_PASSWORD`.
-3. Si el build dice que Strapi no respondió: espera 10 minutos (se reintenta solo).
+3. Si el build dice que Strapi no respondió: espera 20 minutos (se reintenta solo).
 4. Si el contenido no cambió en la web: comprueba en Strapi que la entrada esté
    **Publish** y no en borrador.
+5. **Plan B — lanzarlo a mano:** Actions → *Publicar la web en CDmon* →
+   **Run workflow** (rama `main`). Tarda ~3 minutos y publica lo que haya ahora
+   mismo, sin esperar al turno automático. Con la casilla `dry_run` solo simula.
+
+Las tareas programadas de GitHub pueden retrasarse unos minutos (o descartarse
+alguna vez por carga). Por eso el cron es a los minutos 5/25/45 y no a en punto,
+que es cuando más fallan. Si algún día vieras que no se publica solo, avísame:
+existe la opción de que Strapi avise a GitHub **en el mismo momento** en que ella
+pulsa Publish (requiere crear un token de GitHub y guardarlo en Render).
 
 ---
 
