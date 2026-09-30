@@ -15,7 +15,10 @@ name: 🌐 Publicar la web en CDmon
 
 on:
   schedule:
-    - cron: '*/20 * * * *'
+    # Cada 20 minutos, pero a los minutos 5/25/45 y no a en punto: GitHub avisa
+    # de que las tareas programadas "al inicio de la hora" son las que más se
+    # retrasan o se descartan por carga.
+    - cron: '5,25,45 * * * *'
   # Si se cambia el código, se publica enseguida (sin esperar al turno siguiente)
   push:
     branches: [main]
