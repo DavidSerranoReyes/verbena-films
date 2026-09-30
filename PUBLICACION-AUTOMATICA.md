@@ -90,5 +90,11 @@ subiría. Cuando esté bien, se lanza sin marcar la casilla.
 - `src/pages/version.json.ts` genera la huella que decide si hay que publicar.
   Ojo: las URLs que consulta (`/api/films?populate=*` y `/api/articles?populate=*`)
   están duplicadas en `deploy-cdmon.yml`; si cambias una, cambia la otra.
+- **La primera publicación sube la web entera** (~67 MB, unos minutos, una sola
+  vez). A partir de ahí el subidor deja un fichero de estado en el servidor
+  (`.ftp-deploy-sync-state.json`) y solo envía lo que cambia (compara hashes).
+- Nunca hace un borrado total: solo elimina del servidor ficheros que **él mismo**
+  había subido antes y ya no existen (por ejemplo, bundles antiguos de Astro).
+  Los archivos que subas tú a mano (`.htaccess`, correo, etc.) no se tocan.
 - `.github/workflows/keepalive.yml` hace un commit vacío al mes: GitHub
   desactiva las tareas programadas de un repo que pasa 60 días sin actividad.
