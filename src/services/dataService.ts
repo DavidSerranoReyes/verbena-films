@@ -21,6 +21,35 @@ const USE_STRAPI = isStrapiEnabled();
 const STRAPI_URL = STRAPI_CONFIG.url;
 
 /**
+ * Combina el contenido del CMS con el contenido estático sin duplicar.
+ *
+ * Si una entrada del CMS tiene el mismo título que una estática, gana la del
+ * CMS. Así, por ejemplo, "Taranta" (que ya estaba en los datos estáticos) no
+ * sale dos veces en la web cuando la publican desde Strapi, y además se ve la
+ * versión actualizada (póster, sinopsis, etc.) que sube la clienta.
+ */
+function mergeWithStatic<T extends { title?: string }>(
+  fromCms: T[],
+  staticItems: T[],
+): T[] {
+  const clave = (item: T): string =>
+    String(item?.title ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // quita acentos
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
+  const titulosDelCms = new Set(fromCms.map(clave).filter(Boolean));
+  const estaticosSinDuplicar = staticItems.filter((item) => {
+    const titulo = clave(item);
+    return !titulo || !titulosDelCms.has(titulo);
+  });
+
+  return [...fromCms, ...estaticosSinDuplicar];
+}
+
+/**
  * 🎬 FILMS SERVICE
  */
 
@@ -34,7 +63,7 @@ export async function getFilms(limit?: number): Promise<FilmData[]> {
 
   try {
     if (USE_STRAPI) {
-      console.log('📡 [FILMS] Fetching from Strapi (timeout: 5s)...');
+      console.log('📡 [FILMS] Fetching from Strapi...');
       const startTime = Date.now();
       const response = await fetchFilms();
       const duration = Date.now() - startTime;
@@ -47,10 +76,10 @@ export async function getFilms(limit?: number): Promise<FilmData[]> {
           `✅ [FILMS] Loaded ${strapiFilms.length} from Strapi (${duration}ms)`,
         );
 
-        // Combinar: Strapi primero, luego estáticos
-        allFilms = [...strapiFilms, ...staticFilms];
+        // Combinar: Strapi primero (manda) y estáticos sin duplicar
+        allFilms = mergeWithStatic(strapiFilms, staticFilms);
         console.log(
-          `📦 [FILMS] Total: ${allFilms.length} (${strapiFilms.length} Strapi + ${staticFilms.length} static)`,
+          `📦 [FILMS] Total: ${allFilms.length} (${strapiFilms.length} de Strapi + ${allFilms.length - strapiFilms.length} estáticas, sin duplicados)`,
         );
       } else {
         console.warn(
@@ -106,7 +135,7 @@ export async function getNews(limit?: number): Promise<NewsItem[]> {
 
   try {
     if (USE_STRAPI) {
-      console.log('📡 [NEWS] Fetching from Strapi (timeout: 5s)...');
+      console.log('📡 [NEWS] Fetching from Strapi...');
       const startTime = Date.now();
       const response = await fetchNews();
       const duration = Date.now() - startTime;
@@ -119,10 +148,10 @@ export async function getNews(limit?: number): Promise<NewsItem[]> {
           `✅ [NEWS] Loaded ${strapiNews.length} from Strapi (${duration}ms)`,
         );
 
-        // Combinar: Strapi primero, luego estáticas
-        allNews = [...strapiNews, ...staticNews];
+        // Combinar: Strapi primero (manda) y estáticas sin duplicar
+        allNews = mergeWithStatic(strapiNews, staticNews);
         console.log(
-          `📦 [NEWS] Total: ${allNews.length} (${strapiNews.length} Strapi + ${staticNews.length} static)`,
+          `📦 [NEWS] Total: ${allNews.length} (${strapiNews.length} de Strapi + ${allNews.length - strapiNews.length} estáticas, sin duplicados)`,
         );
       } else {
         console.warn(

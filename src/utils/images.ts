@@ -11,8 +11,28 @@
  * @example
  * getWebpPath('/images/movies/film.jpg')
  * // Returns: '/images/movies/film.webp'
+ *
+ * - Imágenes locales: se cambia la extensión (junto al .jpg existe el .webp).
+ * - Imágenes de Cloudinary (las que sube la clienta desde Strapi): no existe
+ *   un `.webp` al lado, así que se pide el WebP a Cloudinary con su
+ *   transformación `f_webp,q_auto`. Sin esto, el póster salía ROTO en la web.
+ * - Cualquier otra URL externa se deja tal cual.
  */
 export function getWebpPath(imagePath: string): string {
+  if (!imagePath) return imagePath;
+
+  if (/^https?:\/\//i.test(imagePath)) {
+    const cloudinary = imagePath.match(
+      /^(https?:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/i,
+    );
+    if (cloudinary) {
+      const [, base, resto] = cloudinary;
+      if (/\bf_(webp|auto)\b/i.test(resto)) return imagePath; // ya venía optimizada
+      return `${base}f_webp,q_auto/${resto}`;
+    }
+    return imagePath; // otro CDN: no se toca
+  }
+
   return imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 }
 

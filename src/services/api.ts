@@ -6,8 +6,13 @@
 
 import { STRAPI_CONFIG } from '../config';
 
-// Timeout para requests (5 segundos) - para hacer fallback rápido
-const REQUEST_TIMEOUT = 5000;
+// Timeout para requests.
+// En el navegador 5 s basta (si Strapi no responde, se usa el contenido estático).
+// En el build automático se sube con PUBLIC_STRAPI_TIMEOUT: Strapi (plan Free de
+// Render) puede tardar ~1 min en despertar y, si abortáramos, la web se
+// construiría con datos viejos y no aparecería lo último publicado.
+const REQUEST_TIMEOUT =
+  Number(import.meta.env.PUBLIC_STRAPI_TIMEOUT ?? 5000) || 5000;
 
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;

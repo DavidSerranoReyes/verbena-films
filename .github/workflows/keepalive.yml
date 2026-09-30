@@ -1,0 +1,28 @@
+name: 🔁 Mantener activo el publicador
+
+# GitHub desactiva las tareas programadas de un repositorio que pasa 60 días sin
+# actividad. Como el contenido lo publica la clienta en Strapi (y eso no genera
+# commits aquí), este workflow hace un commit vacío una vez al mes para que el
+# publicador automático (deploy-cdmon.yml) no se apague solo.
+
+on:
+  schedule:
+    - cron: '15 4 1 * *' # día 1 de cada mes a las 04:15 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    name: Commit de mantenimiento
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Crear commit vacío
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: mantener activo el publicador automático"
+          git push

@@ -1,0 +1,105 @@
+name: 🌐 Publicar la web en CDmon
+
+# Reconstruye el sitio Astro con el contenido del CMS (Strapi) y lo sube por FTP
+# a CDmon. Objetivo: que la dueña publique en el panel y la web se actualice
+# sola, sin que nadie tenga que ejecutar `npm run build` ni subir archivos a mano.
+#
+# Solo sube lo que cambia (compara con lo que ya hay en el servidor), así que los
+# vídeos e imágenes grandes no se reenvían en cada ejecución.
+
+on:
+  schedule:
+    # Cada 10 minutos. GitHub puede retrasarlo unos minutos si tiene carga.
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Solo simular: muestra qué subiría, sin tocar el servidor'
+        type: boolean
+        default: false
+
+# Evita que dos publicaciones se pisen entre sí
+concurrency:
+  group: publicar-cdmon
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    name: Construir y subir
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Comprobar que están los secretos FTP
+        id: secretos
+        env:
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          if [ -n "$FTP_PASSWORD" ]; then
+            echo "listos=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "listos=0" >> "$GITHUB_OUTPUT"
+            echo "::warning::Faltan los secretos FTP. Añádelos en Settings → Secrets and variables → Actions (FTP_SERVER, FTP_USERNAME, FTP_PASSWORD)."
+          fi
+
+      - name: Descargar el código
+        if: steps.secretos.outputs.listos == '1'
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        if: steps.secretos.outputs.listos == '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Despertar Strapi (el plan Free de Render se duerme)
+        if: steps.secretos.outputs.listos == '1'
+        run: |
+          URL="https://verbena-films-strapi.onrender.com/_health"
+          for i in $(seq 1 24); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "$URL" || true)
+            echo "Intento $i → HTTP $CODE"
+            if [ "$CODE" = "204" ] || [ "$CODE" = "200" ]; then
+              echo "Strapi despierto ✅"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::warning::Strapi no respondió a tiempo. La web se construirá con los datos estáticos: no se rompe nada, pero puede no incluir lo último publicado."
+
+      - name: Instalar dependencias
+        if: steps.secretos.outputs.listos == '1'
+        run: npm install --no-audit --no-fund
+
+      - name: Construir la web con el contenido del CMS
+        if: steps.secretos.outputs.listos == '1'
+        env:
+          PUBLIC_USE_STRAPI: 'true'
+          PUBLIC_STRAPI_URL: 'https://verbena-films-strapi.onrender.com'
+          # Margen para que Strapi despierte sin abortar la petición
+          PUBLIC_STRAPI_TIMEOUT: '90000'
+        run: npm run build
+
+      - name: Subir a CDmon (solo lo que cambió)
+        if: steps.secretos.outputs.listos == '1'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./dist/
+          server-dir: /public_html/
+          # Nunca borra todo el servidor: solo sincroniza lo que sube esta acción
+          dangerous-clean-slate: false
+          dry-run: ${{ inputs.dry_run || 'false' }}
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store

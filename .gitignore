@@ -26,3 +26,6 @@ pnpm-debug.log*
 dist/
 dist-*.tar.gz
 dist-part-*
+
+# estado del publicador automático por FTP (lo genera GitHub Actions)
+.ftp-deploy-sync-state.json
