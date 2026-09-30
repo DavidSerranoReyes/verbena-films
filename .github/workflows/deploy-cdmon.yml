@@ -16,6 +16,9 @@ name: 🌐 Publicar la web en CDmon
 on:
   schedule:
     - cron: '*/20 * * * *'
+  # Si se cambia el código, se publica enseguida (sin esperar al turno siguiente)
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       dry_run:
