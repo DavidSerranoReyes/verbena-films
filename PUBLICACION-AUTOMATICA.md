@@ -13,7 +13,9 @@
 Ella publica en Strapi (Content Manager → Save → Publish)
         │
         ▼
-GitHub Actions (cada 10 minutos)  .github/workflows/deploy-cdmon.yml
+GitHub Actions (cada 20 minutos)  .github/workflows/deploy-cdmon.yml
+        │  0. Compara la huella del CMS con la de la web publicada
+        │     (si no hay nada nuevo, termina aquí sin tocar nada)
         │  1. Despierta Strapi (el plan Free de Render se duerme)
         │  2. npm install && npm run build  (con PUBLIC_USE_STRAPI=true)
         │  3. Sube dist/ por FTP a CDmon → /public_html/
@@ -21,13 +23,26 @@ GitHub Actions (cada 10 minutos)  .github/workflows/deploy-cdmon.yml
 www.verbenafilms.com ya muestra el cambio
 ```
 
-- **Retraso:** hasta ~10-15 minutos desde que pulsa *Publish*. GitHub puede
+- **Retraso:** hasta ~20-25 minutos desde que pulsa *Publish*. GitHub puede
   añadir algunos minutos más si tiene carga.
+- **Solo publica si hay cambios.** La web genera un `version.json` con la huella
+  del contenido. El robot la compara con la del CMS: si son iguales, no construye
+  ni se conecta al FTP. Así no se martillea CDmon (ni se gasta cuota) cuando nadie
+  ha tocado nada.
+- **Por qué cada 20 minutos y no cada 10:** si el robot consultara a Strapi cada
+  10 minutos, el servicio nunca llegaría a dormirse y consumiría sus 750 horas
+  gratis mensuales de Render (riesgo de que Render lo suspenda). Con 20 minutos
+  duerme entre consultas.
 - **Solo sube lo que cambia:** compara con lo que ya hay en el servidor, así que
   los vídeos e imágenes grandes no se reenvían en cada ejecución.
 - **No borra nada del servidor:** `dangerous-clean-slate: false`.
 - **Si Strapi no responde**, el build usa los datos estáticos (la web nunca se
   queda rota, como mucho muestra la versión anterior).
+
+### ¿Está la web al día?
+
+Abre **https://www.verbenafilms.com/version.json**. Dice cuándo se generó, con qué
+commit y la huella del contenido:
 
 ---
 
@@ -72,5 +87,8 @@ subiría. Cuando esté bien, se lanza sin marcar la casilla.
   duplicada (`mergeWithStatic` en `src/services/dataService.ts`).
 - Los pósteres subidos a Cloudinary se piden en WebP (`f_webp,q_auto`) desde
   `src/utils/images.ts`.
+- `src/pages/version.json.ts` genera la huella que decide si hay que publicar.
+  Ojo: las URLs que consulta (`/api/films?populate=*` y `/api/articles?populate=*`)
+  están duplicadas en `deploy-cdmon.yml`; si cambias una, cambia la otra.
 - `.github/workflows/keepalive.yml` hace un commit vacío al mes: GitHub
   desactiva las tareas programadas de un repo que pasa 60 días sin actividad.

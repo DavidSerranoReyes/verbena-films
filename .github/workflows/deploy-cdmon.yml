@@ -4,13 +4,18 @@ name: 🌐 Publicar la web en CDmon
 # a CDmon. Objetivo: que la dueña publique en el panel y la web se actualice
 # sola, sin que nadie tenga que ejecutar `npm run build` ni subir archivos a mano.
 #
-# Solo sube lo que cambia (compara con lo que ya hay en el servidor), así que los
-# vídeos e imágenes grandes no se reenvían en cada ejecución.
+# Cómo se comporta:
+#   1. Compara la huella del contenido del CMS y el commit del repo con los de la
+#      web ya publicada (https://www.verbenafilms.com/version.json).
+#   2. Si no hay nada nuevo, termina sin tocar Strapi ni el FTP.
+#   3. Si hay algo nuevo: despierta Strapi, construye y sube SOLO lo que cambió.
+#
+# Se ejecuta cada 20 minutos a propósito: si fuera cada 10, Strapi (plan Free de
+# Render) no llegaría a dormirse nunca y consumiría sus 750 horas mensuales.
 
 on:
   schedule:
-    # Cada 10 minutos. GitHub puede retrasarlo unos minutos si tiene carga.
-    - cron: '*/10 * * * *'
+    - cron: '*/20 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -45,19 +50,40 @@ jobs:
             echo "::warning::Faltan los secretos FTP. Añádelos en Settings → Secrets and variables → Actions (FTP_SERVER, FTP_USERNAME, FTP_PASSWORD)."
           fi
 
-      - name: Descargar el código
+      - name: ¿Hay algo nuevo que publicar?
+        id: cambios
         if: steps.secretos.outputs.listos == '1'
+        run: |
+          CMS="https://verbena-films-strapi.onrender.com"
+          # Misma fórmula que src/pages/version.json.ts: sha256(films + "\n" + articles)
+          NUEVA=$( { curl -s -m 90 "$CMS/api/films?populate=*"; printf '\n'; curl -s -m 90 "$CMS/api/articles?populate=*"; } | sha256sum | cut -c1-20 )
+          VIVA=$(curl -s -m 30 https://www.verbenafilms.com/version.json || true)
+          HUELLA_VIVA=$(printf '%s' "$VIVA" | sed -n 's/.*"huella": *"\([^"]*\)".*/\1/p')
+          COMMIT_VIVO=$(printf '%s' "$VIVA" | sed -n 's/.*"commit": *"\([^"]*\)".*/\1/p')
+          echo "Huella del CMS ahora : $NUEVA"
+          echo "Huella publicada     : ${HUELLA_VIVA:-ninguna}"
+          echo "Commit publicado     : ${COMMIT_VIVO:-ninguno}"
+          echo "Commit de este repo  : $GITHUB_SHA"
+          if [ "$NUEVA" = "$HUELLA_VIVA" ] && [ "$GITHUB_SHA" = "$COMMIT_VIVO" ] && [ "${{ inputs.dry_run }}" != "true" ]; then
+            echo "publicar=0" >> "$GITHUB_OUTPUT"
+            echo "::notice::La web ya está al día: no hace falta publicar nada."
+          else
+            echo "publicar=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Descargar el código
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         uses: actions/checkout@v4
 
       - name: Preparar Node
-        if: steps.secretos.outputs.listos == '1'
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Despertar Strapi (el plan Free de Render se duerme)
-        if: steps.secretos.outputs.listos == '1'
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         run: |
           URL="https://verbena-films-strapi.onrender.com/_health"
           for i in $(seq 1 24); do
@@ -72,11 +98,11 @@ jobs:
           echo "::warning::Strapi no respondió a tiempo. La web se construirá con los datos estáticos: no se rompe nada, pero puede no incluir lo último publicado."
 
       - name: Instalar dependencias
-        if: steps.secretos.outputs.listos == '1'
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         run: npm install --no-audit --no-fund
 
       - name: Construir la web con el contenido del CMS
-        if: steps.secretos.outputs.listos == '1'
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         env:
           PUBLIC_USE_STRAPI: 'true'
           PUBLIC_STRAPI_URL: 'https://verbena-films-strapi.onrender.com'
@@ -85,7 +111,7 @@ jobs:
         run: npm run build
 
       - name: Subir a CDmon (solo lo que cambió)
-        if: steps.secretos.outputs.listos == '1'
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
