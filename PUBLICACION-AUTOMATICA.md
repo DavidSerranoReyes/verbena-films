@@ -101,6 +101,18 @@ GitHub retrasa el programado).
    **Run workflow** (rama `main`). Tarda ~3 minutos y publica lo que haya ahora
    mismo, sin esperar al turno automático. Con la casilla `dry_run` solo simula.
 
+### Errores de FTP en CDmon
+
+- `530 Login incorrect` → la contraseña de la cuenta `verbenaf` no es la correcta,
+  o CDmon ha **desactivado el servicio FTP** del hosting (les pasó en enero de 2026).
+  Se arregla en `admin.cdmon.com` → sección **FTP / Cuentas FTP** (cambiar la
+  contraseña), y el servicio se activa/desactiva siguiendo la guía de CDmon:
+  <https://helpdesk.cdmon.com/portal/es/kb/articles/c%C3%B3mo-activar-o-desactivar-el-servicio-ftp>
+- Comprobado el 30/09/2026: el servidor FTP (`134.0.10.132`) responde con ProFTPD,
+  reconoce el usuario `verbenaf` y solo rechaza contraseñas incorrectas. El hosting
+  es el **Plan Junior** de CDmon y el dominio está a nombre de la clienta
+  (`anapuentesm@gmail.com`).
+
 Las tareas programadas de GitHub pueden retrasarse (o descartarse): comprobado
 que en 8 horas solo ejecutó una vez. Por eso el disparador normal es el aviso de
 Strapi (`GITHUB_DISPATCH_TOKEN`) y las tareas programadas son solo la red de
