@@ -70,7 +70,9 @@ jobs:
           CMS="https://verbena-films-strapi.onrender.com"
           # Misma fórmula que src/pages/version.json.ts: sha256(films + "\n" + articles)
           NUEVA=$( { curl -s -m 90 "$CMS/api/films?populate=*"; printf '\n'; curl -s -m 90 "$CMS/api/articles?populate=*"; } | sha256sum | cut -c1-20 )
-          VIVA=$(curl -s -m 30 https://www.verbenafilms.com/version.json || true)
+          # Con reintentos y un user-agent "normal": CDmon a veces bloquea
+          # peticiones sin navegador (curl) y devolvía vacío.
+          VIVA=$(curl -s -m 30 --retry 3 --retry-delay 3 -A "Mozilla/5.0 (compatible; VerbenaDeploy/1.0)" https://www.verbenafilms.com/version.json || true)
           HUELLA_VIVA=$(printf '%s' "$VIVA" | sed -n 's/.*"huella": *"\([^"]*\)".*/\1/p')
           COMMIT_VIVO=$(printf '%s' "$VIVA" | sed -n 's/.*"commit": *"\([^"]*\)".*/\1/p')
           echo "Huella del CMS ahora : $NUEVA"
@@ -123,50 +125,50 @@ jobs:
           PUBLIC_STRAPI_TIMEOUT: '90000'
         run: npm run build
 
-      # Dos intentos: el servidor de CDmon a veces corta la conexión de datos
-      # (ECONNRESET) y basta con reintentar. Si el primero va bien, el segundo se salta.
-      # ⚠️ Los dos bloques `with:` deben mantenerse idénticos.
-      - name: Subir a CDmon (intento 1)
-        id: ftp1
-        continue-on-error: true
+      - name: ¿Respondió el CMS durante el build?
+        id: cms
         if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          local-dir: ./dist/
-          # Carpeta web REAL del hosting de CDmon (comprobada por FTP el 04/10/2026:
-          # la raíz tiene backup/, cert/, logs/, tmp/ y **web/**; no existe public_html/)
-          server-dir: /web/
-          # Nunca borra todo el servidor: solo sincroniza lo que sube esta acción
-          dangerous-clean-slate: false
-          dry-run: ${{ inputs.dry_run || 'false' }}
-          timeout: 120000
-          log-level: standard
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.DS_Store
+        run: |
+          HUELLA=$(sed -n 's/.*"huella": *"\([^"]*\)".*/\1/p' dist/version.json | head -1)
+          echo "Huella construida: ${HUELLA:-ninguna}"
+          if [ "$HUELLA" = "error" ] || [ -z "$HUELLA" ]; then
+            echo "seguir=0" >> "$GITHUB_OUTPUT"
+            echo "::warning::El CMS no respondió al construir la web. NO se publica, para no dejar la web sin el contenido que hay en Strapi. Se reintentará en el siguiente turno."
+          else
+            echo "seguir=1" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Subir a CDmon (reintento tras un corte de conexión)
-        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1' && steps.ftp1.outcome == 'failure'
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          local-dir: ./dist/
-          server-dir: /web/
-          dangerous-clean-slate: false
-          dry-run: ${{ inputs.dry_run || 'false' }}
-          timeout: 120000
-          log-level: standard
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.DS_Store
+      # CDmon a veces corta la conexión (ECONNRESET) o ni responde al conectar,
+      # así que se reintenta hasta 3 veces con una espera entre intentos.
+      - name: Subir a CDmon (con reintentos)
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1' && steps.cms.outputs.seguir == '1'
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          for intento in 1 2 3; do
+            echo "::group::Intento $intento de 3"
+            if npx --yes @samkirkland/ftp-deploy \
+                 --server "$FTP_SERVER" \
+                 --username "$FTP_USERNAME" \
+                 --password "$FTP_PASSWORD" \
+                 --port 21 \
+                 --local-dir ./dist/ \
+                 --server-dir /web/ \
+                 --dry-run "$DRY_RUN" \
+                 --log-level standard \
+                 --exclude "**/.git*" --exclude "**/.git*/**" --exclude "**/.DS_Store"; then
+              echo "::endgroup::"
+              echo "✅ Web publicada correctamente (intento $intento)."
+              exit 0
+            fi
+            echo "::endgroup::"
+            if [ "$intento" -lt 3 ]; then
+              echo "::warning::El intento $intento falló. Espero 30 s y reintento…"
+              sleep 30
+            fi
+          done
+          echo "::error::No se pudo subir la web a CDmon tras 3 intentos. La versión anterior sigue publicada: no se ha roto nada."
+          exit 1
