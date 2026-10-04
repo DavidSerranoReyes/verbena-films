@@ -19,7 +19,7 @@ GitHub Actions  .github/workflows/deploy-cdmon.yml
         │     (si no hay nada nuevo, termina aquí sin tocar nada)
         │  1. Despierta Strapi (el plan Free de Render se duerme)
         │  2. npm install && npm run build  (con PUBLIC_USE_STRAPI=true)
-        │  3. Sube dist/ por FTP a CDmon → /public_html/
+        │  3. Sube dist/ por FTP a CDmon → /web/   (¡no es public_html!)
         ▼
 www.verbenafilms.com ya muestra el cambio
 ```

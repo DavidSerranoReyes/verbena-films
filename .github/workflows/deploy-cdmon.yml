@@ -133,7 +133,9 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./dist/
-          server-dir: /public_html/
+          # Carpeta web REAL del hosting de CDmon (comprobada por FTP el 04/10/2026:
+          # la raíz tiene backup/, cert/, logs/, tmp/ y **web/**; no existe public_html/)
+          server-dir: /web/
           # Nunca borra todo el servidor: solo sincroniza lo que sube esta acción
           dangerous-clean-slate: false
           dry-run: ${{ inputs.dry_run || 'false' }}
