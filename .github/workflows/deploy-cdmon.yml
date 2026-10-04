@@ -123,7 +123,12 @@ jobs:
           PUBLIC_STRAPI_TIMEOUT: '90000'
         run: npm run build
 
-      - name: Subir a CDmon (solo lo que cambió)
+      # Dos intentos: el servidor de CDmon a veces corta la conexión de datos
+      # (ECONNRESET) y basta con reintentar. Si el primero va bien, el segundo se salta.
+      # ⚠️ Los dos bloques `with:` deben mantenerse idénticos.
+      - name: Subir a CDmon (intento 1)
+        id: ftp1
+        continue-on-error: true
         if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1'
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
@@ -139,6 +144,27 @@ jobs:
           # Nunca borra todo el servidor: solo sincroniza lo que sube esta acción
           dangerous-clean-slate: false
           dry-run: ${{ inputs.dry_run || 'false' }}
+          timeout: 120000
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
+
+      - name: Subir a CDmon (reintento tras un corte de conexión)
+        if: steps.secretos.outputs.listos == '1' && steps.cambios.outputs.publicar == '1' && steps.ftp1.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./dist/
+          server-dir: /web/
+          dangerous-clean-slate: false
+          dry-run: ${{ inputs.dry_run || 'false' }}
+          timeout: 120000
           log-level: standard
           exclude: |
             **/.git*
